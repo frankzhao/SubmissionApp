@@ -7,8 +7,37 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+<div id="title">
+  <h1>
+    <%=link_to "Submission App", "/" %>
+  </h1>
+</div>
+
+<div id="userdetails">
+  <% if current_user.nil? %>
+    <%= link_to "Login", new_sessions_url %>
+  <% else %>
+    Hello <%= current_user.name %> <br>
+    <%= button_to("Logout", sessions_url, :method => :delete)%>
+  <% end %>
+</div>
+
+<% if flash[:errors] && flash[:errors].length > 0 %>
+  <div id="errors">
+    <h3>Error!</h3>
+    <% flash[:errors].each do |error| %>
+      <div id="error">
+        <%= error.to_s %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<div id="main">
 
 <%= yield %>
+
+</div>
 
 </body>
 </html>
