@@ -4,7 +4,7 @@
   <% @courses.each do |course| %>
     <li>
       <%= link_to course.name, course_url(course) %>
-      <%= course.course_convenor.name %>
+      (<%= course.convenor.name %>)
     </li>
   <% end %>
 </ul>

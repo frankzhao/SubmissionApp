@@ -11,13 +11,49 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131218054418) do
+ActiveRecord::Schema.define(:version => 20131221051434) do
 
   create_table "courses", :force => true do |t|
     t.string   "name",        :null => false
     t.integer  "convenor_id", :null => false
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+  end
+
+  create_table "group_course_memberships", :force => true do |t|
+    t.integer  "course_id"
+    t.integer  "group_type_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  create_table "group_staff_memberships", :force => true do |t|
+    t.integer  "user_id",    :null => false
+    t.integer  "group_id",   :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "group_student_memberships", :force => true do |t|
+    t.integer  "user_id",    :null => false
+    t.integer  "group_id",   :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "group_types", :force => true do |t|
+    t.string   "name",       :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "group_types", ["name"], :name => "index_group_types_on_name", :unique => true
+
+  create_table "groups", :force => true do |t|
+    t.string   "name",          :null => false
+    t.integer  "group_type_id", :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   create_table "staff_enrollments", :force => true do |t|

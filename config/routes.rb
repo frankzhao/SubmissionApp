@@ -1,7 +1,16 @@
 SubmissionApp::Application.routes.draw do
-  resource :sessions
+  get "groups/show"
 
-  resources :courses
+  get "group/show"
+
+  resource :sessions, :only => [:new, :create, :destroy]
+
+  resources :courses, :only => [:index, :show]
+  resources :users, :only => [:show]
+
+  resources :group_types, :only => [:show]
+
+  resources :groups, :only => [:show]
 
   root :to => 'courses#index'
 end

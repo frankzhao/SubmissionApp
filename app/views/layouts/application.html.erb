@@ -9,7 +9,11 @@
 <body>
 <div id="title">
   <h1>
-    <%=link_to "Submission App", "/" %>
+    <% if current_user %>
+      <%=link_to "Submission App", "/" %>
+    <% else %>
+      <%=link_to "Submission App", new_sessions_url %>
+    <% end %>
   </h1>
 </div>
 

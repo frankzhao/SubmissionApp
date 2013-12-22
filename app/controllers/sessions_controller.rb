@@ -22,18 +22,18 @@ class SessionsController < ApplicationController
     end
   end
 
-  def authenticate(uni_id, password)
-    p uni_id
-    p uni_id[1..-1].to_i
-    p password
-    ApplicationHelper.ldap_authenticate(uni_id, password)
-  end
-
   def destroy
     if current_user
       current_user.reset_session_token!
       logout! current_user
     end
     redirect_to "/"
+  end
+
+
+  # Currently disabled
+  def authenticate(uni_id, password)
+    return true
+    ApplicationHelper.ldap_authenticate(uni_id, password)
   end
 end
