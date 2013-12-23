@@ -5,4 +5,8 @@ class Assignment < ActiveRecord::Base
   has_many :courses, :through => :assignment_course_memberships,
                          :source => :course
 
+  def add_course(course)
+    AssignmentCourseMembership.create(:course_id => course.id,
+                                      :assignment_id => self.id)
+
 end

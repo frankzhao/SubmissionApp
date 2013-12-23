@@ -1,12 +1,5 @@
 # This file is me planning the assignment distribution.
 
-tutors = group_staff
-
-class AssignmentDistributionScheme
-  def add_marker; end # takes notify
-  def student; end
-end
-
 # Marks has: average, weight_by
 
 class TutorsMarkAssignments < AssignmentDistributionScheme
