@@ -1,0 +1,9 @@
+<h3>New assignment submission for <%= @assignment.name %></h3>
+
+<form method="POST"
+              action=<%= assignment_assignment_submissions_url(@assignment) %>>
+  <textarea name="submission[body]"></textarea>
+
+  <br>
+  <input type="submit" value="Submit!">
+</form>

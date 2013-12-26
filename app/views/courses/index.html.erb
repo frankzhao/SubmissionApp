@@ -1,7 +1,19 @@
 <h2>Courses</h2>
 
+<h3>Your courses</h3>
+
 <ul>
-  <% @courses.each do |course| %>
+  <% @user_courses.each do |course| %>
+    <li>
+      <%= link_to course.name, course_url(course) %>
+      (<%= course.convenor.name %>)
+    </li>
+  <% end %>
+</ul>
+
+<h3>Other courses</h3>
+<ul>
+  <% @other_courses.each do |course| %>
     <li>
       <%= link_to course.name, course_url(course) %>
       (<%= course.convenor.name %>)

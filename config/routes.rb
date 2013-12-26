@@ -12,5 +12,9 @@ SubmissionApp::Application.routes.draw do
 
   resources :groups, :only => [:show]
 
+  resources :assignments, :only => [:show] do
+    resources :assignment_submissions
+  end
+
   root :to => 'courses#index'
 end

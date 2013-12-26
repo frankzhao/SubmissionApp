@@ -21,7 +21,7 @@
   <% if current_user.nil? %>
     <%= link_to "Login", new_sessions_url %>
   <% else %>
-    Hello <%= current_user.name %> <br>
+    Hello <%= link_to(current_user.name, user_url(current_user)) %> <br>
     <%= button_to("Logout", sessions_url, :method => :delete)%>
   <% end %>
 </div>

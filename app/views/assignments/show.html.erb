@@ -1,0 +1,23 @@
+<h3><%= @assignment.name %></h3>
+
+This is an assignment for the following courses:
+
+<ul>
+  <% @courses.each do |course| %>
+    <li>
+      <%= link_to course.name, course_url(course) %>
+    </li>
+  <% end %>
+</ul>
+
+<h3>Your submissions</h3>
+<ul>
+  <% @user_submissions.each do |submission| %>
+    <li> <%= link_to(submission.created_at,
+              assignment_assignment_submission_url(
+                        @assignment, submission)) %> </li>
+  <% end %>
+</ul>
+
+<%= link_to "Submit assignment", new_assignment_assignment_submission_url(
+                                                                @assignment)%>

@@ -15,9 +15,15 @@ class User < ActiveRecord::Base
 
   has_many :convened_courses, :class_name => "Course", :foreign_key => :convenor_id
 
+  has_many :assignment_submissions
+
   before_validation :reset_session_token, :on => :create
 
   validates :name, :session_token, :uni_id, :presence => true
+
+  def courses
+    self.student_courses + self.staffed_courses + self.convened_courses
+  end
 
   def reset_session_token
     self.session_token = SecureRandom.urlsafe_base64
