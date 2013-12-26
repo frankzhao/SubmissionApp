@@ -27,7 +27,7 @@ class SessionsController < ApplicationController
       current_user.reset_session_token!
       logout! current_user
     end
-    redirect_to "/"
+    redirect_to "sessions/new"
   end
 
 

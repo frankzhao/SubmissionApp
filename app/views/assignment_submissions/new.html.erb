@@ -2,7 +2,9 @@
 
 <form method="POST"
               action=<%= assignment_assignment_submissions_url(@assignment) %>>
-  <textarea name="submission[body]"></textarea>
+  <textarea name="submission[body]">
+    <%= @submission.body if @submission %>
+  </textarea>
 
   <br>
   <input type="submit" value="Submit!">

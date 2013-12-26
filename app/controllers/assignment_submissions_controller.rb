@@ -3,6 +3,7 @@ class AssignmentSubmissionsController < ApplicationController
 
   def show
     @submission = AssignmentSubmission.find(params[:id])
+    @assignment = @submission.assignment
     if @submission.permits?(current_user)
       render :show
     else
@@ -15,6 +16,10 @@ class AssignmentSubmissionsController < ApplicationController
     #TODO: require the user to be in this course
 
     @assignment = Assignment.find(params[:assignment_id])
+    @submission = @assignment.submissions
+                             .where(:user_id => current_user.id)
+                             .order(:created_at)
+                             .last
     render :new
   end
 

@@ -1,5 +1,7 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery
+  # TODO: protect from forgery...
+ # protect_from_forgery
+
 
   include ApplicationHelper
 end
