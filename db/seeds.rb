@@ -36,8 +36,9 @@ tessa.enroll_staff_in_course!(comp1130)
 tute = GroupType.create!(:name => "Comp1100/1130 labs",
                          :courses => [comp1130, comp1100])
 
-assignment = Assignment.create!(:name => "Wireworld", :info => "cellular automata!")
-assignment.add_courses(comp1100, comp1130)
+wireworld = Assignment.create!(:name => "Wireworld",
+                               :info => "cellular automata!",
+                               :group_type => tute)
 
 buck_tute, tessa_tute = tute.create_groups("Thursday A"=>[buck],
                                       "Thursday B"=>[tessa])
@@ -53,3 +54,7 @@ buck_tute, tessa_tute = tute.create_groups("Thursday A"=>[buck],
     end
   end
 end
+
+AssignmentSubmission.create!(:user_id => buck_tute.students.first.id,
+                              :body => "main = error \"unimplemented\"",
+                              :assignment_id => wireworld.id)

@@ -15,7 +15,6 @@ class Course < ActiveRecord::Base
   has_many :group_types, :through => :group_course_memberships,
                          :source => :group_type
 
-  has_many :assignment_course_memberships
-  has_many :assignments, :through => :assignment_course_memberships,
-                         :source => :assignment
+  has_many :assignments, :through => :group_types,
+                         :source => :assignments
 end

@@ -1,18 +1,25 @@
 class Assignment < ActiveRecord::Base
-  attr_accessible :info, :name
+  attr_accessible :info, :name, :group_type
 
-  has_many :assignment_course_memberships
-  has_many :courses, :through => :assignment_course_memberships,
-                         :source => :course
-
+  belongs_to :group_type
   has_many :submissions, :class_name => "AssignmentSubmission"
 
-  def add_course(course)
-    AssignmentCourseMembership.create(:course_id => course.id,
-                                      :assignment_id => self.id)
+  has_many :courses, :through => :group_type, :source => :courses
+
+  def relevant_submissions(user)
+    case user.relationship_to_assignment(self)
+    when :student
+      submissions.find_by_user_id_and_assignment_id(user.id, self.id)
+    when :staff
+      user.staffed_groups.where(:group_type_id => self.group_type_id)
+                         .map{ |x| x.submissions(self) }.flatten
+    when :convenor
+      submissions
+    end
   end
 
-  def add_courses(*courses)
-    courses.each { |course| add_course(course) }
+  def url
+    assignment_url(self)
   end
+
 end

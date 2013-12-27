@@ -10,4 +10,13 @@ class Group < ActiveRecord::Base
   has_many :group_staff_memberships
   has_many :staff, :through => :group_staff_memberships, :source => :user
 
+  has_many :assignments, :through => :group_type, :source => :assignment
+
+  def submissions(assignment)
+    # TODO: rewrite this as SQL
+    assignment.submissions.select do |submission|
+      self.students.include?(submission.user)
+    end
+  end
+
 end

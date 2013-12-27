@@ -11,28 +11,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131226060011) do
-
-  create_table "assignment_course_memberships", :force => true do |t|
-    t.integer  "assignment_id", :null => false
-    t.integer  "course_id",     :null => false
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
-  end
+ActiveRecord::Schema.define(:version => 20131227082636) do
 
   create_table "assignment_submissions", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "assignment_id"
-    t.string   "body"
+    t.integer  "user_id",       :null => false
+    t.integer  "assignment_id", :null => false
+    t.string   "body",          :null => false
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
   end
 
   create_table "assignments", :force => true do |t|
-    t.string   "name",       :null => false
-    t.text     "info",       :null => false
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.string   "name",          :null => false
+    t.text     "info",          :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.integer  "group_type_id", :null => false
   end
 
   create_table "courses", :force => true do |t|
@@ -43,8 +37,8 @@ ActiveRecord::Schema.define(:version => 20131226060011) do
   end
 
   create_table "group_course_memberships", :force => true do |t|
-    t.integer  "course_id"
-    t.integer  "group_type_id"
+    t.integer  "course_id",     :null => false
+    t.integer  "group_type_id", :null => false
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
   end
@@ -79,15 +73,15 @@ ActiveRecord::Schema.define(:version => 20131226060011) do
   end
 
   create_table "staff_enrollments", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "course_id"
+    t.integer  "user_id",    :null => false
+    t.integer  "course_id",  :null => false
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
   create_table "student_enrollments", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "course_id"
+    t.integer  "user_id",    :null => false
+    t.integer  "course_id",  :null => false
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

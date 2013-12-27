@@ -1,0 +1,9 @@
+<h3><%= @assignment.name %></h3>
+
+<h3>Submissions</h3>
+<ul>
+  <% @submissions.each do |submission| %>
+    <li> <%= link_to("#{submission.user.name} (#{submission.created_at})",
+              submission.url) %> </li>
+  <% end %>
+</ul>

@@ -25,6 +25,30 @@ class User < ActiveRecord::Base
     self.student_courses + self.staffed_courses + self.convened_courses
   end
 
+  def taught_courses
+    self.staffed_courses + self.convened_courses
+  end
+
+  def relationship_to_course(course)
+    if self.student_courses.includes?(course)
+      :student
+    elsif self.taught_courses.includes?(course)
+      :staff
+    else
+      nil
+    end
+  end
+
+  def relationship_to_assignment(assignment)
+    if self.staffed_courses & assignment.courses != []
+      :staff
+    elsif self.student_courses & assignment.courses != []
+      :student
+    elsif self.convened_courses & assignment.courses != []
+      :convenor
+    end
+  end
+
   def reset_session_token
     self.session_token = SecureRandom.urlsafe_base64
   end
@@ -49,6 +73,4 @@ class User < ActiveRecord::Base
   def join_group_as_staff!(group)
     GroupStaffMembership.create!(:group_id => group.id, :user_id => self.id)
   end
-
-
 end

@@ -1,4 +1,5 @@
-<h3>New assignment submission for <%= @assignment.name %></h3>
+<h3>New assignment submission for <%= link_to(@assignment.name,
+                                            assignment_url(@assignment) %></h3>
 
 <form method="POST"
               action=<%= assignment_assignment_submissions_url(@assignment) %>>

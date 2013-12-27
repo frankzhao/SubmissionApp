@@ -5,6 +5,7 @@ class GroupType < ActiveRecord::Base
   has_many :courses, :through => :group_course_memberships, :source => :course
 
   has_many :groups
+  has_many :assignments
 
   def create_groups(group_hash)
     [].tap do |groups|

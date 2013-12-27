@@ -1,4 +1,4 @@
-<h3>Submission for <%=@assignment.name %> at <%= @submission.created_at %></h3>
+<h3>Submission for <%= @assignment.name %> at <%= @submission.created_at %></h3>
 
 <% if current_user == @submission.user %>
   <%= link_to "Submit new version", new_assignment_assignment_submission_url(
