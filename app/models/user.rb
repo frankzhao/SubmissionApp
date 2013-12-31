@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   attr_accessible :name, :session_token, :uni_id
+  attr_protected :admin
 
   has_many :student_enrollments
   has_many :student_courses, :through => :student_enrollments, :source => :course
