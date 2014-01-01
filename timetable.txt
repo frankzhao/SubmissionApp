@@ -1,0 +1,25 @@
+Here's my proposed timeline. I'm 80% sure I can meet these deadlines. I'm particularly confident of the deadlines at the end, because I can work on it full time from Monday the 13th.
+
+The trickiest bit will be the interface for the custom distributions.
+
+I'll of course keep you regularly updated throughout the project, so you'll be aware of how I'm going at all stages.
+
+Thursday 26th December: Courses, students, groups, etc, will be implemented. Assignments which are single files can be submitted, and the tutors and lecturers can view them. Those features won't have full functionality--perhaps no due dates on assignments or things like that.
+
+Sunday 5th January 2014: Full functionality for assignment submission, and static distributions for receiving assignments. It is possible for authorized people to return feedback, edited versions of submitted files, and marks. The course convener is able to download a csv file of the marks. Students can be enrolled by uploading a csv of their details.
+
+I will also have planned a Ruby interface which lets you write the distribution algorithms. I will have implemented at least basic functionality. Distributions will be specified by Ruby files which interact with the Ruby interface simply and safely.
+
+At this point, the system will have all the assignment handling capabilities of Wattle. I will have test suites testing all of the Wattle-like features.
+
+Sunday 12th January:
+
+The distribution system will have been implemented. Simple distributions have been implemented.
+
+Sunday 19th January:
+
+More complex distributions have been implemented. Careful automated tests for the distribution are written.
+
+Sunday 26th January:
+
+Load testing, more testing.

@@ -4,6 +4,6 @@
 <ul>
   <% @submissions.each do |submission| %>
     <li> <%= link_to("#{submission.user.name} (#{submission.created_at})",
-              submission.url) %> </li>
+              assignment_assignment_submission_url(@assignment, submission)) %> </li>
   <% end %>
 </ul>

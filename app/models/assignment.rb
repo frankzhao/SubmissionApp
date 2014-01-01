@@ -10,6 +10,9 @@ class Assignment < ActiveRecord::Base
     case user.relationship_to_assignment(self)
     when :student
       submissions.find_by_user_id_and_assignment_id(user.id, self.id)
+
+    # TODO: make it only the most recent one. Better do that with SQL.
+    # TODO: Use SQl.
     when :staff
       user.staffed_groups.where(:group_type_id => self.group_type_id)
                          .map{ |x| x.submissions(self) }.flatten

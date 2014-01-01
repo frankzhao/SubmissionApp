@@ -22,6 +22,14 @@ class User < ActiveRecord::Base
 
   validates :name, :session_token, :uni_id, :presence => true
 
+  def self.create_by_csv!(csv_string)
+    lines = csv_string.split("\n")
+    lines.each do |line|
+      [name, uni_id] = line
+      User.create!(:name => name, :uni_id => uni_id)
+    end
+  end
+
   def courses
     self.student_courses + self.staffed_courses + self.convened_courses
   end
