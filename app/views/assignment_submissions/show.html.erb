@@ -1,4 +1,8 @@
-<h3>Submission for <%= @assignment.name %> at <%= @submission.created_at %></h3>
+<h3>Submission for <%=  link_to @assignment.name, assignment_url(@assignment) %> at <%= @submission.created_at %></h3>
+
+<% if @submission.mark %>
+<h4>Mark: <%= @submission.mark %></h4>
+<% end %>
 
 <% if current_user == @submission.user %>
   <%= link_to "Submit new version", new_assignment_assignment_submission_url(
@@ -7,5 +11,29 @@
   <%= @submission.user.name %>
 <% end %>
 
-<pre><%= @submission.body %></pre>
+<div id="assignment"><pre><%= @submission.body %></pre></div>
 
+<% @comments.each do |comment| %>
+  <div id="comment">
+    <h4>
+      <%= comment.user.name %>
+    </h4>
+    <p>
+      <%= comment.body %>
+    </p>
+  </div>
+<% end %>
+
+<div id="comment">
+  <h4>New comment</h4>
+  <form method="POST"
+      action="<%= assignment_assignment_submission_comments_url(
+                @assignment, @submission)%>">
+    <textarea name="comment[body]"></textarea>
+    <br>
+    <label for="comment_mark">Mark (out of TODO)</label>
+    <input id="comment_mark" name="comment[mark]">
+    <br>
+    <input type="submit" value="Submit!">
+  </form>
+</div>

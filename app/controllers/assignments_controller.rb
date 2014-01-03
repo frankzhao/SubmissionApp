@@ -8,6 +8,7 @@ class AssignmentsController < ApplicationController
       @courses = @assignment.courses
       @user_submissions = @assignment.submissions
                                      .where(:user_id => current_user.id)
+                                     .order('created_at DESC')
       render :show_to_student
     when :staff
 

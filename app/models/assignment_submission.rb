@@ -4,6 +4,8 @@ class AssignmentSubmission < ActiveRecord::Base
   belongs_to :assignment
   belongs_to :user
 
+  has_many :comments
+
   has_one :group_type, :through => :assignment, :source => :group_type
 
   validates :assignment_id, :user_id, :presence => true
@@ -23,6 +25,10 @@ class AssignmentSubmission < ActiveRecord::Base
         return group
       end
     end
+  end
+
+  def mark
+    comments.map { |comment| comment.mark }.select{ |x| x }.last
   end
 
   # This is all the people who are permitted to see the assignment.

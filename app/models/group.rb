@@ -18,5 +18,4 @@ class Group < ActiveRecord::Base
       self.students.include?(submission.user)
     end
   end
-
 end

@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
   def self.create_by_csv!(csv_string)
     lines = csv_string.split("\n")
     lines.each do |line|
-      [name, uni_id] = line
+      name, uni_id = line
       User.create!(:name => name, :uni_id => uni_id)
     end
   end
@@ -56,6 +56,13 @@ class User < ActiveRecord::Base
     elsif self.convened_courses & assignment.courses != []
       :convenor
     end
+  end
+
+  def most_recent_submission(assignment)
+    self.assignment_submissions
+        .where(:assignment_id => assignment.id)
+        .order('created_at DESC')
+        .first
   end
 
   def reset_session_token

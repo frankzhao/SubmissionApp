@@ -4,6 +4,7 @@ class AssignmentSubmissionsController < ApplicationController
   def show
     @submission = AssignmentSubmission.find(params[:id])
     @assignment = @submission.assignment
+    @comments = @submission.comments
 
     if @submission.permits?(current_user)
       render :show

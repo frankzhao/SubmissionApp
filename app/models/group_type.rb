@@ -7,6 +7,8 @@ class GroupType < ActiveRecord::Base
   has_many :groups
   has_many :assignments
 
+  has_many :students, :through => :group, :source => :students
+
   def create_groups(group_hash)
     [].tap do |groups|
       group_hash.each do |name, staff|
