@@ -2,6 +2,10 @@
 
 <em>Course convenor: <%= link_to @convenor.name, user_url(@convenor) %></em>
 
+<% if current_user == @convenor %>
+  <p><%= link_to("Enroll students", new_course_user_url(@course)) %></p>
+<% end %>
+
 <% if @group_types %>
   <% @group_types.each do |group_type| %>
     <h3><%= link_to group_type.name, group_type_url(group_type) %></h3>

@@ -23,6 +23,12 @@
   <% else %>
     Hello <%= link_to(current_user.name, user_url(current_user)) %> <br>
     <%= button_to("Logout", sessions_url, :method => :delete)%>
+    <% if current_user.is_admin %>
+      <p>You're an admin!</p>
+    <% end %>
+    <% if current_user.is_convenor? %>
+      <p>You're a convenor!</p>
+    <% end %>
   <% end %>
 </div>
 

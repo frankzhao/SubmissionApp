@@ -1,0 +1,8 @@
+<h2>Add users to <%= @course.name %></h2>
+
+<h3>Add by csv</h3>
+<p>Stick some CSV here, yo.</p>
+<form method="POST" action=<%= course_users_url(@course) %>>
+  <textarea name="user_details">name,uni id</textarea>
+  <input type="submit" value="Create users">
+</form>

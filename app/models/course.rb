@@ -17,4 +17,11 @@ class Course < ActiveRecord::Base
 
   has_many :assignments, :through => :group_types,
                          :source => :assignments
+
+  def add_students_by_csv(csv_string)
+    students = User.create_by_csv!(csv_string)
+    students.each do |student|
+      student.enroll_in_course!(self)
+    end
+  end
 end

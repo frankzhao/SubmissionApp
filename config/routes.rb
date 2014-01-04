@@ -5,7 +5,10 @@ SubmissionApp::Application.routes.draw do
 
   resource :sessions, :only => [:new, :create, :destroy]
 
-  resources :courses, :only => [:index, :show]
+  resources :courses, :only => [:index, :show] do
+    resources :users, :only => [:new, :create]
+  end
+
   resources :users, :only => [:show]
 
   resources :group_types, :only => [:show]

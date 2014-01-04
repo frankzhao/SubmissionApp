@@ -3,6 +3,8 @@ class AssignmentsController < ApplicationController
 
   def show
     @assignment = Assignment.find(params[:id])
+    p "*"*1000
+    p current_user.relationship_to_assignment(@assignment)
     case current_user.relationship_to_assignment(@assignment)
     when :student
       @courses = @assignment.courses

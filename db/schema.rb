@@ -103,7 +103,7 @@ ActiveRecord::Schema.define(:version => 20140104065730) do
     t.string   "session_token",                    :null => false
     t.datetime "created_at",                       :null => false
     t.datetime "updated_at",                       :null => false
-    t.boolean  "admin",         :default => false, :null => false
+    t.boolean  "is_admin",         :default => false, :null => false
   end
 
 end

@@ -9,7 +9,12 @@
 <h3>Submissions</h3>
 <ul>
   <% @submissions.each do |submission| %>
-    <li> <%= link_to("#{submission.user.name} (#{submission.user.uni_id})",
+    <% if submission.mark %>
+      <li><%= link_to("#{submission.user.name} (u#{submission.user.uni_id})",
               assignment_assignment_submission_url(@assignment, submission)) %> </li>
+    <% else %>
+      <li><b> <%= link_to("#{submission.user.name} (u#{submission.user.uni_id})",
+          assignment_assignment_submission_url(@assignment, submission)) %> </li> (unmarked)</b>
+    <% end %>
   <% end %>
 </ul>

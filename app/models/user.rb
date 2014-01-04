@@ -23,11 +23,24 @@ class User < ActiveRecord::Base
   validates :name, :session_token, :uni_id, :presence => true
 
   def self.create_by_csv!(csv_string)
-    lines = csv_string.split("\n")
-    lines.each do |line|
-      name, uni_id = line
-      User.create!(:name => name, :uni_id => uni_id)
+    lines = csv_string.split("\n").map(&:strip).map{ |line| line.split(",") }
+
+    raise "Invalid csv!" if lines[0]!=["name","uni id"]
+
+    [].tap do |out|
+      lines[1..-1].each do |line|
+        name, uni_id = line
+        user = User.find_by_uni_id(uni_id)
+        if !user
+          user = User.create!(:name => name, :uni_id => uni_id)
+        end
+        out << user
+      end
     end
+  end
+
+  def is_convenor?
+    !self.convened_courses.empty?
   end
 
   def courses
@@ -75,13 +88,18 @@ class User < ActiveRecord::Base
   end
 
   def enroll_in_course!(course)
-    StudentEnrollment.create!(:course_id => course.id, :user_id => self.id)
+    unless self.student_courses.include? course
+      StudentEnrollment.create!(:course_id => course.id, :user_id => self.id)
+    end
   end
 
   def enroll_staff_in_course!(course)
-    StaffEnrollment.create!(:course_id => course.id, :user_id => self.id)
+    unless self.staffed_courses.include? course
+      StaffEnrollment.create!(:course_id => course.id, :user_id => self.id)
+    end
   end
 
+  #TODO: can't join groups twice
   def join_group!(group)
     GroupStudentMembership.create!(:group_id => group.id, :user_id => self.id)
   end

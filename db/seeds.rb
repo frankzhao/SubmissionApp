@@ -6,11 +6,16 @@ User.create!([
   { :name => "Uwe Zimmer", :uni_id => 2222222 },
   { :name => "Buck Shlegeris", :uni_id => 5192430 },
   { :name => "Tessa Bradbury", :uni_id => 3333333 },
-  { :name => "Eric McCreath", :uni_id => 4444444}
+  { :name => "Eric McCreath", :uni_id => 4444444 },
+  { :name => "James Fellows", :uni_id => 1234567 }
   ])
 
 
 uwe = User.find_by_name("Uwe Zimmer")
+
+james = User.find_by_name("James Fellows")
+james.is_admin = true
+james.save!
 
 comp1100 = Course.new(:name => "Comp1100")
 comp1100.convenor = uwe
