@@ -1,5 +1,9 @@
 <h3><%= @assignment.name %></h3>
 
+<% if @assignment.due_date %>
+  <p>Due at <%= @assignment.due_date %> </p>
+<% end %>
+
 This is an assignment for the following courses:
 
 <ul>
@@ -19,5 +23,9 @@ This is an assignment for the following courses:
   <% end %>
 </ul>
 
+<% if Time.now < @assignment.due_date %>
 <%= link_to "Submit assignment", new_assignment_assignment_submission_url(
                                                                 @assignment)%>
+<% else %>
+  <p>Submissions have closed.</p>
+<% end %>

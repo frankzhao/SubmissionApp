@@ -47,8 +47,8 @@ buck_tute, tessa_tute = tute.create_groups("Thursday A"=>[buck],
 [buck_tute, tessa_tute].each do |tute|
   [comp1100, comp1130, comp2300].each do |course|
     5.times do |time|
-      user = User.create( { :name => Faker::Name.name,
-                        :uni_id => 5000000 + rand(1000000) } )
+      user = User.create( { :name => "#{Faker::Name.first_name} #{Faker::Name.last_name}",
+                        :uni_id => 4000000 + rand(2000000) } )
 
       user.enroll_in_course!(course)
       user.join_group!(tute)
