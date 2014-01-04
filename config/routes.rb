@@ -1,7 +1,7 @@
 SubmissionApp::Application.routes.draw do
-  get "groups/show"
+  # get "groups/show"
 
-  get "group/show"
+  # get "group/show"
 
   resource :sessions, :only => [:new, :create, :destroy]
 
@@ -17,6 +17,9 @@ SubmissionApp::Application.routes.draw do
       resources :comments, :only => [:create, :delete]
     end
   end
+
+  get 'assignments/:id/marks.csv', :to => 'assignments#get_csv',
+                                   :as => 'assignment_marks'
 
   root :to => 'courses#index'
 end

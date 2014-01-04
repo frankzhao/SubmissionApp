@@ -1,5 +1,11 @@
 <h3><%= @assignment.name %></h3>
 
+<p><%= link_to "Download all marks as csv", "/assignments/#{@assignment.id}/marks.csv" %></p>
+
+<% if @assignment.due_date %>
+  <p>Due at <%= @assignment.due_date %> </p>
+<% end %>
+
 <h3>Submissions</h3>
 <ul>
   <% @submissions.each do |submission| %>

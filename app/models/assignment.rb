@@ -1,5 +1,5 @@
 class Assignment < ActiveRecord::Base
-  attr_accessible :info, :name, :group_type
+  attr_accessible :info, :name, :group_type, :due_date
 
   belongs_to :group_type
   has_many :groups, :through => :group_type, :source => :groups
@@ -29,8 +29,16 @@ class Assignment < ActiveRecord::Base
     end
   end
 
-  def url
-    assignment_url(self)
+  #TODO: Add "marker" as a field here.
+  def marks_csv
+    out = ["name,uni id,submission time,mark"]
+    self.students.each do |student|
+      most_recent_submission = student.most_recent_submission(self)
+      submission_time = most_recent_submission.created_at rescue ""
+      mark = most_recent_submission.mark || "not marked" rescue "not submitted"
+      out << "#{student.name},#{student.uni_id},#{submission_time},#{mark}"
+    end
+    out.join("\n")
   end
 
 end

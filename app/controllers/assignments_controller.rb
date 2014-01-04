@@ -20,4 +20,10 @@ class AssignmentsController < ApplicationController
       render :show_to_staff
     end
   end
+
+  # CHECK whether this is idiomatic
+  def get_csv
+    @assignment = Assignment.find(params[:id])
+    render :text => @assignment.marks_csv
+  end
 end
