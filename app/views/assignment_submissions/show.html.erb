@@ -2,7 +2,7 @@
 
 
 <% if @submission.permitted_users.include?(current_user) %>
-  <h3> Username hidden </h3>
+  <h3> Submitter is anonymous </h3>
 <% elsif current_user == @submission.user %>
   <%= link_to "Submit new version", new_assignment_assignment_submission_url(
                                                                 @assignment)%>
@@ -27,7 +27,7 @@
   <% @comments.each do |comment| %>
     <div class="comment">
       <h4>
-        <%= comment.user.name %>
+        <%= @submission.context_name(comment.user, current_user) %>
       </h4>
         <% if comment.mark %>
           <h5>Mark: <%= comment.mark %></h5>

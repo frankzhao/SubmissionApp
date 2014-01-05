@@ -56,9 +56,9 @@ class User < ActiveRecord::Base
   end
 
   def relationship_to_course(course)
-    if self.student_courses.includes?(course)
+    if self.student_courses.include?(course)
       :student
-    elsif self.taught_courses.includes?(course)
+    elsif self.taught_courses.include?(course)
       :staff
     else
       nil

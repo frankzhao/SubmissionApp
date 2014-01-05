@@ -83,4 +83,17 @@ class AssignmentSubmission < ActiveRecord::Base
     SubmissionPermission.create!(:user_id => user.id,
                                  :assignment_submission_id => self.id)
   end
+
+  def context_name(user, current_user)
+    if current_user == self.user
+      if self.permitted_users.include?(user)
+        return "Anonymous Reviewer"
+      end
+    elsif self.permitted_users.include?(current_user)
+      if self.user == user
+        return "Anonymous Submitter"
+      end
+    end
+    return "#{user.name} (u#{user.uni_id})"
+  end
 end
