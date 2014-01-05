@@ -78,4 +78,9 @@ class AssignmentSubmission < ActiveRecord::Base
   def upload=(whatever)
     @upload = whatever
   end
+
+  def add_permission(user)
+    SubmissionPermission.create!(:user_id => user.id,
+                                 :assignment_submission_id => self.id)
+  end
 end

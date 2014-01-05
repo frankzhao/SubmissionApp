@@ -1,6 +1,9 @@
 <h2>Submission for <%=  link_to @assignment.name, assignment_url(@assignment) %></h2>
 
-<% if current_user == @submission.user %>
+
+<% if @submission.permitted_users.include?(current_user) %>
+  <h3> Username hidden </h3>
+<% elsif current_user == @submission.user %>
   <%= link_to "Submit new version", new_assignment_assignment_submission_url(
                                                                 @assignment)%>
 <% else %>

@@ -101,7 +101,7 @@ ActiveRecord::Schema.define(:version => 20140105082041) do
   end
 
   create_table "submission_permissions", :force => true do |t|
-    t.integer "assignment_submission", :null => false
+    t.integer "assignment_submission_id", :null => false
     t.integer "user_id",               :null => false
   end
 

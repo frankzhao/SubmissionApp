@@ -11,6 +11,7 @@ class AssignmentsController < ApplicationController
       @user_submissions = @assignment.submissions
                                      .where(:user_id => current_user.id)
                                      .order('created_at DESC')
+      @permitted_submissions = current_user.permitted_submissions(@assignment)
       render :show_to_student
     when :staff
 

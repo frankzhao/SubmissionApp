@@ -19,6 +19,8 @@ class User < ActiveRecord::Base
   has_many :assignment_submissions
 
   has_many :submission_permissions
+  has_many :permitted_submissions, :through => :submission_permissions,
+                                   :source => :assignment_submission
 
   before_validation :reset_session_token, :on => :create
 
@@ -108,5 +110,10 @@ class User < ActiveRecord::Base
 
   def join_group_as_staff!(group)
     GroupStaffMembership.create!(:group_id => group.id, :user_id => self.id)
+  end
+
+  def permitted_submissions(assignment)
+    self.submission_permissions.select { |s| s.assignment == assignment }
+                               .map(&:assignment_submission)
   end
 end

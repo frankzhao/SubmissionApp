@@ -28,8 +28,19 @@ This is an assignment for the following courses:
 <% end %>
 
 <% if Time.now < @assignment.due_date %>
-<%= link_to "Submit assignment", new_assignment_assignment_submission_url(
-                                                                @assignment)%>
+<%= link_to("Submit assignment",
+          new_assignment_assignment_submission_url(@assignment)) %>
 <% else %>
   <p>Submissions have closed.</p>
+<% end %>
+
+<% unless @permitted_submissions.empty? %>
+  <h3>Submissions for peer review</h3>
+  <ul>
+  <% @permitted_submissions.each do |submission| %>
+    <li> <%= link_to("Anonymous submission",
+              assignment_assignment_submission_url(
+                        @assignment, submission)) %> </li>
+  <% end %>
+  </ul>
 <% end %>

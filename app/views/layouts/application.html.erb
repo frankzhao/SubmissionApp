@@ -8,13 +8,11 @@
 </head>
 <body>
 <div id="title">
-  <h1>
     <% if current_user %>
-      <%=link_to "Submission App", "/" %>
+      <%=link_to (image_tag "logo.jpg"), "/" %>
     <% else %>
-      <%=link_to "Submission App", new_sessions_url %>
+      <%=link_to (image_tag "logo.jpg"), new_sessions_url %>
     <% end %>
-  </h1>
 </div>
 
 <div id="userdetails">

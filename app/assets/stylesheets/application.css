@@ -44,6 +44,7 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
     line-height: 1;
+    font: "arial";
 }
 ol, ul {
     list-style: none;
@@ -68,6 +69,7 @@ table {
 
 h1 {
     font-size: 42px;
+    font: "verdana";
 }
 
 table, th, td {
@@ -85,16 +87,15 @@ table, th, td {
 
 #title {
     margin: 0 auto;
-    background: #1e5799;
-    border-bottom: 2px solid;
+    background: #201F2E;
+    border-bottom: 5px solid;
+    border-color: rgb(146, 24, 24);
     text-align: center;
-    padding: 10px;
+    padding: 15px;
 }
 
-#title a:-webkit-any-link {
-    color: white;
-    text-decoration: none;
-    cursor: auto;
+#title img {
+    width: 40%;
 }
 
 h2 {
@@ -116,15 +117,16 @@ h4 {
 }
 
 ul {
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 3px;
+    padding-bottom: 10px;
 }
 
 li {
     list-style-type: circle;
     list-style-position: inside;
     padding-left: 10px;
-    padding-top: 5px;
+    padding-top: 2px;
+    padding-bottom: 5px;
 }
 
 #userdetails {
@@ -157,11 +159,6 @@ li {
     padding: 20px;
     background-color: #EEF;
     border: 1px;
-}
-
-img {
-    width: 100px;
-    height: 100px;
 }
 
 body {
