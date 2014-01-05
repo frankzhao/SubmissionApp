@@ -1,3 +1,4 @@
+<h2>Log in</h2>
 <form method="POST" action=<%= sessions_url %> >
   <label for="user_uni_id">Uni ID</label>
   <input type="text" id="user_uni_id" name="user[uni_id]" value="<%=@uni_id%>">
@@ -6,5 +7,5 @@
   <input type="password" id="user_password" name="user[password]">
 
   <br>
-  <input type="submit">
+  <input type="submit" value="Log in">
 </form>

@@ -33,7 +33,9 @@ gem 'faker'
 group :test do
   gem 'capybara'
   gem 'guard-rspec'
+  gem 'rspec-rails'
   gem 'launchy'
+  gem 'database-cleaner'
 end
 
 gem 'rubyzip'
