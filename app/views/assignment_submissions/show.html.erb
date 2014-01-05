@@ -10,7 +10,7 @@
 <h4>Submitted at <%= @submission.created_at %></h4>
 
 <% if @submission.mark %>
-<h4>Mark: <%= @submission.mark %></h4>
+<h4>Mark: <%= @submission.mark %>/<%= @assignment.maximum_mark %></h4>
 <% end %>
 
 <% if @assignment.submission_format == "plaintext" %>

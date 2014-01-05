@@ -1,1 +1,1 @@
-main = error "unimplemented"
+main = error "first unimplemented"

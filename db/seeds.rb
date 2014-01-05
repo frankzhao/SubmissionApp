@@ -102,6 +102,10 @@ end
 end
 
 
-AssignmentSubmission.create!(:user_id => buck_tute.students.first.id,
+sub1 = AssignmentSubmission.create!(:user_id => buck_tute.students[0].id,
+                              :body => "main = error \"first unimplemented\"",
+                              :assignment_id => wireworld.id)
+
+sub2 = AssignmentSubmission.create!(:user_id => buck_tute.students[1].id,
                               :body => "main = error \"unimplemented\"",
                               :assignment_id => wireworld.id)

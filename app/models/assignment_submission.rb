@@ -10,14 +10,21 @@ class AssignmentSubmission < ActiveRecord::Base
 
   has_many :comments
 
+  has_many :submission_permissions
+
+  has_many :permitted_users, :through => :submission_permissions,
+                             :source => :user
+
   has_one :group_type, :through => :assignment, :source => :group_type
 
   validates :assignment_id, :user_id, :presence => true
 
+  # TODO: rewrite with SQL
   def permits?(user)
     permitted_people = ([self.user] +
                         assignment.courses.map(&:staff).flatten +
-                        assignment.courses.map(&:convenor))
+                        assignment.courses.map(&:convenor) +
+                        self.permitted_users)
 
     permitted_people.include?(user)
   end
