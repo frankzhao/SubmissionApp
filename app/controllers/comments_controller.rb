@@ -4,7 +4,7 @@ class CommentsController < ApplicationController
     @comment = Comment.new(params[:comment])
     @comment.user = current_user
     @comment.assignment_submission = AssignmentSubmission.find(params[:assignment_submission_id])
-    if @comment.user == current_user
+    if @comment.assignment_submission.user == current_user
       @comment.mark = nil
     end
     @comment.save!
