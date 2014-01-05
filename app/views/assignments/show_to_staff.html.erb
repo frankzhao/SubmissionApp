@@ -14,7 +14,8 @@
               assignment_assignment_submission_url(@assignment, submission)) %> </li>
     <% else %>
       <li><b> <%= link_to("#{submission.user.name} (u#{submission.user.uni_id})",
-          assignment_assignment_submission_url(@assignment, submission)) %> </li> (unmarked)</b>
+          assignment_assignment_submission_url(@assignment, submission)) %>
+            (unmarked)</li> </b>
     <% end %>
   <% end %>
 </ul>

@@ -1,0 +1,8 @@
+<h3>New assignment submission for <%= link_to(@assignment.name,
+                                            assignment_url(@assignment)) %></h3>
+<form method="POST"
+         action="<%= assignment_assignment_submissions_url(@assignment) %>"
+         enctype="multipart/form-data">
+  <%= file_field 'upload', 'datafile' %>
+  <input type="submit" value="Submit!">
+</form>

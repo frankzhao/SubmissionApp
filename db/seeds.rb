@@ -46,20 +46,61 @@ wireworld = Assignment.create!(:name => "Wireworld",
                                :group_type => tute,
                                :due_date => "2014-01-03 23:04:26")
 
+kalaha = Assignment.create!(:name => "Kalaha",
+                               :info => "board game!",
+                               :group_type => tute,
+                               :due_date => "2015-01-03 23:04:26",
+                               :submission_format => "zipfile")
+
 buck_tute, tessa_tute = tute.create_groups("Thursday A"=>[buck],
                                       "Thursday B"=>[tessa])
 
+people = [['Michele Hirthe',5689215],
+['Etha Medhurst',5167449],
+['Julius Casper',5544508],
+['Lessie Beier',4597441],
+['Sylvia Kutch',5292181],
+['Joanne Stanton',4957443],
+['Daren Wolf',5972951],
+['Jasen Schroeder',4625564],
+['Rafaela Parisian',4643300],
+['Emma Maggio',5671846],
+['Martin Kris',4919654],
+['Elvis Block',5228817],
+['Christine Powlowski',4292920],
+['Sammy Mueller',4648373],
+['Leslie Bednar',4950106],
+['Justice Rogahn',5930905],
+['Toni Kuvalis',5440690],
+['Garnet Thompson',4365727],
+['Lindsey Kautzer',5438481],
+['Osvaldo Spinka',4424755],
+['Elisabeth Volkman',4704255],
+["Dolly O'Keefe",4989649],
+['Hoyt Williamson',4210491],
+['Demarcus Johns',4500384],
+['Brooks Kris',4911177],
+['Katelyn Collier',5817236]]
+
+
 [buck_tute, tessa_tute].each do |tute|
-  [comp1100, comp1130, comp2300].each do |course|
+  [comp1100, comp1130].each do |course|
     5.times do |time|
-      user = User.create( { :name => "#{Faker::Name.first_name} #{Faker::Name.last_name}",
-                        :uni_id => 4000000 + rand(2000000) } )
+      name, id = people.pop
+      user = User.create!({ :name => name, :uni_id => id })
 
       user.enroll_in_course!(course)
       user.join_group!(tute)
     end
   end
 end
+
+5.times do |time|
+  name, id = people.pop
+  user = User.create!({ :name => name, :uni_id => id })
+  user.enroll_in_course!(comp2300)
+end
+
 
 AssignmentSubmission.create!(:user_id => buck_tute.students.first.id,
                               :body => "main = error \"unimplemented\"",

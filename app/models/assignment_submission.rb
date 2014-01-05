@@ -1,8 +1,12 @@
+require 'zip'
+
 class AssignmentSubmission < ActiveRecord::Base
   attr_accessible :assignment_id, :body, :user_id
 
   belongs_to :assignment
   belongs_to :user
+
+  after_save :save_locally
 
   has_many :comments
 
@@ -43,4 +47,21 @@ class AssignmentSubmission < ActiveRecord::Base
                         self.assignment_id, self.id)
   end
 
+  def save_locally
+    if self.assignment.submission_format == "plaintext"
+      name = self.user.name.gsub(" ","_")
+      filepath = "upload/#{self.assignment.name}_#{name}_#{self.id}.txt"
+      File.open(filepath, 'w') do |f|
+        f.write(self.body)
+      end
+    end
+  end
+
+  def save_data(data)
+    name = self.user.name.gsub(" ","_")
+    filepath = "upload/#{self.assignment.name}_#{name}_#{self.id}.zip"
+    File.open(filepath, 'wb') do |f|
+      f.write(self.upload)
+    end
+  end
 end

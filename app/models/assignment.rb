@@ -1,5 +1,5 @@
 class Assignment < ActiveRecord::Base
-  attr_accessible :info, :name, :group_type, :due_date
+  attr_accessible :info, :name, :group_type, :due_date, :submission_format
 
   belongs_to :group_type
   has_many :groups, :through => :group_type, :source => :groups
@@ -40,5 +40,4 @@ class Assignment < ActiveRecord::Base
     end
     out.join("\n")
   end
-
 end

@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.15'
-
 gem 'rake', '10.1.1'
 
 # Bundle edge Rails instead:
@@ -37,6 +36,7 @@ group :test do
   gem 'launchy'
 end
 
+gem 'rubyzip'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

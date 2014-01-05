@@ -11,24 +11,26 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140104065730) do
+ActiveRecord::Schema.define(:version => 20140104231253) do
 
   create_table "assignment_submissions", :force => true do |t|
     t.integer  "user_id",       :null => false
     t.integer  "assignment_id", :null => false
-    t.string   "body",          :null => false
+    t.string   "body"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+    t.binary   "zip_file"
   end
 
   create_table "assignments", :force => true do |t|
-    t.string   "name",              :null => false
-    t.text     "info",              :null => false
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
-    t.integer  "group_type_id",     :null => false
+    t.string   "name",                                       :null => false
+    t.text     "info",                                       :null => false
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
+    t.integer  "group_type_id",                              :null => false
     t.string   "submission_policy"
     t.datetime "due_date"
+    t.string   "submission_format", :default => "plaintext", :null => false
   end
 
   create_table "comments", :force => true do |t|
@@ -103,7 +105,7 @@ ActiveRecord::Schema.define(:version => 20140104065730) do
     t.string   "session_token",                    :null => false
     t.datetime "created_at",                       :null => false
     t.datetime "updated_at",                       :null => false
-    t.boolean  "is_admin",         :default => false, :null => false
+    t.boolean  "is_admin",      :default => false, :null => false
   end
 
 end
