@@ -2,7 +2,7 @@ Here's my proposed timeline. I'm 80% sure I can meet these deadlines. I'm partic
 
 The trickiest bit will be the interface for the custom distributions.
 
-I'll of course keep you regularly updated throughout the project, so you'll be aware of how I'm going at all stages.
+I'll of course keep you refgularly updated throughout the project, so you'll be aware of how I'm going at all stages.
 
 Thursday 26th December: Courses, students, groups, etc, will be implemented. Assignments which are single files can be submitted, and the tutors and lecturers can view them. Those features won't have full functionality--perhaps no due dates on assignments or things like that.
 

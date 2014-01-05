@@ -15,13 +15,17 @@ This is an assignment for the following courses:
 </ul>
 
 <h3>Your submissions</h3>
-<ul>
-  <% @user_submissions.each do |submission| %>
-    <li> <%= link_to(submission.created_at,
-              assignment_assignment_submission_url(
-                        @assignment, submission)) %> </li>
-  <% end %>
-</ul>
+<% if @user_submissions.empty? %>
+  <p>You haven't submitted anything.</p>
+<% else %>
+  <ul>
+    <% @user_submissions.each do |submission| %>
+      <li> <%= link_to(submission.created_at,
+                assignment_assignment_submission_url(
+                          @assignment, submission)) %> </li>
+    <% end %>
+  </ul>
+<% end %>
 
 <% if Time.now < @assignment.due_date %>
 <%= link_to "Submit assignment", new_assignment_assignment_submission_url(

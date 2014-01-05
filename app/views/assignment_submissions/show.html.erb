@@ -38,14 +38,18 @@
   <div class="comment">
     <h4>New comment</h4>
     <form method="POST"
-        action="<%= assignment_assignment_submission_comments_url(
-                  @assignment, @submission)%>">
+          action="<%= assignment_assignment_submission_comments_url(
+                    @assignment, @submission)%>"
+          enctype="multipart/form-data">
       <textarea name="comment[body]"></textarea>
       <% if @submission.user != current_user %>
         <br>
-        <label for="comment_mark">Mark (out of TODO)</label>
+        <label for="comment_mark">Mark (out of <%= @assignment.maximum_mark %>)</label>
         <input id="comment_mark" name="comment[mark]">
       <% end %>
+      <br>
+      Attach file:
+      <%= file_field 'upload', 'datafile' %>
       <br>
       <input type="submit" value="Submit!">
     </form>
