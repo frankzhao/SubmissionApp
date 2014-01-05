@@ -12,8 +12,62 @@
  *= require_tree .
 */
 
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
 table {
     border-collapse:collapse;
+}
+
+
+h1 {
+    font-size: 42px;
 }
 
 table, th, td {
@@ -25,25 +79,58 @@ table, th, td {
 #heading {
     font-size: 20px;
     text-align: center;
+    text-decoration: none;
+    color: white;
 }
 
 #title {
-    width: 400px;
     margin: 0 auto;
-    padding: 20px;
-    background-color: #ee88bb;
-    border:2px solid;
-    border-radius:25px;
+    background: #1e5799;
+    border-bottom: 2px solid;
     text-align: center;
+    padding: 10px;
+}
+
+#title a:-webkit-any-link {
+    color: white;
+    text-decoration: none;
+    cursor: auto;
+}
+
+h2 {
+    font-size: 30px;
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+
+h3 {
+    font-size: 20px;
+    padding-top: 15px;
+    padding-bottom: 5px;
+}
+
+h4 {
+    font-weight: bold;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+ul {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+li {
+    list-style-type: circle;
+    list-style-position: inside;
+    padding-left: 10px;
+    padding-top: 5px;
 }
 
 #userdetails {
     width: 300px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #ee88fb;
-    border:1px solid;
-    border-radius:25px;
     text-align: center;
 }
 
@@ -53,7 +140,6 @@ table, th, td {
     padding: 10px;
     background-color: #F00;
     border:1px solid;
-    border-radius:25px;
     text-align: center;
 }
 
@@ -62,8 +148,6 @@ table, th, td {
     margin: 0 auto;
     padding: 10px;
     background-color: #FAA;
-    border:1px solid;
-    border-radius:25px;
     text-align: center;
 }
 
@@ -71,9 +155,8 @@ table, th, td {
     width: 800px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #eeddbb;
-    border:2px solid;
-    border-radius:25px;
+    background-color: #EEF;
+    border: 1px grey;
 }
 
 img {
@@ -83,7 +166,11 @@ img {
 
 body {
     font-family: "verdana";
-    background: #1e5799;
+    font-size: 14px;
+}
+
+p {
+    padding: 5px;
 }
 
 #assignment {
@@ -103,10 +190,11 @@ body {
 
 .comment {
     width: 500px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     padding-left: 10px;
     padding-right: 10px;
-    border: 1px solid;
-    background: #A9D885;
+    background: #E6EAEE;
     margin: auto;
 }
 

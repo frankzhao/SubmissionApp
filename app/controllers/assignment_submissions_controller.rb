@@ -38,14 +38,15 @@ class AssignmentSubmissionsController < ApplicationController
     @assignment = Assignment.find(params[:assignment_id])
 
     if @assignment.due_date > Time.now
-      if @assignment.submission_type == "zipfile"
-        @submission.upload = params[:upload]["datafile"].read
-        @submission.save_data
-      end
       @submission = AssignmentSubmission.new(params[:submission])
       @submission.assignment_id = params[:assignment_id]
       @submission.user_id = current_user.id
       @submission.save!
+
+      if @assignment.submission_format == "zipfile"
+        @submission.save_data(params[:upload]["datafile"].read)
+      end
+
       redirect_to(assignment_assignment_submission_url(params[:assignment_id],@submission))
     else
       flash[:errors] = ["Assignment is already due."]
@@ -53,5 +54,16 @@ class AssignmentSubmissionsController < ApplicationController
     end
   end
 
+
+  def get_zip
+    @submission = AssignmentSubmission.find(params[:id])
+
+    if @submission.permits?(current_user)
+      send_file(@submission.zip_path)
+    else
+      flash[:errors] = "You don't have permission to access that page"
+      redirect_to "/"
+    end
+  end
 
 end

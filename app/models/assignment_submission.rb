@@ -58,10 +58,17 @@ class AssignmentSubmission < ActiveRecord::Base
   end
 
   def save_data(data)
-    name = self.user.name.gsub(" ","_")
-    filepath = "upload/#{self.assignment.name}_#{name}_#{self.id}.zip"
-    File.open(filepath, 'wb') do |f|
-      f.write(self.upload)
+    File.open(self.zip_path, 'wb') do |f|
+      f.write(data)
     end
+  end
+
+  def zip_path
+    name = self.user.name.gsub(" ","_")
+    "upload/#{self.assignment.name}_#{name}_#{self.id}.zip"
+  end
+
+  def upload=(whatever)
+    @upload = whatever
   end
 end

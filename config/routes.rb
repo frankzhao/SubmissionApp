@@ -24,5 +24,9 @@ SubmissionApp::Application.routes.draw do
   get 'assignments/:id/marks.csv', :to => 'assignments#get_csv',
                                    :as => 'assignment_marks'
 
+  get 'assignments/:assignment_id/assignment_submissions/:id/file.zip',
+                                    :to => 'assignment_submissions#get_zip',
+                                    :as => 'assignment_submission_zip'
+
   root :to => 'courses#index'
 end
