@@ -7,17 +7,21 @@ class CoursesController < ApplicationController
     render :new
   end
 
-  def create
-    render :text => params
-  end
-
   # def create
-  #   @course = Course.new(params[:course])
-  #   unless current_user.is_admin
-  #     @course.convenor = current_user
-  #   end
-
+  #   render :text => params
   # end
+
+  def create
+    @course = Course.new(params[:course])
+    unless current_user.is_admin
+      @course.convenor = current_user
+    end
+
+    # TODO: make these two in a transaction, deal with invalid code
+    @course.save!
+    @course.add_students_by_csv(params[:students_csv])
+    redirect_to @course
+  end
 
   def index
     require_logged_in
@@ -28,6 +32,11 @@ class CoursesController < ApplicationController
 
   def show
     @course = Course.find(params[:id])
+
+    if @course.nil?
+      flash[:errors] = ["Looks like you went looking for a course that doesn't exist."]
+    end
+
     @convenor = @course.convenor
     @staffs = @course.staff # I am aware that the plural of staff isn't staffs
     if current_user.courses.include?(@course)

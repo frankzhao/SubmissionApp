@@ -47,6 +47,10 @@ class User < ActiveRecord::Base
     !self.convened_courses.empty?
   end
 
+  def is_admin_or_convenor?
+    self.is_admin || self.is_convenor?
+  end
+
   def courses
     self.student_courses + self.staffed_courses + self.convened_courses
   end

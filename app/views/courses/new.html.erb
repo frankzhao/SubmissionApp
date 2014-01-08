@@ -2,12 +2,16 @@
 <%= form_for @course, url: {action: "create"} do |f| %>
   <p><%= label_tag(:name, "Name") %>
   <%= f.text_field(:name) %></p>
+
   <% if current_user.is_admin %>
     <p><%= label_tag(:convenor_id, "Convenor") %>
     <%= f.collection_select(:convenor_id, User.all, :id, :name) %></p>
+  <% else %>
+    <p>Convenor: <%= current_user.name %> </p>
   <% end %>
-  <p><%= label_tag(:students_csv)%>
-    <textarea id="course_students_csv" name="course[students_csv]">name,uni_id</textarea>
+
+  <p><label for="students_csv">Students</label>
+    <textarea id="students_csv" name="students_csv]">name,uni id</textarea>
   </p>
   <p><%= f.submit("Create course") %></p>
 <% end %>
