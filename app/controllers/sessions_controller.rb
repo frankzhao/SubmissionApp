@@ -4,7 +4,6 @@ class SessionsController < ApplicationController
   end
 
   def create
-    p params
     @uni_id, password = params[:user][:uni_id], params[:user][:password]
     if authenticate(@uni_id, password)
       @user = User.find_by_uni_id(@uni_id[1..-1].to_i)

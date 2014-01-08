@@ -4,7 +4,11 @@
   <p>Due at <%= @assignment.due_date %> </p>
 <% end %>
 
-This is an assignment for the following courses:
+<p>
+  <%= @assignment.info %>
+</p>
+
+<p>This is an assignment for the following courses:</p>
 
 <ul>
   <% @courses.each do |course| %>

@@ -35,7 +35,7 @@ group :test do
   gem 'guard-rspec'
   gem 'rspec-rails'
   gem 'launchy'
-  gem 'database-cleaner'
+  gem 'database_cleaner'
 end
 
 gem 'rubyzip'

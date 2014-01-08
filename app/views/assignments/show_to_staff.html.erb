@@ -9,6 +9,10 @@
   <p>Due at <%= @assignment.due_date %> </p>
 <% end %>
 
+<p>
+  <%= @assignment.info %>
+</p>
+
 <h3>Submissions</h3>
 <ul>
   <% @submissions.each do |submission| %>

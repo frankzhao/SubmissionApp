@@ -96,4 +96,16 @@ class AssignmentSubmission < ActiveRecord::Base
     end
     return "#{user.name} (u#{user.uni_id})"
   end
+
+  def file_names
+    p self.zip_path
+    Zip::File.open(self.zip_path)
+             .map{|e| e.name}
+             .select{|x| x[0..5]!= "__MACO" }
+             .select{ |x| [".rb",".js",".hs"].any? {|y| tail_match?(x,y)}}
+  end
+
+  def tail_match?(str1, str2)
+    str1[-str2.length..-1] == str2
+  end
 end

@@ -1,3 +1,5 @@
+require "zip"
+
 class AssignmentSubmissionsController < ApplicationController
   before_filter :require_logged_in
 
@@ -7,6 +9,10 @@ class AssignmentSubmissionsController < ApplicationController
     @comments = @submission.comments
 
     if @submission.permits?(current_user)
+      if @assignment.submission_format == "zipfile"
+        @files = @submission.file_names
+      end
+
       render :show
     else
       flash[:errors] = "You don't have permission to access that page"
