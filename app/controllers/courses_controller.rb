@@ -1,5 +1,23 @@
 class CoursesController < ApplicationController
   before_filter :require_logged_in
+  before_filter :require_convenor_or_admin, :except => [:show, :index]
+
+  def new
+    @course = Course.new
+    render :new
+  end
+
+  def create
+    render :text => params
+  end
+
+  # def create
+  #   @course = Course.new(params[:course])
+  #   unless current_user.is_admin
+  #     @course.convenor = current_user
+  #   end
+
+  # end
 
   def index
     require_logged_in

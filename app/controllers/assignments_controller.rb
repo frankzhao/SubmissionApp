@@ -1,6 +1,10 @@
 class AssignmentsController < ApplicationController
   before_filter :require_logged_in
 
+  def new
+    render :new
+  end
+
   def show
     @assignment = Assignment.find(params[:id])
     @relation = current_user.relationship_to_assignment(@assignment)
