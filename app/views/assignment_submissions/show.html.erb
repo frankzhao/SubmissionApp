@@ -51,6 +51,7 @@
           action="<%= assignment_assignment_submission_comments_url(
                     @assignment, @submission)%>"
           enctype="multipart/form-data">
+      <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
       <textarea name="comment[body]"></textarea>
       <% if @submission.user != current_user %>
         <br>

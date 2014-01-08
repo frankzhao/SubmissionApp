@@ -2,6 +2,7 @@
                                             assignment_url(@assignment)) %></h3>
 <form method="POST"
               action="<%= assignment_assignment_submissions_url(@assignment) %>">
+  <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
   <textarea name="submission[body]"><%= @submission.body if @submission %></textarea>
   <br>
   <input type="submit" value="Submit!">
