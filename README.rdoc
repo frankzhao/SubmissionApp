@@ -1,7 +1,7 @@
-Submission App
-============
+# Submission App
 
-*Installation*
+
+## Installation
 
 This project uses Rails 3.2.15, as it says in the Gemfile.
 
@@ -15,15 +15,15 @@ I've tested this on my Mac running OS 10.9, with Ruby 2.0.0.
 
 Later today, I'll try to install this on another Mac and see where the tricky parts are. TODO: get it running on a Linux server.
 
-*Usage*
+# Usage
 
 Like all Rails apps, running `rails s` will launch the app and respond to queries on port 3000. You change the port to 8080 by running `rails server -p 8080`.
 
-*Dependencies*
+# Dependencies
 
 This uses the `zip` shell command.
 
-*Using the demo*
+# Using the demo
 
 Currently, no passwords are required. This is because the authentication is running through the ANU LDAP server, and I don't have a bunch of ANU LDAP passwords and usernames which I can use for testing.
 
