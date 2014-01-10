@@ -23,7 +23,7 @@ class Assignment < ActiveRecord::Base
                 .flatten
                 .map{ |x| x.most_recent_submission(self) }
                 .select{ |x| x }
-    when :convenor
+    when :convener
       out = self.students.map{ |x| x.most_recent_submission(self) }
                          .select{ |x| x }
     end

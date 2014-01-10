@@ -1,9 +1,12 @@
 <h3><%= @assignment.name %></h3>
 
-<% if @relation == "convenor" %>
+
+<% if @relation == "convener" %>
   <p><%= link_to "Download all marks as csv",
             "/assignments/#{@assignment.id}/marks.csv" %></p>
 <% end %>
+
+<p>TODO: let markers download all their assignments as a zip.</p>
 
 <% if @assignment.due_date %>
   <p>Due at <%= @assignment.due_date %> </p>

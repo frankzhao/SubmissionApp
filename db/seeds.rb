@@ -18,16 +18,16 @@ james.is_admin = true
 james.save!
 
 comp1100 = Course.new(:name => "Comp1100")
-comp1100.convenor = uwe
+comp1100.convener = uwe
 comp1100.save!
 
 comp1130 = Course.new(:name => "Comp1130")
-comp1130.convenor = uwe
+comp1130.convener = uwe
 comp1130.save!
 
 eric = User.find_by_name("Eric McCreath")
 comp2300 = Course.new(:name => "Comp2300")
-comp2300.convenor = eric
+comp2300.convener = eric
 comp2300.save!
 
 buck = User.find_by_name("Buck Shlegeris")

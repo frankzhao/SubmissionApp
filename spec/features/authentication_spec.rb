@@ -23,8 +23,8 @@ feature "the sign in process" do
       expect(page).to have_content("Comp1100 (Uwe Zimmer)")
     end
 
-    it "knows you're not a convenor" do
-      expect(page).to_not have_content("You're a convenor!")
+    it "knows you're not a convener" do
+      expect(page).to_not have_content("You're a convener!")
       expect(page).to_not have_content("You're an admin!")
     end
 
@@ -33,7 +33,7 @@ feature "the sign in process" do
     end
   end
 
-  feature "signing in as a convenor" do
+  feature "signing in as a convener" do
     before(:each) do
       visit new_sessions_url
       fill_in 'Uni ID', :with => "u2222222"
@@ -49,8 +49,8 @@ feature "the sign in process" do
       expect(page).to have_content("Comp1100 (Uwe Zimmer)")
     end
 
-    it "knows you are a convenor" do
-      expect(page).to have_content("You're a convenor!")
+    it "knows you are a convener" do
+      expect(page).to have_content("You're a convener!")
       expect(page).to_not have_content("You're an admin!")
     end
 

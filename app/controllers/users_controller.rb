@@ -3,21 +3,21 @@ class UsersController < ApplicationController
 
   def new
     @course = Course.find(params[:course_id])
-    if current_user.is_admin or current_user == @course.convenor
+    if current_user.is_admin or current_user == @course.convener
       render :new
     else
-      flash[:errors] = ["You have to be an admin or the convenor of this course to create users"]
+      flash[:errors] = ["You have to be an admin or the convener of this course to create users"]
       redirect_to course_url(@course)
     end
   end
 
   def create
     @course = Course.find(params[:course_id])
-    if current_user.is_admin or current_user == @course.convenor
+    if current_user.is_admin or current_user == @course.convener
       @course.add_students_by_csv(params[:user_details])
       redirect_to course_url(@course)
     else
-      flash[:errors] = ["You have to be an admin or the convenor of this course to create users"]
+      flash[:errors] = ["You have to be an admin or the convener of this course to create users"]
       redirect_to course_url(@course)
     end
   end

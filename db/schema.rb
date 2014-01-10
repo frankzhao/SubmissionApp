@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(:version => 20140105082041) do
 
   create_table "courses", :force => true do |t|
     t.string   "name",        :null => false
-    t.integer  "convenor_id", :null => false
+    t.integer  "convener_id", :null => false
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end

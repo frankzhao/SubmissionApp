@@ -10,7 +10,7 @@ class AssignmentSubmissionsController < ApplicationController
 
     if @submission.permits?(current_user)
       if @assignment.submission_format == "zipfile"
-        @files = @submission.file_names
+        @files = @submission.zip_contents
       end
 
       render :show

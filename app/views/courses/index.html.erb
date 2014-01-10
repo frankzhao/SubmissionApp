@@ -1,6 +1,6 @@
 <h2>Courses</h2>
 
-<% if current_user.is_admin_or_convenor? %>
+<% if current_user.is_admin_or_convener? %>
 <%= link_to("Create course", new_course_url) %>
 <% end %>
 
@@ -10,19 +10,23 @@
   <% @user_courses.each do |course| %>
     <li>
       <%= link_to course.name, course_url(course) %>
-      (<%= course.convenor.name %>)
+      (<%= course.convener.name %>)
+      <% if course.admin_or_convener?(current_user) %>
+        <%= button_to "Delete course", course_url(course), :method => :delete %>
+      <% end %>
     </li>
   <% end %>
 </ul>
-
-<hr>
 
 <h3>Other courses</h3>
 <ul>
   <% @other_courses.each do |course| %>
     <li>
       <%= link_to course.name, course_url(course) %>
-      (<%= course.convenor.name %>)
+      (<%= course.convener.name %>)
+      <% if current_user.is_admin %>
+        <%= button_to "Delete course", course_url(course), :method => :delete %>
+      <% end %>
     </li>
   <% end %>
 </ul>

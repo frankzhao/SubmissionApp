@@ -4,8 +4,8 @@
   <%= f.text_field(:name) %></p>
 
   <% if current_user.is_admin %>
-    <p><%= label_tag(:convenor_id, "Convenor") %>
-    <%= f.collection_select(:convenor_id, User.all, :id, :name) %></p>
+    <p><%= label_tag(:convener_id, "Convenor") %>
+    <%= f.collection_select(:convener_id, User.all, :id, :name) %></p>
   <% else %>
     <p>Convenor: <%= current_user.name %> </p>
   <% end %>

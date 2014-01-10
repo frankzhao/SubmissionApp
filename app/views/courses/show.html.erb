@@ -1,8 +1,8 @@
 <h2><%= @course.name %></h2>
 
-<em>Course convenor: <%= link_to @convenor.name, user_url(@convenor) %></em>
+<em>Course convener: <%= link_to @convener.name, user_url(@convener) %></em>
 
-<% if current_user == @convenor %>
+<% if current_user == @convener %>
   <p><%= link_to("Enroll students", new_course_user_url(@course)) %></p>
 <% end %>
 

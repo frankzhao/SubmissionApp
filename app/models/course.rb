@@ -3,7 +3,7 @@ class Course < ActiveRecord::Base
 
   validates :name, :presence => true, :uniqueness => true
 
-  belongs_to :convenor, :class_name => "User"
+  belongs_to :convener, :class_name => "User"
 
   has_many :student_enrollments
   has_many :students, :through => :student_enrollments, :source => :user
@@ -23,5 +23,9 @@ class Course < ActiveRecord::Base
     students.each do |student|
       student.enroll_in_course!(self)
     end
+  end
+
+  def admin_or_convener?(user)
+    user.is_admin || self.convener == user
   end
 end

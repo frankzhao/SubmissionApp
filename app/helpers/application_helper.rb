@@ -41,9 +41,9 @@ module ApplicationHelper
     end
   end
 
-  def require_convenor_or_admin
-    unless current_user.is_convenor? || current_user.is_admin
-      flash[:errors] = ["You have to be a convenor or admin to see that"]
+  def require_convener_or_admin
+    unless current_user.is_convener? || current_user.is_admin
+      flash[:errors] = ["You have to be a convener or admin to see that"]
       redirect_to courses_url
     end
   end

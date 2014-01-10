@@ -1,6 +1,6 @@
 class CoursesController < ApplicationController
   before_filter :require_logged_in
-  before_filter :require_convenor_or_admin, :except => [:show, :index]
+  before_filter :require_convener_or_admin, :except => [:show, :index]
 
   def new
     @course = Course.new
@@ -14,13 +14,29 @@ class CoursesController < ApplicationController
   def create
     @course = Course.new(params[:course])
     unless current_user.is_admin
-      @course.convenor = current_user
+      @course.convener = current_user
     end
 
     # TODO: make these two in a transaction, deal with invalid code
     @course.save!
     @course.add_students_by_csv(params[:students_csv])
+    flash[:notifications] =
+          ["Course #{@course.name} created with #{@course.students.length} students."]
     redirect_to @course
+  end
+
+  def destroy
+    @course = Course.find(params[:id])
+    if @course.nil?
+      flash[:errors] = ["The course you just tried to delete doesn't exist."]
+    elsif @course.admin_or_convener?(current_user)
+      @course.destroy
+      flash[:notifications] = ["Course #{@course.name} destroyed."]
+      redirect_to courses_url
+    else
+      flash[:errors] = ["You can't delete that course, and you shouldn't have that url..."]
+      redirect_to course_url(@course)
+    end
   end
 
   def index
@@ -37,7 +53,7 @@ class CoursesController < ApplicationController
       flash[:errors] = ["Looks like you went looking for a course that doesn't exist."]
     end
 
-    @convenor = @course.convenor
+    @convener = @course.convener
     @staffs = @course.staff # I am aware that the plural of staff isn't staffs
     if current_user.courses.include?(@course)
       @students = @course.students

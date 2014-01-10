@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
   has_many :group_staff_memberships
   has_many :staffed_groups, :through => :group_staff_memberships, :source => :group
 
-  has_many :convened_courses, :class_name => "Course", :foreign_key => :convenor_id
+  has_many :convened_courses, :class_name => "Course", :foreign_key => :convener_id
 
   has_many :assignment_submissions
 
@@ -43,12 +43,12 @@ class User < ActiveRecord::Base
     end
   end
 
-  def is_convenor?
+  def is_convener?
     !self.convened_courses.empty?
   end
 
-  def is_admin_or_convenor?
-    self.is_admin || self.is_convenor?
+  def is_admin_or_convener?
+    self.is_admin || self.is_convener?
   end
 
   def courses
@@ -75,7 +75,7 @@ class User < ActiveRecord::Base
     elsif self.student_courses & assignment.courses != []
       :student
     elsif self.convened_courses & assignment.courses != []
-      :convenor
+      :convener
     end
   end
 

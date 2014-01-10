@@ -23,7 +23,7 @@ class AssignmentSubmission < ActiveRecord::Base
   def permits?(user)
     permitted_people = ([self.user] +
                         assignment.courses.map(&:staff).flatten +
-                        assignment.courses.map(&:convenor) +
+                        assignment.courses.map(&:convener) +
                         self.permitted_users)
 
     permitted_people.include?(user)
@@ -46,7 +46,7 @@ class AssignmentSubmission < ActiveRecord::Base
   # TODO: make it so that the assignment has a setting to let all
   # staff for the course see all the assignments.
   def staff
-    group.staff + group.group_type.courses.map(&:convenor)
+    group.staff + group.group_type.courses.map(&:convener)
   end
 
   def url
@@ -72,7 +72,7 @@ class AssignmentSubmission < ActiveRecord::Base
 
   def zip_path
     name = self.user.name.gsub(" ","_")
-    "upload/#{self.assignment.name}_#{name}_#{self.id}.zip"
+    "upload/#{self.assignment.id}_#{self.assignment.name}/#{name}_#{self.id}.zip"
   end
 
   def upload=(whatever)
@@ -97,12 +97,18 @@ class AssignmentSubmission < ActiveRecord::Base
     return "#{user.name} (u#{user.uni_id})"
   end
 
-  def file_names
-    p self.zip_path
-    Zip::File.open(self.zip_path)
-             .map{|e| e.name}
-             .select{|x| x[0..5]!= "__MACO" }
-             .select{ |x| [".rb",".js",".hs"].any? {|y| tail_match?(x,y)}}
+  def zip_contents
+    zip_contents = {}
+    Zip::File.open(self.zip_path) do |zipfile|
+        names = zipfile.map{|e| e.name}
+               .select{|x| x[0..5]!= "__MACO" }
+               .select{ |x| [".rb",".js",".hs"].any? {|y| tail_match?(x,y)}}
+
+        names.each do |name|
+          zip_contents[name] = zipfile.read(name)
+        end
+    end
+    zip_contents
   end
 
   def tail_match?(str1, str2)

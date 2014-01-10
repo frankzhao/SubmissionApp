@@ -23,7 +23,7 @@
                     @assignment, @submission) %> </p>
   <h4>File listing</h4>
   <ul>
-    <% @files.each do |filename| %>
+    <% @files.each do |filename, file| %>
       <li><%= filename %></li>
     <% end %>
   </ul>

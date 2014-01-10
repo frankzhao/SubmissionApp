@@ -24,18 +24,27 @@
     <% if current_user.is_admin %>
       <p>You're an admin!</p>
     <% end %>
-    <% if current_user.is_convenor? %>
-      <p>You're a convenor!</p>
+    <% if current_user.is_convener? %>
+      <p>You're a convener!</p>
     <% end %>
   <% end %>
 </div>
 
 <% if flash[:errors] && flash[:errors].length > 0 %>
   <div id="errors">
-    <h3>Error!</h3>
     <% flash[:errors].each do |error| %>
       <div id="error">
         <%= error.to_s %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<% if flash[:notifications] && flash[:notifications].length > 0 %>
+  <div id="notifications">
+    <% flash[:notifications].each do |notification| %>
+      <div id="notification">
+        <%= notification.to_s %>
       </div>
     <% end %>
   </div>

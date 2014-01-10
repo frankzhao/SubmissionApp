@@ -22,7 +22,7 @@ class AssignmentsController < ApplicationController
       @submissions = @assignment.relevant_submissions(current_user)
 
       render :show_to_staff
-    when :convenor
+    when :convener
       @submissions = @assignment.relevant_submissions(current_user)
       render :show_to_staff
     end
