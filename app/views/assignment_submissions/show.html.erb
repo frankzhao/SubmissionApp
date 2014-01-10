@@ -34,7 +34,11 @@
   <% @comments.each do |comment| %>
     <div class="comment">
       <h4>
-        <%= @submission.context_name(comment.user, current_user) %>
+        <% if comment.user %>
+          <%= @submission.context_name(comment.user, current_user) %>
+        <% else %>
+          Automatic comment
+        <% end %>
       </h4>
         <% if comment.mark %>
           <h5>Mark: <%= comment.mark %></h5>

@@ -44,7 +44,7 @@ tute = GroupType.create!(:name => "Comp1100/1130 labs",
 wireworld = Assignment.create!(:name => "Wireworld",
                                :info => "cellular automata!",
                                :group_type => tute,
-                               :due_date => "2014-01-03 23:04:26")
+                               :due_date => "2015-01-03 23:04:26")
 
 kalaha = Assignment.create!(:name => "Kalaha",
                                :info => "board game!",

@@ -1,12 +1,15 @@
 require 'zip'
 
 class AssignmentSubmission < ActiveRecord::Base
+
+  include CheckingRules
+
   attr_accessible :assignment_id, :body, :user_id
 
   belongs_to :assignment
   belongs_to :user
 
-  after_save :save_locally
+  after_save :save_locally, :do_custom_things
 
   has_many :comments
 
@@ -115,5 +118,21 @@ class AssignmentSubmission < ActiveRecord::Base
 
   def tail_match?(str1, str2)
     str1[-str2.length..-1] == str2
+  end
+
+  def do_custom_things
+    if self.assignment.submission_format == "plaintext"
+      ans, errors = check_compiling_haskell(self.body)
+      if ans
+        add_anonymous_comment("This code compiles!")
+      else
+        add_anonymous_comment(
+            "This code doesn't compile, with the following error:<br>"+errors)
+      end
+    end
+  end
+
+  def add_anonymous_comment(body)
+    Comment.create(:body => body, :assignment_submission_id => self.id)
   end
 end

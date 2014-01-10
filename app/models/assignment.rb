@@ -79,5 +79,4 @@ class Assignment < ActiveRecord::Base
     end
     mapping
   end
-
 end
