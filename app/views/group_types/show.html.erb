@@ -1,6 +1,6 @@
 <h2><%= @group_type.name %></h2>
 
-<p>"<%= @group_type.name %>" includes students from the following courses:</p>
+<p><%= @group_type.name %> includes students from the following courses:</p>
 
 <ul>
   <% @courses.each do |course| %>
@@ -10,7 +10,7 @@
   <% end %>
 </ul>
 
-It has the following groups:
+<p>It has the following groups:</p>
 
 <ul>
   <% @group_type.groups.each do |group| %>

@@ -1,15 +1,20 @@
 class Assignment < ActiveRecord::Base
-  attr_accessible :info, :name, :group_type, :due_date, :submission_format
+  attr_accessible :info, :name, :group_type, :group_type_id, :due_date, :submission_format
 
   belongs_to :group_type
   has_many :groups, :through => :group_type, :source => :groups
 
   has_many :submissions, :class_name => "AssignmentSubmission"
+  has_many :students_who_have_submitted, :through => :submissions, :source => :user
+  has_many :submission_permissions, :through => :submissions, :source => :submission_permissions
 
   has_many :courses, :through => :group_type, :source => :courses
+  has_many :conveners, :through => :courses, :source => :convener
 
   has_many :students, :through => :groups, :source => :students
   has_many :staff, :through => :groups, :source => :staff
+
+  after_create :make_directory
 
   def relevant_submissions(user)
     case user.relationship_to_assignment(self)
@@ -29,6 +34,26 @@ class Assignment < ActiveRecord::Base
     end
   end
 
+  def path
+    "upload/#{self.path_without_upload}"
+  end
+
+  def path_without_upload
+    "#{self.id}_#{self.name}"
+  end
+
+  def update_zip
+    system("cd upload && zip -r #{self.path_without_upload}.zip #{self.path_without_upload}")
+  end
+
+  def zip_path
+    "#{self.path}.zip"
+  end
+
+  def make_directory
+    Dir.mkdir(self.path) unless File.directory?(self.path)
+  end
+
   #TODO: Add "marker" as a field here.
   def marks_csv
     out = ["name,uni id,submission time,mark"]
@@ -40,4 +65,19 @@ class Assignment < ActiveRecord::Base
     end
     out.join("\n")
   end
+
+  def start_peer_review
+    submittors = self.students_who_have_submitted
+    mapping = submittors.zip(submittors.shuffle)
+    while (mapping.any?{|k,v| k==v}) do
+      mapping = submittors.zip(submittors.shuffle)
+    end
+
+    mapping.each do |source, destination|
+      submission = source.most_recent_submission(self)
+      submission.add_permission(destination)
+    end
+    mapping
+  end
+
 end

@@ -1,16 +1,21 @@
-<h3><%= @assignment.name %></h3>
+<h2><%= @assignment.name %></h2>
+<p><em>Assignment for
+  <%= link_to(@assignment.group_type.name, @assignment.group_type) %></em></p>
 
-
-<% if @relation == "convener" %>
+<% if @relation == :convener %>
   <p><%= link_to "Download all marks as csv",
             "/assignments/#{@assignment.id}/marks.csv" %></p>
+  <p><%= link_to "Download all submissions as zip",
+            "/assignments/#{@assignment.id}/submissions.zip" %></p>
+  <p><%= button_to "Start peer review",
+            "/assignments/#{@assignment.id}/peer_review" %></p>
 <% end %>
-
-<p>TODO: let markers download all their assignments as a zip.</p>
 
 <% if @assignment.due_date %>
   <p>Due at <%= @assignment.due_date %> </p>
 <% end %>
+
+
 
 <p>
   <%= @assignment.info %>
@@ -19,13 +24,15 @@
 <h3>Submissions</h3>
 <ul>
   <% @submissions.each do |submission| %>
-    <% if submission.mark %>
-      <li><%= link_to("#{submission.user.name} (u#{submission.user.uni_id})",
-              assignment_assignment_submission_url(@assignment, submission)) %> </li>
-    <% else %>
-      <li><b> <%= link_to("#{submission.user.name} (u#{submission.user.uni_id})",
-          assignment_assignment_submission_url(@assignment, submission)) %>
-            (unmarked)</li> </b>
-    <% end %>
+    <li>
+      <%= link_to("#{submission.user.name} (u#{submission.user.uni_id})",
+              assignment_assignment_submission_url(@assignment, submission)) %>
+      <% if submission.mark %>
+        <b>(unmarked)</b>
+      <% end %>
+      <% unless submission.submission_permissions.empty? %>
+        (visible to <%= submission.permitted_users.map(&:name).join(" ") %>)
+      <% end %>
+    </li>
   <% end %>
 </ul>

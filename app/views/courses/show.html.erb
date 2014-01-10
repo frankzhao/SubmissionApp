@@ -8,7 +8,13 @@
 
 <% if @group_types %>
   <% @group_types.each do |group_type| %>
+
     <h3><%= link_to group_type.name, group_type_url(group_type) %></h3>
+
+    <% if current_user == @convener %>
+<p><%= link_to "New assignment", new_group_type_assignment_url(group_type) %><p>
+    <% end %>
+
       <ul>
         <% group_type.groups.each do |group| %>
           <li>
@@ -21,7 +27,12 @@
   <h3>Assignments</h3>
   <ul>
     <% @assignments.each do |assignment| %>
-      <li> <%= link_to assignment.name, assignment_url(assignment) %> </li>
+      <li>
+        <%= link_to assignment.name, assignment_url(assignment) %>
+        <% if current_user == @convener %>
+          <%= button_to "Delete", assignment, :method => :delete %>
+        <% end %>
+      </li>
     <% end %>
   </ul>
 <% end %>

@@ -109,6 +109,3 @@ sub1 = AssignmentSubmission.create!(:user_id => buck_tute.students[0].id,
 sub2 = AssignmentSubmission.create!(:user_id => buck_tute.students[1].id,
                               :body => "main = error \"unimplemented\"",
                               :assignment_id => wireworld.id)
-
-sub1.add_permission(buck_tute.students[1])
-sub2.add_permission(buck_tute.students[0])

@@ -229,3 +229,7 @@ textarea {
 .button_to div {
   display: inline;
 }
+
+em {
+  font-weight: 600
+}

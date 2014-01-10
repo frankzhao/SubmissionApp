@@ -5,5 +5,4 @@ class SubmissionPermission < ActiveRecord::Base
   has_one :assignment, :through => :assignment_submission, :source => :assignment
   belongs_to :user
 
-
 end

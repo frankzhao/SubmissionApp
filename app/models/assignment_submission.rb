@@ -57,11 +57,13 @@ class AssignmentSubmission < ActiveRecord::Base
   def save_locally
     if self.assignment.submission_format == "plaintext"
       name = self.user.name.gsub(" ","_")
-      filepath = "upload/#{self.assignment.name}_#{name}_#{self.id}.txt"
+      filepath = self.assignment.path + "/#{name}_#{self.id}.txt"
       File.open(filepath, 'w') do |f|
         f.write(self.body)
       end
     end
+
+    self.assignment.update_zip
   end
 
   def save_data(data)
@@ -72,7 +74,7 @@ class AssignmentSubmission < ActiveRecord::Base
 
   def zip_path
     name = self.user.name.gsub(" ","_")
-    "upload/#{self.assignment.id}_#{self.assignment.name}/#{name}_#{self.id}.zip"
+    self.assignment.path + "/#{name}_#{self.id}.zip"
   end
 
   def upload=(whatever)

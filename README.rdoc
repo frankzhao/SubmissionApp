@@ -1,2 +1,4 @@
 Submission App
 =
+
+This uses the `zip` shell command.
