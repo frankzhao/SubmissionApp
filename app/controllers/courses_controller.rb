@@ -7,10 +7,6 @@ class CoursesController < ApplicationController
     render :new
   end
 
-  # def create
-  #   render :text => params
-  # end
-
   def create
     @course = Course.new(params[:course])
     unless current_user.is_admin

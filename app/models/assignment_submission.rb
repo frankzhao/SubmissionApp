@@ -41,6 +41,7 @@ class AssignmentSubmission < ActiveRecord::Base
     end
   end
 
+  #TODO: again, SQL
   def mark
     comments.map { |comment| comment.mark }.select{ |x| x }.last
   end
