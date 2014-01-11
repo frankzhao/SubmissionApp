@@ -1,5 +1,5 @@
 class Course < ActiveRecord::Base
-  attr_accessible :name
+  attr_accessible :name, :convener_id
 
   validates :name, :presence => true, :uniqueness => true
 

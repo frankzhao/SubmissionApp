@@ -1,6 +1,13 @@
 require 'spec_helper'
 
 feature "the sign in process" do
+  before :each do
+    dolly = User.create(:name => "Dolly O'Keefe", :uni_id => 4989649)
+    uwe = User.create(:name => "Uwe Zimmer", :uni_id => 2222222)
+    course = Course.create(:name => "Comp1100", :convener_id => uwe.id)
+    dolly.enroll_in_course!(course)
+  end
+
   it "has a log in page do" do
     visit new_sessions_url
     expect(page).to have_content("Log in")
