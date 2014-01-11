@@ -11,9 +11,11 @@ Once you download it, install necessary dependencies with `bundle install`. Then
 
 To run the tests, first run `rake db:test:prepare`, then run `rspec`. You should see lots of pretty green lines.
 
-I've tested this on my Mac running OS 10.9, with Ruby 2.0.0.
+I've tested this on the following machines:
+- Mac OS 10.9 basically before every commit
+- Mac OS 10.8: 10 Jan 2014
 
-Later today, I'll try to install this on another Mac and see where the tricky parts are. TODO: get it running on a Linux server.
+TODO: get it running on a Linux server.
 
 # Usage
 
