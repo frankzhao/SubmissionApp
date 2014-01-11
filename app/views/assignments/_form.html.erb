@@ -1,0 +1,20 @@
+
+  <p><%= label_tag(:name, "Name") %>
+  <%= f.text_field(:name) %></p>
+
+  <p>Group type: <%= assignment.group_type.name %>
+
+  <input type="hidden" name="assignment[group_type_id]" value="<%= assignment.group_type_id %>">
+
+  <p><%= label_tag(:due_date, "Due date") %>
+  <%= f.datetime_select(:due_date) %></p>
+
+  <p><label for="assignment_info">Assignment description</label>
+    <textarea id="assignment_info" name="assignment[info]"><%=assignment.info%></textarea>
+  </p>
+
+  Submission format:
+  <%= f.select(:submission_format,
+    options_for_select([
+      ['Plain text', 'plaintext'], ['Zip file', 'zipfile']], "plaintext")) %>
+

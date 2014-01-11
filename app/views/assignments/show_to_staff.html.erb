@@ -3,6 +3,7 @@
   <%= link_to(@assignment.group_type.name, @assignment.group_type) %></em></p>
 
 <% if @relation == :convener %>
+  <p><%= link_to "Edit", edit_assignment_url(@assignment) %></p>
   <p><%= link_to "Download all marks as csv",
             "/assignments/#{@assignment.id}/marks.csv" %></p>
   <p><%= link_to "Download all submissions as zip",

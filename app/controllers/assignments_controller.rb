@@ -15,6 +15,7 @@ class AssignmentsController < ApplicationController
     @group_type = GroupType.find(params[:group_type_id])
     if @group_type.conveners.include? current_user
       @assignment = Assignment.new
+      @assignment.group_type = @group_type
       render :new
     else
       flash[:errors] = ["You can't create assignments for that course."]
@@ -26,7 +27,24 @@ class AssignmentsController < ApplicationController
     if @assignment.save
       redirect_to @assignment
     else
-      flash.now[:errors] = courses_url
+      flash.now[:errors] = @assignment.errors.full_messages
+      render :new
+    end
+  end
+
+  #TODO: this permits all conveners
+  def edit
+    @assignment = Assignment.find(params[:id])
+    render :edit
+  end
+
+  def update
+    @assignment.update_attributes(params[:assignment])
+    if @assignment.save
+      redirect_to @assignment
+    else
+      flash.now[:errors] = @assignment.errors.full_messages
+      render :new
     end
   end
 

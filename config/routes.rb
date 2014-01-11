@@ -17,7 +17,7 @@ SubmissionApp::Application.routes.draw do
 
   resources :groups, :only => [:show]
 
-  resources :assignments, :only => [:show, :create, :destroy] do
+  resources :assignments, :only => [:show, :create, :destroy, :edit, :update] do
     resources :assignment_submissions do
       resources :comments, :only => [:create, :destroy]
     end

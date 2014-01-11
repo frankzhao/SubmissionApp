@@ -46,12 +46,12 @@ tute = GroupType.create!(:name => "Comp1100/1130 labs",
 wireworld = Assignment.create!(:name => "Wireworld",
                                :info => "cellular automata!",
                                :group_type => tute,
-                               :due_date => "2015-01-03 23:04:26")
+                               :due_date => "2014-05-03 23:04:26")
 
 kalaha = Assignment.create!(:name => "Kalaha",
                                :info => "board game!",
                                :group_type => tute,
-                               :due_date => "2015-01-03 23:04:26",
+                               :due_date => "2015-03-33 23:04:26",
                                :submission_format => "zipfile")
 
 buck_tute, tessa_tute = tute.create_groups("Thursday A"=>[buck],
