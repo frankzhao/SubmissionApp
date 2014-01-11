@@ -38,6 +38,7 @@ RSpec.configure do |config|
   config.order = "random"
 
   config.before(:suite) do
+    Dir.mkdir "tmp" unless Dir.exist?("tmp")
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)
     Rails.application.load_seed # loading seeds

@@ -10,6 +10,7 @@ User.create!([
   ])
 
 
+
 uwe = User.find_by_name("Uwe Zimmer")
 
 james = User.find_by_name("James Fellows")
@@ -39,6 +40,9 @@ tessa.enroll_staff_in_course!(comp1130)
 
 tute = GroupType.create!(:name => "Comp1100/1130 labs",
                          :courses => [comp1130, comp1100])
+
+# tmp should be created by the Rails server, but this makes it just in case.
+Dir.mkdir "tmp" unless Dir.exist?("tmp")
 
 wireworld = Assignment.create!(:name => "Wireworld",
                                :info => "cellular automata!",
