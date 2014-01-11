@@ -5,7 +5,7 @@
 
 This project uses Rails 3.2.15, as it says in the Gemfile.
 
-Currently, it uses sqlite3 for a database. This will change before the project goes into production.
+Currently, it uses sqlite3 for a database. This will change before the project goes into production. It also stores data files in `/upload`.
 
 Once you download it, install necessary dependencies with `bundle install`. Then run `rake db:create` to get the database set up. To seed it with demo data, run `rake db:seed`.
 
@@ -14,8 +14,7 @@ To run the tests, first run `rake db:test:prepare`, then run `rspec`. You should
 I've tested this on the following machines:
 - Mac OS 10.9 basically before every commit
 - Mac OS 10.8: 10 Jan 2014
-
-TODO: get it running on a Linux server.
+- Ubuntu 13.04: 10 Jan 2014
 
 # Usage
 
