@@ -13,3 +13,6 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp/*
+
+# Ignore stuff in the upload folder--it's basically a database
+/upload/*
