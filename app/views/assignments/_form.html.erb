@@ -13,8 +13,10 @@
     <textarea id="assignment_info" name="assignment[info]"><%=assignment.info%></textarea>
   </p>
 
-  Submission format:
+  <p>Submission format:
   <%= f.select(:submission_format,
     options_for_select([
-      ['Plain text', 'plaintext'], ['Zip file', 'zipfile']], "plaintext")) %>
+      ['Plain text', 'plaintext'], ['Zip file', 'zipfile']], "plaintext")) %></p>
 
+  <p><%= label_tag(:behavior_on_submission, "Behavior on submission") %>
+  <%= f.text_field(:behavior_on_submission) %></p>

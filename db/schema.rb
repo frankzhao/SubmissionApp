@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140110082851) do
+ActiveRecord::Schema.define(:version => 20140111223610) do
 
   create_table "assignment_submissions", :force => true do |t|
     t.integer  "user_id",       :null => false
@@ -23,15 +23,16 @@ ActiveRecord::Schema.define(:version => 20140110082851) do
   end
 
   create_table "assignments", :force => true do |t|
-    t.string   "name",                                       :null => false
-    t.text     "info",                                       :null => false
-    t.datetime "created_at",                                 :null => false
-    t.datetime "updated_at",                                 :null => false
-    t.integer  "group_type_id",                              :null => false
+    t.string   "name",                                            :null => false
+    t.text     "info",                                            :null => false
+    t.datetime "created_at",                                      :null => false
+    t.datetime "updated_at",                                      :null => false
+    t.integer  "group_type_id",                                   :null => false
     t.string   "submission_policy"
     t.datetime "due_date"
-    t.string   "submission_format", :default => "plaintext", :null => false
-    t.integer  "maximum_mark",      :default => 100,         :null => false
+    t.string   "submission_format",      :default => "plaintext", :null => false
+    t.integer  "maximum_mark",           :default => 100,         :null => false
+    t.string   "behavior_on_submission", :default => ""
   end
 
   create_table "comments", :force => true do |t|

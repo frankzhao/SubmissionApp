@@ -1,5 +1,5 @@
 class Assignment < ActiveRecord::Base
-  attr_accessible :info, :name, :group_type, :group_type_id, :due_date, :submission_format
+  attr_accessible :info, :name, :group_type, :group_type_id, :due_date, :submission_format, :behavior_on_submission
 
   belongs_to :group_type
   has_many :groups, :through => :group_type, :source => :groups

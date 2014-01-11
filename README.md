@@ -16,15 +16,15 @@ I've tested this on the following machines:
 - Mac OS 10.8: 10 Jan 2014
 - Ubuntu 13.04: 10 Jan 2014
 
-# Usage
+## Usage
 
 Like all Rails apps, running `rails s` will launch the app and respond to queries on port 3000. You change the port to 8080 by running `rails server -p 8080`.
 
-# Dependencies
+## Dependencies
 
 This uses the `zip` shell command.
 
-# Using the demo
+## Using the demo
 
 Currently, no passwords are required. This is because the authentication is running through the ANU LDAP server, and I don't have a bunch of ANU LDAP passwords and usernames which I can use for testing.
 
@@ -50,3 +50,6 @@ Things you can do:
 - As Uwe or James, create a course and upload students by CSV.
 - As Uwe, click the "Start Peer Review" button on an assignment webpage. This means that each student who has submitted something gets access to a random other student's most recent submission. They can comment on it. Neither the reviewer nor the reviewee see each other's names.
 
+## Miscellaneous
+
+I've used American English throughout.

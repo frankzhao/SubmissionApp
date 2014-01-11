@@ -122,14 +122,8 @@ class AssignmentSubmission < ActiveRecord::Base
   end
 
   def do_custom_things
-    if self.assignment.submission_format == "plaintext"
-      ans, errors = check_compiling_haskell(self.body)
-      if ans
-        add_anonymous_comment("This code compiles!")
-      else
-        add_anonymous_comment(
-            "This code doesn't compile, with the following error:<br>"+errors)
-      end
+    if self.assignment.behavior_on_submission.include? "check_compiling_haskell"
+      self.check_compiling_haskell
     end
   end
 
