@@ -7,7 +7,7 @@ This project uses Rails 3.2.15, as it says in the Gemfile.
 
 Currently, it uses sqlite3 for a database. This will change before the project goes into production. It also stores data files in `/upload`.
 
-Once you download it, install necessary dependencies with `bundle install`. Then run `rake db:create` to get the database set up. To seed it with demo data, run `rake db:seed`.
+Once you download it, install necessary dependencies with `bundle install`. Then run `rake db:reset` to get the database set up. To seed it with demo data, run `rake db:seed`.
 
 To run the tests, first run `rake db:test:prepare`, then run `rspec`. You should see lots of pretty green lines.
 
@@ -22,7 +22,7 @@ Like all Rails apps, running `rails s` will launch the app and respond to querie
 
 ## Dependencies
 
-This uses the `zip` shell command.
+This uses the `zip` shell command. It uses `ghc` to check if Haskell assignments compile, if that's enabled for the assignment. Various *nix shell commands are hard coded in submission related code.
 
 ## Using the demo
 

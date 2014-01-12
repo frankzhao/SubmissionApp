@@ -44,7 +44,7 @@
   <% end %>
 </ul>
 
-<% if @students %>
+<% if (@course.staff+[@course.convener]).include? current_user%>
   <h3>Students</h3>
   <ul>
     <% @students.each do |student| %>
