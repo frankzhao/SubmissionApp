@@ -1,5 +1,6 @@
 class Assignment < ActiveRecord::Base
-  attr_accessible :info, :name, :group_type, :group_type_id, :due_date, :submission_format, :behavior_on_submission
+  attr_accessible :info, :name, :group_type, :group_type_id, :due_date,
+                   :submission_format, :behavior_on_submission, :maximum_mark
 
   belongs_to :group_type
   has_many :groups, :through => :group_type, :source => :groups
@@ -81,5 +82,11 @@ class Assignment < ActiveRecord::Base
       submission.add_permission(destination)
     end
     mapping
+  end
+
+  # Does the assignment have a due date in the past?
+  # If it doesn't have a due date, it's never overdue.
+  def already_due
+    self.due_date && self.due_date < Time.now
   end
 end

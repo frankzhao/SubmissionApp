@@ -16,6 +16,7 @@
 
 
 
+
 <p>
   <%= @assignment.info %>
 </p>
@@ -34,7 +35,7 @@
         <b>(unmarked)</b>
       <% end %>
       <% unless submission.submission_permissions.empty? %>
-        (visible to <%= submission.permitted_users.map(&:name).join(" ") %>)
+        (visible to <%= submission.permitted_users.map(&:name).join(", ") %>)
       <% end %>
     </li>
   <% end %>

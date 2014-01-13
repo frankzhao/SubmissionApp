@@ -31,7 +31,7 @@
   </ul>
 <% end %>
 
-<% if Time.now < @assignment.due_date %>
+<% unless @assignment.already_due %>
 <%= link_to("Submit assignment",
           new_assignment_assignment_submission_url(@assignment)) %>
 <% else %>

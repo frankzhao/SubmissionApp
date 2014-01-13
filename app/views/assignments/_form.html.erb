@@ -18,5 +18,8 @@
     options_for_select([
       ['Plain text', 'plaintext'], ['Zip file', 'zipfile']], "plaintext")) %></p>
 
+  <p><%= label_tag(:maximum_mark, "Maximum mark") %>
+  <%= f.text_field(:maximum_mark) %></p>
+
   <p><%= label_tag(:behavior_on_submission, "Behavior on submission") %>
   <%= f.text_field(:behavior_on_submission) %></p>

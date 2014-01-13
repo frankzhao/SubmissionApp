@@ -23,7 +23,7 @@ class AssignmentSubmissionsController < ApplicationController
   def new
     #TODO: require the user to be in this course
     @assignment = Assignment.find(params[:assignment_id])
-    if @assignment.due_date > Time.now
+    if @assignment.already_due
       @submission = @assignment.submissions
                          .where(:user_id => current_user.id)
                          .order(:created_at)
@@ -43,7 +43,7 @@ class AssignmentSubmissionsController < ApplicationController
     # TODO: require the user to be in the course
     @assignment = Assignment.find(params[:assignment_id])
 
-    if @assignment.due_date > Time.now
+    unless @assignment.already_due
       @submission = AssignmentSubmission.new(params[:submission])
       @submission.assignment_id = params[:assignment_id]
       @submission.user_id = current_user.id
