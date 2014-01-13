@@ -1,8 +1,6 @@
-Submission system.
-
-Due date
-
-on_submit
-
-Recieve resubmissions?
-
+behavior_on_submission
+  check_haskell_compiles(*files)
+  check_python_parses
+  run_tests
+  demand_compiles # refuses submission if it doesn't compile
+  send_to_recent_student

@@ -14,6 +14,9 @@ class Assignment < ActiveRecord::Base
   has_many :students, :through => :groups, :source => :students
   has_many :staff, :through => :groups, :source => :staff
 
+  validate :info, :name, :group_type_id, :due_date, :submission_format, :behavior_on_submission,
+          :presence => true
+
   after_create :make_directory
 
   def relevant_submissions(user)

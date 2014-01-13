@@ -51,6 +51,7 @@
       <li> <%= link_to student.name, user_url(student) %> </li>
     <% end %>
   </ul>
+<% elsif @course.students.include? current_user %>
 <% else %>
   <em>Note that you aren't enrolled in this course--you'd
          see more if you were.</em>

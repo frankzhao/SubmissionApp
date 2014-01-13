@@ -6,8 +6,6 @@
   <p><%= link_to "Edit", edit_assignment_url(@assignment) %></p>
   <p><%= link_to "Download all marks as csv",
             "/assignments/#{@assignment.id}/marks.csv" %></p>
-  <p><%= link_to "Download all submissions as zip",
-            "/assignments/#{@assignment.id}/submissions.zip" %></p>
   <p><%= button_to "Start peer review",
             "/assignments/#{@assignment.id}/peer_review" %></p>
 <% end %>
@@ -23,6 +21,10 @@
 </p>
 
 <h3>Submissions</h3>
+  <% unless @submissions.empty? %>
+    <p><%= link_to "Download all submissions as zip",
+            "/assignments/#{@assignment.id}/submissions.zip" %></p>
+  <% end %>
 <ul>
   <% @submissions.each do |submission| %>
     <li>

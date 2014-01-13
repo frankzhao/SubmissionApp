@@ -13,6 +13,7 @@ module CheckingRules
     end
   end
 
+  # TODO: this stuff should be more resilient against files named "temp"
   def check_compiling_haskell_string(text)
     Dir.mkdir('temp') unless Dir.exists? 'temp'
     File.open("tmp/temp.hs","w") { |f| f.write(text) }
@@ -23,6 +24,7 @@ module CheckingRules
   end
 
   def check_compiling_haskell_module
-    error
+    Dir.mkdir('temp') unless Dir.exists? 'temp'
+    todo
   end
 end

@@ -52,4 +52,4 @@ Things you can do:
 
 ## Miscellaneous
 
-I've used American English throughout.
+I've used American English throughout in spelling of variable names etc.
