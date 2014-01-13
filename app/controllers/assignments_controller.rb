@@ -85,6 +85,7 @@ class AssignmentsController < ApplicationController
   end
 
   def get_zipfile
+    @assignment.update_zip
     send_file(@assignment.zip_path)
   end
 
