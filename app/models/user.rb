@@ -4,9 +4,11 @@ class User < ActiveRecord::Base
 
   has_many :student_enrollments
   has_many :student_courses, :through => :student_enrollments, :source => :course
+  has_many :student_assignments, :through => :student_courses, :source => :assignments
 
   has_many :staff_enrollments
   has_many :staffed_courses, :through => :staff_enrollments, :source => :course
+  has_many :staffed_assignments, :through => :staffed_courses, :source => :assignments
 
   has_many :group_student_memberships
   has_many :student_groups, :through => :group_student_memberships, :source => :group
@@ -15,6 +17,7 @@ class User < ActiveRecord::Base
   has_many :staffed_groups, :through => :group_staff_memberships, :source => :group
 
   has_many :convened_courses, :class_name => "Course", :foreign_key => :convener_id
+  has_many :convened_assignments, :through => :convened_courses, :source => :assignments
 
   has_many :assignment_submissions
 
@@ -119,5 +122,10 @@ class User < ActiveRecord::Base
   def permitted_submissions(assignment)
     self.submission_permissions.select { |s| s.assignment == assignment }
                                .map(&:assignment_submission)
+  end
+
+  def all_assignments
+    (self.student_assignments + self.staffed_assignments +
+        self.convened_assignments).uniq
   end
 end

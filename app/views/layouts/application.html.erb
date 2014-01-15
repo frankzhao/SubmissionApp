@@ -7,28 +7,41 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<div id="title">
-    <% if current_user %>
-      <%=link_to (image_tag "logo.jpg"), "/" %>
-    <% else %>
-      <%=link_to (image_tag "logo.jpg"), new_sessions_url %>
-    <% end %>
-</div>
 
-<div id="userdetails">
-  <% if current_user.nil? %>
-    You're not signed in. <%= link_to "Log in", new_sessions_url %>
-  <% else %>
-    Hello <%= link_to(current_user.name, user_url(current_user)) %> <br>
-    <%= button_to("Log out", sessions_url, :method => :delete)%>
-    <% if current_user.is_admin %>
-      <p>You're an admin!</p>
-    <% end %>
-    <% if current_user.is_convener? %>
-      <p>You're a convener!</p>
-    <% end %>
-  <% end %>
-</div>
+<% "TODO: navbar fixed at top" %>
+
+<nav class="navbar navbar-inverse" role="navigation">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">&#9776;</button>
+    <a class="navbar-brand" href="/">Submission App</a>
+  </div>
+
+  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <ul class="nav navbar-nav">
+      <li><a href="/courses">Courses</a></li>
+      <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Assignments<b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <% current_user.all_assignments.each do |assignment| %>
+            <li><%= link_to assignment.name, assignment %></li>
+          <% end %>
+        </ul>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%=current_user.name%><b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="<%=user_url current_user%>">Profile</a></li>
+          <li class="divider"></li>
+          <li><%= link_to "Log Out", sessions_url, method: :delete %></li>
+
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+</nav>
+
 
 <% if flash[:errors] && flash[:errors].length > 0 %>
   <div id="errors">
@@ -50,7 +63,7 @@
   </div>
 <% end %>
 
-<div id="main">
+<div class="container">
 
 <%= yield %>
 

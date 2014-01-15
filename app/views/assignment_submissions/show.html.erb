@@ -7,17 +7,23 @@
   <%= link_to "Submit new version", new_assignment_assignment_submission_url(
                                                                 @assignment)%>
 <% else %>
-  <h3> <%= link_to(@submission.user.name,user_url(@submission.user))%> (u<%= @submission.user.uni_id%>) </h3>
+  <h3> <%= link_to(@submission.user.name,user_url(@submission.user))%>
+    (u<%= @submission.user.uni_id%>)
+  </h3>
 <% end %>
 
-<h4>Submitted at <%= @submission.created_at %></h4>
+<p class="text-right">Submitted at <%= @submission.created_at %></p>
 
 <% if @submission.mark %>
 <h4>Mark: <%= @submission.mark %>/<%= @assignment.maximum_mark %></h4>
 <% end %>
 
 <% if @assignment.submission_format == "plaintext" %>
-  <div id="assignment"><pre><%= @submission.body %></pre></div>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <pre><%= @submission.body %></pre>
+    </div>
+  </div>
 <% elsif @assignment.submission_format == "zipfile" %>
   <p><%= link_to "Download submission here", assignment_submission_zip_url(
                     @assignment, @submission) %> </p>
