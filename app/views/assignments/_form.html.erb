@@ -19,11 +19,17 @@
 <div class="form-group">
   <%= label_tag(:due_date, "Due date", :class => "col-sm-2 col-sm-offset-2") %>
   <div class="col-sm-5">
-    <%= f.datetime_select(:due_date, :class => "form-control") %><br>
-    TODO: make this default to previous value in the edit form
+    <%= f.datetime_select(:due_date, :class => "form-control") %>
   </div>
 </div>
-
+<div class="row">
+  <div class="col-sm-7 col-sm-offset-2">
+    <label>
+      <input type="checkbox"> Stop accepting submissions after due date
+    </label>
+    <span class="help-block">If this isn't selected, users continue to be able to submit after the due date.</span>
+  </div>
+</div>
 <div class="row">
   <label for="assignment_info" class="col-sm-6 col-sm-offset-2">Assignment description</label>
 </div>
