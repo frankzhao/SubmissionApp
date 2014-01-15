@@ -43,26 +43,18 @@
   <% end %>
 </nav>
 
-
-<% if flash[:errors] && flash[:errors].length > 0 %>
-  <div id="errors">
-    <% flash[:errors].each do |error| %>
-      <div id="error">
-        <%= error.to_s %>
-      </div>
-    <% end %>
+<% flash[:errors] && flash[:errors].each do |error| %>
+  <div class="alert alert-danger">
+    <%= error.to_s %>
   </div>
 <% end %>
 
-<% if flash[:notifications] && flash[:notifications].length > 0 %>
-  <div id="notifications">
-    <% flash[:notifications].each do |notification| %>
-      <div id="notification">
-        <%= notification.to_s %>
-      </div>
-    <% end %>
+<% flash[:errors] && flash[:notifications].each do |notification| %>
+  <div class="alert alert-warning">
+    <%= notification.to_s %>
   </div>
 <% end %>
+
 
 <div class="container">
 

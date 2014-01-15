@@ -1,78 +1,96 @@
-<h2>Submission for <%=  link_to @assignment.name, assignment_url(@assignment) %></h2>
+<div class="row">
+  <div class="col-sm-5 col-sm-offset-2">
+    <h2>Submission for <%=  link_to @assignment.name, assignment_url(@assignment) %></h2>
+  </div>
+</div>
 
-
-<% if @submission.permitted_users.include?(current_user) %>
-  <h3> Submitter is anonymous </h3>
-<% elsif current_user == @submission.user %>
-  <%= link_to "Submit new version", new_assignment_assignment_submission_url(
-                                                                @assignment)%>
-<% else %>
-  <h3> <%= link_to(@submission.user.name,user_url(@submission.user))%>
-    (u<%= @submission.user.uni_id%>)
-  </h3>
-<% end %>
-
-<p class="text-right">Submitted at <%= @submission.created_at %></p>
+<div class="row">
+  <div class="col-sm-5 col-sm-offset-2">
+    <% if @submission.permitted_users.include?(current_user) %>
+      <h3> Submitter is anonymous </h3>
+    <% elsif current_user == @submission.user %>
+      <%= link_to "Submit new version", new_assignment_assignment_submission_url(
+                            @assignment)%>
+    <% else %>
+      <h3> <%= link_to(@submission.user.name,user_url(@submission.user))%>
+        (u<%= @submission.user.uni_id%>)
+      </h3>
+    <% end %>
+    <small>Submitted at <%= @submission.created_at %></small>
+  </div>
+</div>
 
 <% if @submission.mark %>
-<h4>Mark: <%= @submission.mark %>/<%= @assignment.maximum_mark %></h4>
-<% end %>
-
-<% if @assignment.submission_format == "plaintext" %>
-  <div class="panel panel-default">
-    <div class="panel-body">
-      <pre><%= @submission.body %></pre>
+  <div class="row">
+    <div class="col-sm-5 col-sm-offset-2">
+      <h4>Mark: <%= @submission.mark %>/<%= @assignment.maximum_mark %></h4>
     </div>
   </div>
-<% elsif @assignment.submission_format == "zipfile" %>
-  <p><%= link_to "Download submission here", assignment_submission_zip_url(
-                    @assignment, @submission) %> </p>
-  <h4>File listing</h4>
-  <ul>
-    <% @files.each do |filename, file| %>
-      <li><%= filename %></li>
-    <% end %>
-  </ul>
-
 <% end %>
 
-<div id="comments">
-  <% @comments.each do |comment| %>
-    <div class="comment">
-      <h4>
-        <% if comment.user %>
-          <%= @submission.context_name(comment.user, current_user) %>
-        <% else %>
-          Automatic comment
+<div class="row">
+  <div class="col-sm-8 col-sm-offset-2">
+      <% if @assignment.submission_format == "plaintext" %>
+      <div class="panel panel-default">
+        <div class="panel-heading">Main.hs</div>
+        <div class="panel-body">
+          <code><%= @submission.body %></code>
+        </div>
+      </div>
+    <% elsif @assignment.submission_format == "zipfile" %>
+      <p><%= link_to "Download submission here", assignment_submission_zip_url(
+                        @assignment, @submission) %> </p>
+      <h4>File listing</h4>
+      <ul>
+        <% @files.each do |filename, file| %>
+          <li><%= filename %></li>
         <% end %>
-      </h4>
-        <% if comment.mark %>
-          <h5>Mark: <%= comment.mark %></h5>
-        <% end %>
-      <p>
-        <%= comment.body %>
-      </p>
-    </div>
-  <% end %>
+      </ul>
 
-  <div class="comment">
-    <h4>New comment</h4>
-    <form method="POST"
-          action="<%= assignment_assignment_submission_comments_url(
-                    @assignment, @submission)%>"
-          enctype="multipart/form-data">
-      <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
-      <textarea name="comment[body]"></textarea>
-      <% if @submission.user != current_user %>
-        <br>
-        <label for="comment_mark">Mark (out of <%= @assignment.maximum_mark %>)</label>
-        <input id="comment_mark" name="comment[mark]">
+    <% end %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-8 col-sm-offset-2">
+    <div id="comments">
+      <% @comments.each do |comment| %>
+        <div class="comment">
+          <h4>
+            <% if comment.user %>
+              <%= @submission.context_name(comment.user, current_user) %>
+            <% else %>
+              Automatic comment
+            <% end %>
+          </h4>
+            <% if comment.mark %>
+              <h5>Mark: <%= comment.mark %></h5>
+            <% end %>
+          <p>
+            <%= comment.body %>
+          </p>
+        </div>
       <% end %>
-      <br>
-      Attach file:
-      <%= file_field 'upload', 'datafile' %>
-      <br>
-      <input type="submit" value="Submit!">
-    </form>
+
+      <div class="comment">
+        <h4>New comment</h4>
+        <form method="POST"
+              action="<%= assignment_assignment_submission_comments_url(
+                        @assignment, @submission)%>"
+              enctype="multipart/form-data">
+          <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
+          <textarea name="comment[body]"></textarea>
+          <% if @submission.user != current_user %>
+            <br>
+            <label for="comment_mark">Mark (out of <%= @assignment.maximum_mark %>)</label>
+            <input id="comment_mark" name="comment[mark]">
+          <% end %>
+          <br>
+          Attach file:
+          <%= file_field 'upload', 'datafile' %>
+          <br>
+          <input type="submit" value="Submit!">
+        </form>
+      </div>
+    </div>
   </div>
 </div>

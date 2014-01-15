@@ -1,56 +1,60 @@
-<h2><%= @course.name %></h2>
+<div class="row">
+  <div class="col-sm-9 col-sm-offset-2">
+    <h2><%= @course.name %></h2>
 
-<em>Course convener: <%= link_to @convener.name, user_url(@convener) %></em>
-
-<% if current_user == @convener %>
-  <p><%= link_to("Enroll students", new_course_user_url(@course)) %></p>
-<% end %>
-
-<% if @group_types %>
-  <% @group_types.each do |group_type| %>
-
-    <h3><%= link_to group_type.name, group_type_url(group_type) %></h3>
+    <em>Course convener: <%= link_to @convener.name, user_url(@convener) %></em>
 
     <% if current_user == @convener %>
-<p><%= link_to "New assignment", new_group_type_assignment_url(group_type) %><p>
+      <p><%= link_to("Enroll students", new_course_user_url(@course)) %></p>
     <% end %>
 
+    <% if @group_types %>
+      <% @group_types.each do |group_type| %>
+
+        <h3><%= link_to group_type.name, group_type_url(group_type) %></h3>
+
+        <% if current_user == @convener %>
+    <p><%= link_to "New assignment", new_group_type_assignment_url(group_type) %></p>
+        <% end %>
+
+          <ul>
+            <% group_type.groups.each do |group| %>
+              <li>
+                <%= link_to group.name, group_url(group) %>
+              </li>
+            <% end %>
+          </ul>
+      <% end %>
+
+      <h3>Assignments</h3>
       <ul>
-        <% group_type.groups.each do |group| %>
+        <% @assignments.each do |assignment| %>
           <li>
-            <%= link_to group.name, group_url(group) %>
+            <%= link_to assignment.name, assignment_url(assignment) %>
           </li>
         <% end %>
       </ul>
-  <% end %>
-
-  <h3>Assignments</h3>
-  <ul>
-    <% @assignments.each do |assignment| %>
-      <li>
-        <%= link_to assignment.name, assignment_url(assignment) %>
-      </li>
     <% end %>
-  </ul>
-<% end %>
 
-<h3>Staff</h3>
-<ul>
-  <% @staffs.each do |staff| %>
-    <li> <%= link_to staff.name, user_url(staff) %> </li>
-  <% end %>
-</ul>
+    <h3>Staff</h3>
+    <ul>
+      <% @staffs.each do |staff| %>
+        <li> <%= link_to staff.name, user_url(staff) %> </li>
+      <% end %>
+    </ul>
 
-<% if (@course.staff+[@course.convener]).include? current_user%>
-  <h3>Students</h3>
-  <ul>
-    <% @students.each do |student| %>
-      <li> <%= link_to student.name, user_url(student) %> </li>
+    <% if (@course.staff+[@course.convener]).include? current_user%>
+      <h3>Students</h3>
+      <ul>
+        <% @students.each do |student| %>
+          <li> <%= link_to student.name, user_url(student) %> </li>
+        <% end %>
+      </ul>
+    <% elsif @course.students.include? current_user %>
+    <% else %>
+      <em>Note that you aren't enrolled in this course--you'd
+             see more if you were.</em>
     <% end %>
-  </ul>
-<% elsif @course.students.include? current_user %>
-<% else %>
-  <em>Note that you aren't enrolled in this course--you'd
-         see more if you were.</em>
-<% end %>
+  </div>
+</div>
 

@@ -1,7 +1,14 @@
-<h3>New assignment submission for <%= link_to(@assignment.name,
-                                            assignment_url(@assignment)) %></h3>
+<div class="row">
+  <div class="col-sm-9 col-sm-offset-2">
+    <h3>New assignment submission for
+      <%= link_to(@assignment.name, assignment_url(@assignment)) %>
+    </h3>
+  </div>
+</div>
+
+
 <form method="POST"
-              action="<%= assignment_assignment_submissions_url(@assignment) %>">
+      action="<%= assignment_assignment_submissions_url(@assignment) %>">
   <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
   <textarea name="submission[body]"><%= @submission.body if @submission %></textarea>
   <br>
