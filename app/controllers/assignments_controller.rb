@@ -1,6 +1,8 @@
 class AssignmentsController < ApplicationController
   before_filter :require_logged_in
-  before_filter :require_permission, :except => [:show]
+  before_filter :require_permission, :only => [:edit, :update, :destroy,
+                                          :get_csv, :get_zipfile, :peer_review]
+  before_filter :require_convener_or_admin, :only => [:new, :create]
 
   def require_permission
     @assignment = Assignment.find(params[:id])
@@ -24,6 +26,7 @@ class AssignmentsController < ApplicationController
   end
 
   def create
+    @assignment = Assignment.new(params[:assignment])
     if @assignment.save
       redirect_to @assignment
     else

@@ -1,6 +1,10 @@
 class SessionsController < ApplicationController
   def new
-    render :new
+    if current_user
+      redirect_to courses_url
+    else
+      render :new
+    end
   end
 
   def create

@@ -11,9 +11,6 @@
     <li>
       <%= link_to course.name, course_url(course) %>
       (<%= course.convener.name %>)
-      <% if course.admin_or_convener?(current_user) %>
-        <%= button_to "Delete course", course_url(course), :method => :delete %>
-      <% end %>
     </li>
   <% end %>
 </ul>

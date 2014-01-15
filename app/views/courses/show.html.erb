@@ -29,9 +29,6 @@
     <% @assignments.each do |assignment| %>
       <li>
         <%= link_to assignment.name, assignment_url(assignment) %>
-        <% if current_user == @convener %>
-          <%= button_to "Delete", assignment, :method => :delete %>
-        <% end %>
       </li>
     <% end %>
   </ul>

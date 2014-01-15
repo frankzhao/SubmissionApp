@@ -1,8 +1,20 @@
-<h2>Edit <%= @assignment.name %></h2>
+<div class="row">
+  <div class="col-sm-9 col-sm-offset-2">
+    <h2>Edit <%= @assignment.name %></h2>
+  </div>
+</div>
 
-<%= form_for @assignment, url: {action: "update"} do |f| %>
+<%= form_for(@assignment, html: {:class => "form-horizontal", :role => "form"},
+                            url: {action: "update"}) do |f| %>
 
   <%= render :partial => "form", :locals => {:f => f, :assignment => @assignment} %>
 
-  <p><%= f.submit("Update assignment") %></p>
+  <div class="row">
+    <div class="col-sm-2 col-sm-offset-2 col-xs-4">
+      <%= f.submit("Update assignment", :class => "btn btn-default") %>
+    </div>
+    <div class="col-sm-3">
+      <%= button_to "Delete assignment", @assignment, :method => :delete, :class => "btn btn-danger" %>
+    </div>
+  </div>
 <% end %>
