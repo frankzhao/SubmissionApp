@@ -77,7 +77,7 @@ class AssignmentsController < ApplicationController
   def destroy
     @assignment.destroy
     flash[:notifications] = ["Assignment \"#{@assignment.name}\" successfully destroyed"]
-    redirect_to @assignment.group_type
+    redirect_to "/"
   end
 
 

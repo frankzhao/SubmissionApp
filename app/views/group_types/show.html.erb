@@ -1,21 +1,25 @@
-<h2><%= @group_type.name %></h2>
+<div class="row">
+  <div class="col-sm-8 col-sm-offset-2">
+    <h2><%= @group_type.name %></h2>
 
-<p><%= @group_type.name %> includes students from the following courses:</p>
+    <p><%= @group_type.name %> includes students from the following courses:</p>
 
-<ul>
-  <% @courses.each do |course| %>
-    <li>
-      <%= link_to course.name, course_url(course) %>
-    </li>
-  <% end %>
-</ul>
+    <ul>
+      <% @courses.each do |course| %>
+        <li>
+          <%= link_to course.name, course_url(course) %>
+        </li>
+      <% end %>
+    </ul>
 
-<p>It has the following groups:</p>
+    <p>It has the following groups:</p>
 
-<ul>
-  <% @group_type.groups.each do |group| %>
-    <li>
-      <%= link_to group.name, group_url(group) %>
-    </li>
-  <% end %>
-</ul>
+    <ul>
+      <% @group_type.groups.each do |group| %>
+        <li>
+          <%= link_to group.name, group_url(group) %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

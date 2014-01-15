@@ -50,10 +50,10 @@ wireworld = Assignment.create!(:name => "Wireworld",
                                :behavior_on_submission => "check_compiling_haskell")
 
 kalaha = Assignment.create!(:name => "Kalaha",
-                               :info => "board game!",
-                               :group_type => tute,
-                               :due_date => "2014-03-33 23:04:26",
-                               :submission_format => "zipfile")
+                             :info => "board game!",
+                             :group_type => tute,
+                             :due_date => "2014-03-33 23:04:26",
+                             :submission_format => "zipfile")
 
 buck_tute, tessa_tute = tute.create_groups("Thursday A"=>[buck],
                                       "Thursday B"=>[tessa])

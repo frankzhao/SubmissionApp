@@ -1,12 +1,16 @@
-<h2><%= @group.name %></h2>
-<p><%= @group.name %> is an instance of <%= @group_type.name %>.</p>
+<div class="row">
+  <div class="col-sm-8 col-sm-offset-2">
+    <h2><%= @group.name %></h2>
+    <p><%= @group.name %> is an instance of <%= @group_type.name %>.</p>
 
-<h3> Students</h3>
+    <h3> Students</h3>
 
-<ul>
-  <% @users.each do |user| %>
-    <li>
-      <%= link_to user.name, user_url(user) %>
-    </li>
-  <% end %>
-</ul>
+    <ul>
+      <% @users.each do |user| %>
+        <li>
+          <%= link_to user.name, user_url(user) %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

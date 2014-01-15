@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  assignment_id: 1
+  distribution_scheme: MyString
+  get_marks: false
+  shut_off_submission: false
+  anonymise: false
+
+two:
+  assignment_id: 1
+  distribution_scheme: MyString
+  get_marks: false
+  shut_off_submission: false
+  anonymise: false

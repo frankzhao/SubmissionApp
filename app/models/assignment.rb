@@ -56,7 +56,10 @@ class Assignment < ActiveRecord::Base
   end
 
   def make_directory
+    puts "*"*100
+    p `ls upload`
     Dir.mkdir(self.path) unless File.directory?(self.path)
+    p `ls upload`
   end
 
   #TODO: Add "marker" as a field here.
