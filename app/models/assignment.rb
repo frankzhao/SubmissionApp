@@ -92,6 +92,7 @@ class Assignment < ActiveRecord::Base
   # If it doesn't have a due date, it's never overdue.
   # If the due date isn't compulsary, it's never overdue
   def already_due
+    p "#{self.name} !!! #{self.due_date} #{self.is_due_date_compulsary}"
     self.due_date && self.is_due_date_compulsary && self.due_date < Time.now
   end
 end

@@ -22,6 +22,7 @@ gem 'jquery-rails'
 gem 'net-ldap'
 gem 'faker'
 gem 'rubyzip'
+gem 'whenever'
 
 group :test do
   gem 'capybara'

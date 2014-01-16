@@ -1,0 +1,7 @@
+<p><%= link_to "Download submission here", submission.zip_path %> </p>
+<h4>File listing</h4>
+<ul>
+  <% submission.zip_contents.each do |filename, file| %>
+    <li><%= filename %></li>
+  <% end %>
+</ul>

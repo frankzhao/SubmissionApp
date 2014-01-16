@@ -9,10 +9,6 @@ class AssignmentSubmissionsController < ApplicationController
     @comments = @submission.comments
 
     if @submission.permits?(current_user)
-      if @assignment.submission_format == "zipfile"
-        @files = @submission.zip_contents
-      end
-
       render :show
     else
       flash[:errors] = "You don't have permission to access that page"

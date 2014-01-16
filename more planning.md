@@ -22,11 +22,11 @@ This is the behavior which is run when the assignment is submitted. It includes 
 The convener can create arbitrary numbers of cycles of peer review, each of which has seperately chosen behavior. When you get access to someone's assignment, you can comment on it and submit changed versions of it.
 ### Distribution scheme
 The review cycle can have multiple different distribution schemes. 
-- Swap immediately: When this is activated, everyone who has submitted gets access to n other people's submission.
+- Swap simultaneously: When this is activated, everyone who has submitted gets access to n other people's submission. 
 - Send to previous submitter: Every submission is given to the previous student to submit. The first assignment is given to the student's tutor.
 These will be implemented with the judicious use of helper methods, so it will be easy to write new, competing methods.
 ### Get marks
-If this flag is true, then the peer reviewer gets to choose a mark. The peer review cycle would be connected to a section of the mark, as implemented in the marking scheme.
+If this flag is true, then the peer reviewer gets to choose a mark. The peer review cycle would be connected to a section of the mark, as implemented in the marking scheme. The cycle has a field called *enabled_mark_sections* which tells it which mark sections the student gets to mark in.
 ### Shut off submissions
 If this flag is true, then students cannot resubmit the assignment until they've provided their peer comments.
 ### Anonymise

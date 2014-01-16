@@ -30,23 +30,12 @@
 
 <div class="row">
   <div class="col-sm-8 col-sm-offset-2">
-      <% if @assignment.submission_format == "plaintext" %>
-      <div class="panel panel-default">
-        <div class="panel-heading">Main.hs</div>
-        <div class="panel-body">
-          <code><%= @submission.body %></code>
-        </div>
-      </div>
+    <% if @assignment.submission_format == "plaintext" %>
+      <%= render :partial => "plaintext",
+                          :locals => { :submission => @submission} %>
     <% elsif @assignment.submission_format == "zipfile" %>
-      <p><%= link_to "Download submission here", assignment_submission_zip_url(
-                        @assignment, @submission) %> </p>
-      <h4>File listing</h4>
-      <ul>
-        <% @files.each do |filename, file| %>
-          <li><%= filename %></li>
-        <% end %>
-      </ul>
-
+      <%= render :partial => "zipfile",
+                          :locals => { :submission => @submission} %>
     <% end %>
   </div>
 </div>
