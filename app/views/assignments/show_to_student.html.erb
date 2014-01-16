@@ -8,15 +8,9 @@
   <%= @assignment.info %>
 </p>
 
-<p>This is an assignment for the following courses:</p>
-
-<ul>
-  <% @courses.each do |course| %>
-    <li>
-      <%= link_to course.name, course_url(course) %>
-    </li>
-  <% end %>
-</ul>
+<%= render :partial => "show_info",
+                        :locals => {:assignment => @assignment,
+                                        :courses => @courses} %>
 
 <h3>Your submissions</h3>
 <% if @user_submissions.empty? %>

@@ -25,17 +25,10 @@
 </div>
 <div class="row">
   <div class="col-sm-8 col-sm-offset-2">
-    <p><em>Assignment for
-      <%= link_to(@assignment.group_type.name, @assignment.group_type) %></em>
-    </p>
 
-    <% if @assignment.due_date %>
-      <p>Due at <%= @assignment.due_date %> </p>
-    <% end %>
-
-    <p>
-      <%= @assignment.info.html_safe %>
-    </p>
+    <%= render :partial => "show_info",
+                            :locals => { :assignment => @assignment,
+                                        :courses => @courses} %>
 
     <h3>Submissions</h3>
 

@@ -1,0 +1,21 @@
+<p><em>Assignment for
+  <%= link_to(assignment.group_type.name, assignment.group_type) %></em>
+</p>
+
+<p>This is an assignment for the following courses:</p>
+
+<ul>
+  <% assignment.courses.each do |course| %>
+    <li>
+      <%= link_to course.name, course_url(course) %>
+    </li>
+  <% end %>
+</ul>
+
+<% if assignment.due_date %>
+  <p>Due at <%= assignment.due_date %> </p>
+<% end %>
+
+<p>
+  <%= assignment.info.html_safe %>
+</p>

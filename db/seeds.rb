@@ -41,13 +41,20 @@ tessa.enroll_staff_in_course!(comp1130)
 tute = GroupType.create!(:name => "Comp1100/1130 labs",
                          :courses => [comp1130, comp1100])
 
-# tmp should be created by the Rails server, but this makes it just in case.
+wireworld_description = "<p>Cellular automata!</p>"+ Faker::Lorem.paragraphs.map{|x| "<p>#{x}</p>"}.join("\n")
 
 wireworld = Assignment.create!(:name => "Wireworld",
-                               :info => "cellular automata!",
+                               :info => wireworld_description,
                                :group_type => tute,
                                :due_date => "2014-05-03 23:04:26",
                                :behavior_on_submission => "check_compiling_haskell")
+
+wireworld.create_marking_scheme([{:name => "Style",
+                                  :description => "how good the code is",
+                                  :maximum_mark => 30},
+                                  {:name => "Correctness",
+                                  :description => "how correct the code is",
+                                  :maximum_mark => 30}])
 
 kalaha = Assignment.create!(:name => "Kalaha",
                              :info => "board game!",
@@ -59,31 +66,31 @@ buck_tute, tessa_tute = tute.create_groups("Thursday A"=>[buck],
                                       "Thursday B"=>[tessa])
 
 people = [['Michele Hirthe',5689215],
-['Etha Medhurst',5167449],
-['Julius Casper',5544508],
-['Lessie Beier',4597441],
-['Sylvia Kutch',5292181],
-['Joanne Stanton',4957443],
-['Daren Wolf',5972951],
-['Jasen Schroeder',4625564],
-['Rafaela Parisian',4643300],
-['Emma Maggio',5671846],
-['Martin Kris',4919654],
-['Elvis Block',5228817],
-['Christine Powlowski',4292920],
-['Sammy Mueller',4648373],
-['Leslie Bednar',4950106],
-['Justice Rogahn',5930905],
-['Toni Kuvalis',5440690],
-['Garnet Thompson',4365727],
-['Lindsey Kautzer',5438481],
-['Osvaldo Spinka',4424755],
-['Elisabeth Volkman',4704255],
-["Dolly O'Keefe",4989649],
-['Hoyt Williamson',4210491],
-['Demarcus Johns',4500384],
-['Brooks Kris',4911177],
-['Katelyn Collier',5817236]]
+          ['Etha Medhurst',5167449],
+          ['Julius Casper',5544508],
+          ['Lessie Beier',4597441],
+          ['Sylvia Kutch',5292181],
+          ['Joanne Stanton',4957443],
+          ['Daren Wolf',5972951],
+          ['Jasen Schroeder',4625564],
+          ['Rafaela Parisian',4643300],
+          ['Emma Maggio',5671846],
+          ['Martin Kris',4919654],
+          ['Elvis Block',5228817],
+          ['Christine Powlowski',4292920],
+          ['Sammy Mueller',4648373],
+          ['Leslie Bednar',4950106],
+          ['Justice Rogahn',5930905],
+          ['Toni Kuvalis',5440690],
+          ['Garnet Thompson',4365727],
+          ['Lindsey Kautzer',5438481],
+          ['Osvaldo Spinka',4424755],
+          ['Elisabeth Volkman',4704255],
+          ["Dolly O'Keefe",4989649],
+          ['Hoyt Williamson',5555554],
+          ['Demarcus Johns',5555553],
+          ['Brooks Kris',5555552],
+          ['Katelyn Collier',5555551]]
 
 
 [buck_tute, tessa_tute].each do |tute|

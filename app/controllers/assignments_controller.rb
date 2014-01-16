@@ -57,7 +57,6 @@ class AssignmentsController < ApplicationController
 
     case @relation
     when :student
-      @courses = @assignment.courses
       @user_submissions = @assignment.submissions
                                      .where(:user_id => current_user.id)
                                      .order('created_at DESC')

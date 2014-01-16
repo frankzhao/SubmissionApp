@@ -1,6 +1,6 @@
 class Assignment < ActiveRecord::Base
   attr_accessible :info, :name, :group_type, :group_type_id, :due_date,
-                   :submission_format, :behavior_on_submission, :maximum_mark,
+                   :submission_format, :behavior_on_submission,
                    :is_due_date_compulsary
 
   belongs_to :group_type
@@ -93,8 +93,21 @@ class Assignment < ActiveRecord::Base
   # Does the assignment have a due date in the past?
   # If it doesn't have a due date, it's never overdue.
   # If the due date isn't compulsary, it's never overdue
+  # TODO: check this carefully.
   def already_due
     p "#{self.name} !!! #{self.due_date} #{self.is_due_date_compulsary}"
     self.due_date && self.is_due_date_compulsary && self.due_date < Time.now
+  end
+
+  def add_marking_category!(hash)
+    category = MarkingCategory.new(hash)
+    category.assignment = self
+    category.save!
+  end
+
+  def create_marking_scheme(scheme)
+    scheme.each do |hash|
+      self.add_marking_category!(hash)
+    end
   end
 end
