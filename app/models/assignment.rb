@@ -19,6 +19,8 @@ class Assignment < ActiveRecord::Base
   validate :info, :name, :group_type_id, :due_date, :submission_format, :behavior_on_submission,
           :presence => true
 
+  has_many :marking_categories
+
   after_create :make_directory
 
   def relevant_submissions(user)

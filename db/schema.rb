@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140115232756) do
+ActiveRecord::Schema.define(:version => 20140116184204) do
 
   create_table "assignment_submissions", :force => true do |t|
     t.integer  "user_id",       :null => false
@@ -30,8 +30,7 @@ ActiveRecord::Schema.define(:version => 20140115232756) do
     t.integer  "group_type_id",                                   :null => false
     t.string   "submission_policy"
     t.datetime "due_date"
-    t.string   "submission_format",      :default => "plaintext", :null => false
-    t.integer  "maximum_mark",           :default => 100,         :null => false
+    t.string   "submission_format",  :default => "plaintext", :null => false
     t.string   "behavior_on_submission", :default => ""
     t.boolean  "is_due_date_compulsary", :default => false
   end
@@ -88,6 +87,24 @@ ActiveRecord::Schema.define(:version => 20140115232756) do
     t.datetime "updated_at",    :null => false
   end
 
+  create_table "marking_categories", :force => true do |t|
+    t.integer  "assignment_id", :null => false
+    t.string   "name",          :null => false
+    t.string   "source",        :null => false
+    t.string   "description",   :null => false
+    t.integer  "maximum_mark",  :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  create_table "marks", :force => true do |t|
+    t.integer  "marking_category_id", :null => false
+    t.integer  "value",               :null => false
+    t.integer  "comment_id",          :null => false
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+  end
+
   create_table "peer_review_cycles", :force => true do |t|
     t.integer  "assignment_id",       :null => false
     t.string   "distribution_scheme", :null => false
@@ -116,6 +133,7 @@ ActiveRecord::Schema.define(:version => 20140115232756) do
   create_table "submission_permissions", :force => true do |t|
     t.integer "assignment_submission_id", :null => false
     t.integer "user_id",                  :null => false
+    t.integer "peer_review_cycle_id"
   end
 
   create_table "users", :force => true do |t|

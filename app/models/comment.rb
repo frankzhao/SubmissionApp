@@ -1,8 +1,12 @@
 class Comment < ActiveRecord::Base
   #TODO: nested comments
 
-  attr_accessible :assignment_submission_id, :body, :mark, :user_id
+  attr_accessible :assignment_submission_id, :body, :user_id
 
   belongs_to :assignment_submission
+  delegate :assignment, :to => :assignment_submission
+
   belongs_to :user
+
+  has_many :marks
 end
