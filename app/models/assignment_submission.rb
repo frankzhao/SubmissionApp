@@ -11,6 +11,7 @@ class AssignmentSubmission < ActiveRecord::Base
   after_save :save_locally, :do_custom_things
 
   has_many :comments
+  has_many :marks, :through => :comments, :source => :marks
 
   has_many :submission_permissions
 
@@ -38,11 +39,6 @@ class AssignmentSubmission < ActiveRecord::Base
         return group
       end
     end
-  end
-
-  #TODO: again, SQL
-  def mark
-    comments.map { |comment| comment.mark }.select{ |x| x }.last
   end
 
   # This is all the people who are permitted to see the assignment.

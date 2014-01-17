@@ -10,8 +10,10 @@
     <% if @submission.permitted_users.include?(current_user) %>
       <h3> Submitter is anonymous </h3>
     <% elsif current_user == @submission.user %>
-      <%= link_to "Submit new version", new_assignment_assignment_submission_url(
+      <% unless @assignment.already_due %>
+        <%= link_to "Submit new version", new_assignment_assignment_submission_url(
                             @assignment), :class => "btn btn-default"%>
+      <% end %>
     <% else %>
       <h3> <%= link_to(@submission.user.name,user_url(@submission.user)) %>
         (u<%= @submission.user.uni_id%>)
@@ -20,13 +22,13 @@
   </div>
 </div>
 
-<% if @submission.mark %>
-  <div class="row">
-    <div class="col-sm-5 col-sm-offset-2">
-      <h4>Mark: <%= @submission.mark %>/<%= @assignment.maximum_mark %></h4>
-    </div>
+<div class="row">
+  <div class="col-sm-5 col-sm-offset-2">
+    <% @assignment.marking_categories.each do |category| %>
+      <p><%= category.name %>: <%= category.mark_for_submission(@submission) || "-"%>/<%= category.maximum_mark %></p>
+    <% end %>
   </div>
-<% end %>
+</div>
 
 
 <% if @assignment.submission_format == "plaintext" %>
@@ -79,7 +81,7 @@
           <div class="form-group">
             <%= category.name %> (<%= category.maximum_mark %> marks)
             <input id="mark_<%= category.name %>"
-                   name="mark[<%= category.name%>]"
+                   name="mark[<%= category.id%>]"
                    class="form-control">
           </div>
           <% end %>

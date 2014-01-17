@@ -66,12 +66,16 @@ class Assignment < ActiveRecord::Base
 
   #TODO: Add "marker" as a field here.
   def marks_csv
-    out = ["name,uni id,submission time,mark"]
+    marking_category_names = self.marking_categories.map(&:name).join(",")
+    out = ["name,uni id,submission time,#{marking_category_names}"]
     self.students.each do |student|
       most_recent_submission = student.most_recent_submission(self)
       submission_time = most_recent_submission.created_at rescue ""
-      mark = most_recent_submission.mark || "not marked" rescue "not submitted"
-      out << "#{student.name},#{student.uni_id},#{submission_time},#{mark}"
+      marks = []
+      self.marking_categories.each do |category|
+        marks << category.mark_for_submission(most_recent_submission) rescue ""
+      end
+      out << "#{student.name},#{student.uni_id},#{submission_time},#{marks.join(",")}"
     end
     out.join("\n")
   end

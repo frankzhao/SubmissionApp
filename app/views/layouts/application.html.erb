@@ -43,23 +43,24 @@
   <% end %>
 </nav>
 
-<% flash[:errors] && flash[:errors].each do |error| %>
-  <div class="alert alert-danger">
-    <%= error.to_s %>
-  </div>
-<% end %>
+<div class="row">
+  <div class="col-sm-6 col-sm-offset-3">
+    <% flash[:errors] && flash[:errors].each do |error| %>
+      <div class="alert alert-danger">
+        <%= error.to_s %>
+      </div>
+    <% end %>
 
-<% flash[:notifications] && flash[:notifications].each do |notification| %>
-  <div class="alert alert-warning">
-    <%= notification.to_s %>
+    <% flash[:notifications] && flash[:notifications].each do |notification| %>
+      <div class="alert alert-warning">
+        <%= notification.to_s %>
+      </div>
+    <% end %>
   </div>
-<% end %>
-
+</div>
 
 <div class="container">
-
   <%= yield %>
-
 </div>
 </body>
 </html>

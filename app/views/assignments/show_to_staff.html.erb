@@ -40,9 +40,10 @@
         <li>
           <%= link_to("#{submission.user.name} (u#{submission.user.uni_id})",
                   assignment_assignment_submission_url(@assignment, submission)) %>
-          <% unless submission.mark %>
+         <!-- TODO: add this feature back in -->
+         <!--  <%# unless submission.mark %>
             <span class="label label-default">(unmarked)</span>
-          <% end %>
+          <%# end %> -->
           <% unless submission.submission_permissions.empty? %>
             (visible to <%= submission.permitted_users.map(&:name).join(", ") %>)
           <% end %>

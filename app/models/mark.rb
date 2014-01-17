@@ -5,4 +5,5 @@ class Mark < ActiveRecord::Base
 
   belongs_to :marking_category
   belongs_to :comment
+  delegate :assignment_submission, :to => :comment
 end
