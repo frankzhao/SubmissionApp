@@ -1,34 +1,38 @@
-<h2><%= @user.name %></h2>
+<div class="row">
+  <div class="col-sm-8 col-sm-offset-2">
+    <h2><%= @user.name %></h2>
 
-<% if @student_courses.length > 0 %>
-  <p>Student in the following courses: </p>
-  <ul>
-    <% @student_courses.each do |course| %>
-      <li>
-        <%= link_to(course.name, course_url(course)) %>
-      </li>
+    <% if @student_courses.length > 0 %>
+      <p>Student in the following courses: </p>
+      <ul>
+        <% @student_courses.each do |course| %>
+          <li>
+            <%= link_to(course.name, course_url(course)) %>
+          </li>
+        <% end %>
+      </ul>
     <% end %>
-  </ul>
-<% end %>
 
-<% if @staffed_courses.length > 0 %>
-  <p>Staffing the following courses: </p>
-  <ul>
-    <% @staffed_courses.each do |course| %>
-      <li>
-        <%= link_to(course.name, course_url(course)) %>
-      </li>
+    <% if @staffed_courses.length > 0 %>
+      <p>Staffing the following courses: </p>
+      <ul>
+        <% @staffed_courses.each do |course| %>
+          <li>
+            <%= link_to(course.name, course_url(course)) %>
+          </li>
+        <% end %>
+      </ul>
     <% end %>
-  </ul>
-<% end %>
 
-<% if @convened_courses.length > 0 %>
-  <p>Convening the following courses: </p>
-  <ul>
-    <% @convened_courses.each do |course| %>
-      <li>
-        <%= link_to(course.name, course_url(course)) %>
-      </li>
+    <% if @convened_courses.length > 0 %>
+      <p>Convening the following courses: </p>
+      <ul>
+        <% @convened_courses.each do |course| %>
+          <li>
+            <%= link_to(course.name, course_url(course)) %>
+          </li>
+        <% end %>
+      </ul>
     <% end %>
-  </ul>
-<% end %>
+  </div>
+</div>

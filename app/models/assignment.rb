@@ -76,26 +76,11 @@ class Assignment < ActiveRecord::Base
     out.join("\n")
   end
 
-  def start_peer_review
-    submittors = self.students_who_have_submitted
-    mapping = submittors.zip(submittors.shuffle)
-    while (mapping.any?{|k,v| k==v}) do
-      mapping = submittors.zip(submittors.shuffle)
-    end
-
-    mapping.each do |source, destination|
-      submission = source.most_recent_submission(self)
-      submission.add_permission(destination)
-    end
-    mapping
-  end
-
   # Does the assignment have a due date in the past?
   # If it doesn't have a due date, it's never overdue.
   # If the due date isn't compulsary, it's never overdue
   # TODO: check this carefully.
   def already_due
-    p "#{self.name} !!! #{self.due_date} #{self.is_due_date_compulsary}"
     self.due_date && self.is_due_date_compulsary && self.due_date < Time.now
   end
 
@@ -109,5 +94,14 @@ class Assignment < ActiveRecord::Base
     scheme.each do |hash|
       self.add_marking_category!(hash)
     end
+  end
+
+  def replace_marking_scheme(scheme)
+    self.marking_categories.each(&:destroy)
+    create_marking_scheme(scheme)
+  end
+
+  def maximum_mark
+    self.marking_categories.map{|x| x.maximum_mark}.sum
   end
 end

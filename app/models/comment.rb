@@ -9,4 +9,6 @@ class Comment < ActiveRecord::Base
   belongs_to :user
 
   has_many :marks
+
+  validates :assignment_submission_id, :body, :user_id, :presence => true
 end

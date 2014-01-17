@@ -1,6 +1,7 @@
 <div class="row">
   <div class="col-sm-5 col-sm-offset-2">
     <h2>Submission for <%=  link_to @assignment.name, assignment_url(@assignment) %></h2>
+    <small>Submitted at <%= @submission.created_at %></small>
   </div>
 </div>
 
@@ -10,13 +11,12 @@
       <h3> Submitter is anonymous </h3>
     <% elsif current_user == @submission.user %>
       <%= link_to "Submit new version", new_assignment_assignment_submission_url(
-                            @assignment)%>
+                            @assignment), :class => "btn btn-default"%>
     <% else %>
-      <h3> <%= link_to(@submission.user.name,user_url(@submission.user))%>
+      <h3> <%= link_to(@submission.user.name,user_url(@submission.user)) %>
         (u<%= @submission.user.uni_id%>)
       </h3>
     <% end %>
-    <small>Submitted at <%= @submission.created_at %></small>
   </div>
 </div>
 
@@ -28,19 +28,18 @@
   </div>
 <% end %>
 
+
+<% if @assignment.submission_format == "plaintext" %>
+  <%= render :partial => "plaintext",
+                      :locals => { :submission => @submission} %>
+<% elsif @assignment.submission_format == "zipfile" %>
+  <%= render :partial => "zipfile",
+                      :locals => { :submission => @submission} %>
+<% end %>
+
+
 <div class="row">
-  <div class="col-sm-8 col-sm-offset-2">
-    <% if @assignment.submission_format == "plaintext" %>
-      <%= render :partial => "plaintext",
-                          :locals => { :submission => @submission} %>
-    <% elsif @assignment.submission_format == "zipfile" %>
-      <%= render :partial => "zipfile",
-                          :locals => { :submission => @submission} %>
-    <% end %>
-  </div>
-</div>
-<div class="row">
-  <div class="col-sm-8 col-sm-offset-2">
+  <div class="col-sm-6 col-sm-offset-3">
     <div id="comments">
       <% @comments.each do |comment| %>
         <div class="comment">
@@ -51,9 +50,6 @@
               Automatic comment
             <% end %>
           </h4>
-            <% if comment.mark %>
-              <h5>Mark: <%= comment.mark %></h5>
-            <% end %>
           <p>
             <%= comment.body %>
           </p>
@@ -65,19 +61,30 @@
         <form method="POST"
               action="<%= assignment_assignment_submission_comments_url(
                         @assignment, @submission)%>"
-              enctype="multipart/form-data">
+              enctype="multipart/form-data"
+              role="form"
+              class="form-inline"
+              >
           <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
-          <textarea name="comment[body]"></textarea>
-          <% if @submission.user != current_user %>
-            <br>
-            <label for="comment_mark">Mark (out of <%= @assignment.maximum_mark %>)</label>
-            <input id="comment_mark" name="comment[mark]">
+          <div class="form-group">
+            <textarea name="comment[body]" class="form-control"></textarea>
+          </div>
+
+          <div class="form-group">
+            Attach file: (currently this doesn't do anything)
+            <%= file_field 'upload', 'datafile' %>
+          </div>
+
+          <% @assignment.marking_categories.each do |category| %>
+          <div class="form-group">
+            <%= category.name %> (<%= category.maximum_mark %> marks)
+            <input id="mark_<%= category.name %>"
+                   name="mark[<%= category.name%>]"
+                   class="form-control">
+          </div>
           <% end %>
-          <br>
-          Attach file:
-          <%= file_field 'upload', 'datafile' %>
-          <br>
-          <input type="submit" value="Submit!">
+
+          <input class="btn btn-primary" type="submit" value="Post comment">
         </form>
       </div>
     </div>

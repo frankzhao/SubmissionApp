@@ -1,7 +1,6 @@
 require 'zip'
 
 class AssignmentSubmission < ActiveRecord::Base
-
   include CheckingRules
 
   attr_accessible :assignment_id, :body, :user_id
@@ -49,6 +48,7 @@ class AssignmentSubmission < ActiveRecord::Base
   # This is all the people who are permitted to see the assignment.
   # TODO: make it so that the assignment has a setting to let all
   # staff for the course see all the assignments.
+  # Also, SQL, obviously
   def staff
     group.staff + group.group_type.courses.map(&:convener)
   end

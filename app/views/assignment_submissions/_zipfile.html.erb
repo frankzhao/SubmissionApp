@@ -1,7 +1,34 @@
-<p><%= link_to "Download submission here", submission.zip_path %> </p>
-<h4>File listing</h4>
-<ul>
-  <% submission.zip_contents.each do |filename, file| %>
-    <li><%= filename %></li>
-  <% end %>
-</ul>
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <p><%= link_to "Download submission", submission.zip_path,
+                :class=>"btn btn-default" %> </p>
+    <h3>File listing</h3>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-9 col-md-offset-2">
+    <div class="panel-group" id="accordion">
+    <% a = 1 %>
+    <% submission.zip_contents.each do |filename, file| %>
+      <% a += 1  %>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <p class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%= a %>">
+                <%= filename %>
+            </a>
+          </p>
+        </div>
+
+        <div id="collapse<%= a %>" class="panel-collapse collapse">
+          <div class="panel-body">
+            <pre><code data-language="haskell"><%= file %></code></pre>
+          </div>
+        </div>
+      </div>
+
+    <% end %>
+    </div>
+  </div>
+</div>

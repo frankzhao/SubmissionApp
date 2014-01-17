@@ -30,12 +30,29 @@
     <span class="help-block">If this isn't selected, users continue to be able to submit after the due date.</span>
   </div>
 </div>
+
 <div class="row">
   <label for="assignment_info" class="col-sm-6 col-sm-offset-2">Assignment description</label>
 </div>
 <div class="row">
   <div class="col-sm-7 col-sm-offset-2">
-    <textarea class="form-control" id="assignment_info" name="assignment[info]"><%=assignment.info%></textarea>
+    <textarea class="form-control" id="assignment_info" rows="10" name="assignment[info]"><%=assignment.info%></textarea>
+    <span class="help-block"> TODO: restrict allowed HTML here. Currently you can do whatever you want</span>
+  </div>
+</div>
+
+<div class="row">
+  <label for="marking_scheme" class="col-sm-6 col-sm-offset-2">Assignment marking scheme</label>
+</div>
+<div class="row">
+  <div class="col-sm-7 col-sm-offset-2">
+    <textarea class="form-control" id="marking_scheme" rows="6" name="marking_scheme">[{:name => "Style",
+:description => "how good the code is",
+:maximum_mark => 30},
+{:name => "Correctness",
+:description => "how correct the code is",
+:maximum_mark => 30}]</textarea>
+    <span class="help-block">Obviously, this should be replaced by a real input. TODO</span>
   </div>
 </div>
 

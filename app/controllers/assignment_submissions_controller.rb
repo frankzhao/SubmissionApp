@@ -19,16 +19,14 @@ class AssignmentSubmissionsController < ApplicationController
   def new
     #TODO: require the user to be in this course
     @assignment = Assignment.find(params[:assignment_id])
-    if @assignment.already_due
-      @submission = @assignment.submissions
-                         .where(:user_id => current_user.id)
-                         .order(:created_at)
-                         .last
+    unless @assignment.already_due
       if @assignment.submission_format == "plaintext"
-        render :new_plaintext
-      elsif @assignment.submission_format = "zipfile"
-        render :new_zipfile
+        @submission = @assignment.submissions
+                   .where(:user_id => current_user.id)
+                   .order(:created_at)
+                   .last
       end
+      render :new
     else
       flash[:errors] = ["Assignment is already due."]
       redirect_to assignment_url(@assignment)
@@ -43,13 +41,22 @@ class AssignmentSubmissionsController < ApplicationController
       @submission = AssignmentSubmission.new(params[:submission])
       @submission.assignment_id = params[:assignment_id]
       @submission.user_id = current_user.id
-      @submission.save!
+      if @submission.save
+        if @assignment.submission_format == "zipfile"
+          if (params[:upload] and params[:upload]["datafile"])
+            @submission.save_data(params[:upload]["datafile"].read)
+          else
+            flash[:errors] = ["Please select a file to upload."]
+            render :new
+            return
+          end
+        end
 
-      if @assignment.submission_format == "zipfile"
-        @submission.save_data(params[:upload]["datafile"].read)
+        redirect_to(assignment_assignment_submission_url(params[:assignment_id],@submission))
+      else
+        flash[:errors] = @submission.errors.full_messages
+        render :new
       end
-
-      redirect_to(assignment_assignment_submission_url(params[:assignment_id],@submission))
     else
       flash[:errors] = ["Assignment is already due."]
       redirect_to assignment_url(@assignment)

@@ -1,1 +1,14 @@
-@import "bootstrap";
+@import "bootstrap.min.css";
+
+.comment {
+border-style: solid;
+border-radius: 3px;
+border-width: 1px;
+border-color: lightgray;
+padding: 5px;
+padding-left: 15px;
+padding-right: 15px;
+background-color: #F3F4F5;
+margin-top: 5px;
+margin-bottom: 5px;
+}

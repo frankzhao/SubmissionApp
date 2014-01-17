@@ -7,8 +7,13 @@ class CommentsController < ApplicationController
     if @comment.assignment_submission.user == current_user
       @comment.mark = nil
     end
-    @comment.save!
-    redirect_to(assignment_assignment_submission_url(params[:assignment_id],
+    if @comment.save
+      redirect_to(assignment_assignment_submission_url(params[:assignment_id],
                             params[:assignment_submission_id]))
+    else
+      redirect_to(assignment_assignment_submission_url(params[:assignment_id],
+                            params[:assignment_submission_id]))
+      flash.now[:errors] = @comment.errors.full_messages + ["fail"]
+    end
   end
 end

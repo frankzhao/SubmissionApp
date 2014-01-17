@@ -27,6 +27,7 @@ class AssignmentsController < ApplicationController
 
   def create
     @assignment = Assignment.new(params[:assignment])
+    @assignment.create_marking_scheme(eval(params[:marking_scheme]))
     if @assignment.save
       redirect_to @assignment
     else
@@ -43,6 +44,7 @@ class AssignmentsController < ApplicationController
 
   def update
     @assignment.update_attributes(params[:assignment])
+    @assignment.replace_marking_scheme(eval(params[:marking_scheme]))
     if @assignment.save
       redirect_to @assignment
     else

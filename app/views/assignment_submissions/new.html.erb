@@ -1,0 +1,16 @@
+<div class="row">
+  <div class="col-sm-8 col-sm-offset-2">
+    <h3>New assignment submission for
+      <%= link_to(@assignment.name, assignment_url(@assignment)) %>
+    </h3>
+
+    <% if @assignment.submission_format == "zipfile" %>
+      <%= render :partial => "new_zipfile",
+          :locals => { :submission => @submission, :assignment => @assignment} %>
+    <% elsif @assignment.submission_format == "plaintext" %>
+      <%= render :partial => "new_plaintext",
+          :locals => { :submission => @submission, :assignment => @assignment} %>
+    <% end %>
+  </div>
+</div>
+
