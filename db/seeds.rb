@@ -111,6 +111,16 @@ end
   user.enroll_in_course!(comp2300)
 end
 
+50.times do |time|
+  p time
+  name, id = "student#{time}", time
+  user = User.create!({ :name => name, :uni_id => id })
+  user.enroll_in_course!(comp1100)
+  user.join_group!(buck_tute)
+  AssignmentSubmission.create!(:user_id => user.id,
+                              :body => "main = error \"first unimplemented\"",
+                              :assignment_id => wireworld.id)
+end
 
 sub1 = AssignmentSubmission.create!(:user_id => buck_tute.students[0].id,
                               :body => "main = error \"first unimplemented\"",

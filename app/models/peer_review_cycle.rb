@@ -1,15 +1,21 @@
 class PeerReviewCycle < ActiveRecord::Base
   attr_accessible :anonymise, :assignment_id, :distribution_scheme,
-                  :get_marks, :shut_off_submission, :activation_time
+                  :shut_off_submission, :activation_time,
+                  :maximum_mark
 
   belongs_to :assignment
 
+  has_many :marks, :as => :mark_provider
+
   validates :anonymise, :assignment_id, :distribution_scheme,
-           :get_marks, :shut_off_submission, :presence => :true
+           :shut_off_submission, :presence => :true
+
+
+
+  DISTRIBUTION_SCHEMES = %w(swap_simultaneously send_to_previous)
 
   validates :distribution_scheme, :inclusion => { :in => DISTRIBUTION_SCHEMES }
 
-  DISTRIBUTION_SCHEMES = %w(swap_simultaneously send_to_previous)
 
   def activate!
     if self.activated

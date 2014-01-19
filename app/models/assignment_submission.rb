@@ -60,8 +60,6 @@ class AssignmentSubmission < ActiveRecord::Base
         f.write(self.body)
       end
     end
-
-    self.assignment.update_zip
   end
 
 
@@ -130,4 +128,22 @@ class AssignmentSubmission < ActiveRecord::Base
   def add_anonymous_comment(body)
     Comment.create(:body => body, :assignment_submission_id => self.id)
   end
+
+  def relationship_to_user(user)
+    if user == self.user
+      return :creator
+    elsif (assignment.courses.map(&:staff).flatten +
+                        assignment.courses.map(&:convener)).include?(user)
+      return :staff
+    elsif self.permitted_users.include? user
+      return :peer
+    end
+  end
+
+  # TODO: what happens if there's more than one peer review cycle which pairs
+  # the same person and assignment?
+  def which_peer_review_cycle(user)
+    self.submission_permissions.where(:user_id => user.id).first.id
+  end
+
 end

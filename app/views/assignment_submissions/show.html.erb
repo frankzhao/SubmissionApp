@@ -77,13 +77,21 @@
             <%= file_field 'upload', 'datafile' %>
           </div>
 
-          <% @assignment.marking_categories.each do |category| %>
-          <div class="form-group">
-            <%= category.name %> (<%= category.maximum_mark %> marks)
-            <input id="mark_<%= category.name %>"
-                   name="mark[<%= category.id%>]"
-                   class="form-control">
-          </div>
+          <% if @relationship == :staff %>
+            <% @assignment.marking_categories.each do |category| %>
+              <div class="form-group">
+                <%= category.name %> (<%= category.maximum_mark %> marks)
+                <input id="mark_<%= category.name %>"
+                       name="mark[<%= category.id%>]"
+                       class="form-control">
+              </div>
+            <% end %>
+          <% elsif @relationship == :peer %>
+            <% peer_review_cycle = @submission.which_peer_review_cycle(
+                                                    current_user) %>
+            <% if peer_review_cycle.maximum_mark %>
+              Lol, you should be able to mark
+            <% end %>
           <% end %>
 
           <input class="btn btn-primary" type="submit" value="Post comment">

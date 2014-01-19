@@ -7,18 +7,27 @@ class AssignmentSubmissionsController < ApplicationController
     @submission = AssignmentSubmission.find(params[:id])
     @assignment = @submission.assignment
     @comments = @submission.comments
+    @relationship = @submission.relationship_to_user(current_user)
 
-    if @submission.permits?(current_user)
+    if @relationship
       render :show
     else
-      flash[:errors] = "You don't have permission to access that page"
+      flash[:errors] = ["You don't have permission to access that page"]
       redirect_to "/"
     end
   end
 
+  # TODO: Should I have some sort of "log dodginess" functionality?
   def new
-    #TODO: require the user to be in this course
     @assignment = Assignment.find(params[:assignment_id])
+
+    #NOTE: this allows the user to be a staff member.
+    unless current_user.relationship_to_assignment(@assignment)
+      flash[:errors] = ["You're not allowed to submit that assignment..."]
+      redirect_to courses_url
+    end
+
+
     unless @assignment.already_due
       if @assignment.submission_format == "plaintext"
         @submission = @assignment.submissions
@@ -70,7 +79,7 @@ class AssignmentSubmissionsController < ApplicationController
     if @submission.permits?(current_user)
       send_file(@submission.zip_path)
     else
-      flash[:errors] = "You don't have permission to access that page"
+      flash[:errors] = ["You don't have permission to access that page"]
       redirect_to "/"
     end
   end
