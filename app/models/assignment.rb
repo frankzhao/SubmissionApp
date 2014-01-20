@@ -21,6 +21,8 @@ class Assignment < ActiveRecord::Base
 
   has_many :marking_categories
 
+  has_many :peer_review_cycles
+
   after_create :make_directory
 
   def relevant_submissions(user)

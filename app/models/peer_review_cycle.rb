@@ -5,10 +5,11 @@ class PeerReviewCycle < ActiveRecord::Base
 
   belongs_to :assignment
 
-  has_many :marks, :as => :mark_provider
+  has_many :marks
 
-  validates :anonymise, :assignment_id, :distribution_scheme,
-           :shut_off_submission, :presence => :true
+  has_many :submission_permissions
+
+  validates :assignment_id, :distribution_scheme, :presence => :true
 
 
 
@@ -36,7 +37,7 @@ class PeerReviewCycle < ActiveRecord::Base
   # TODO: generalise this for the case where people send their assignments to
   # more than one other student.
   def swap_simultaneously
-    submittors = self.students_who_have_submitted
+    submittors = self.assignment.students_who_have_submitted
     mapping = submittors.zip(submittors.shuffle)
     while (mapping.any?{|k,v| k==v}) do
       mapping = submittors.zip(submittors.shuffle)
@@ -44,7 +45,7 @@ class PeerReviewCycle < ActiveRecord::Base
 
     mapping.each do |source, destination|
       submission = source.most_recent_submission(self)
-      submission.add_permission(destination)
+      submission.add_permission(destination, self.id)
     end
     mapping
   end

@@ -101,8 +101,7 @@ ActiveRecord::Schema.define(:version => 20140118000105) do
     t.integer  "comment_id",         :null => false
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
-    t.integer  "mark_provider_id"
-    t.string   "mark_provider_type"
+    t.integer  "marking_category_id"
   end
 
   create_table "peer_review_cycles", :force => true do |t|

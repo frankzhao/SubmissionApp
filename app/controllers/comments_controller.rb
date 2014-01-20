@@ -13,7 +13,7 @@ class CommentsController < ApplicationController
       @comment.mark = nil
     end
     if @comment.save
-      params[:mark].each do |category_id, value|
+      params[:mark] && params[:mark].each do |category_id, value|
         mark = Mark.new(:comment_id => @comment.id,
                         :marking_category_id => category_id,
                         :value => value)

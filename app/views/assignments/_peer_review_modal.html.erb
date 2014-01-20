@@ -3,10 +3,24 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Modal title</h4>
+          <h3 class="modal-title">Peer review cycles</h3>
         </div>
         <div class="modal-body">
-          <p>One day there will be content here...</p>
+          <p>
+            This is where all the peer review cycles are specified.
+          </p>
+          <h3>
+            Peer review cycles
+          </h3>
+
+          <% assignment.peer_review_cycles.each do |cycle| %>
+            <h4>Cycle id <%= cycle.id %></h4>
+            <p><%= cycle.id %></p>
+          <% end %>
+
+          <h3>New peer review cycle</h3>
+            <%= render :partial => "cycle_form", :locals => {:assignment => assignment} %>
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

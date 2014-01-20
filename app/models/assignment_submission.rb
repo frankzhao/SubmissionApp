@@ -83,9 +83,10 @@ class AssignmentSubmission < ActiveRecord::Base
     @upload = whatever
   end
 
-  def add_permission(user)
+  def add_permission(user, cycle_id)
     SubmissionPermission.create!(:user_id => user.id,
-                                 :assignment_submission_id => self.id)
+                                 :assignment_submission_id => self.id,
+                                 :peer_review_cycle_id => cycle_id)
   end
 
   def context_name(user, current_user)
@@ -143,7 +144,7 @@ class AssignmentSubmission < ActiveRecord::Base
   # TODO: what happens if there's more than one peer review cycle which pairs
   # the same person and assignment?
   def which_peer_review_cycle(user)
-    self.submission_permissions.where(:user_id => user.id).first.id
+    self.submission_permissions.where(:user_id => user.id).first.peer_review_cycle
   end
 
 end

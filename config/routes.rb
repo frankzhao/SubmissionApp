@@ -21,6 +21,11 @@ SubmissionApp::Application.routes.draw do
     resources :assignment_submissions do
       resources :comments, :only => [:create, :destroy]
     end
+
+    get 'cycles', :to => 'peer_review_cycles#index', :as => "cycles"
+    post 'cycles', :to => 'peer_review_cycles#create'
+    post 'cycles/:id/activate', :to => 'peer_review_cycles#activate',
+                                :as => "cycle_activate"
   end
 
   get 'assignments/:id/marks.csv', :to => 'assignments#get_csv',

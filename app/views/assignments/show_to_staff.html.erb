@@ -13,8 +13,7 @@
           <li><%= link_to "Edit", edit_assignment_url(@assignment) %></li>
           <li><%= link_to "View all marks as csv",
                 "/assignments/#{@assignment.id}/marks.csv" %></li>
-          <li><a href="#" data-toggle="modal" data-target="#peerReviewModal">
-              Create peer review wave</a></li>
+          <li><%= link_to "Peer review cycles", "/assignments/#{@assignment.id}/cycles" %></li>
           <li class="divider"></li>
           <li><%= link_to "Download all submissions as zip",
                 "/assignments/#{@assignment.id}/submissions.zip" %></li>
@@ -52,8 +51,3 @@
     </ul>
   </div>
 </div>
-
-<% if @relation == :convener %>
-  <%= render partial: "peer_review_modal",
-                          :locals => {:assignment => @assignment}%>
-<% end %>

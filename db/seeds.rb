@@ -111,7 +111,7 @@ end
   user.enroll_in_course!(comp2300)
 end
 
-50.times do |time|
+10.times do |time|
   p time
   name, id = "student#{time}", time
   user = User.create!({ :name => name, :uni_id => id })
