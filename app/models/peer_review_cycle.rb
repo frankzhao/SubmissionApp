@@ -14,7 +14,6 @@ class PeerReviewCycle < ActiveRecord::Base
 
   before_destroy :delete_children
 
-
   DISTRIBUTION_SCHEMES = %w(swap_simultaneously send_to_previous)
 
   validates :distribution_scheme, :inclusion => { :in => DISTRIBUTION_SCHEMES }
@@ -25,15 +24,15 @@ class PeerReviewCycle < ActiveRecord::Base
     elsif self.submission_permissions.empty?
       case self.distribution_scheme
       when "swap_simultaneously"
+        p "swapping swap_simultaneously"
         self.swap_simultaneously
-        self.activated = true
+        p "finished swap"
       when "send_to_previous"
-        raise "not implemented yet" # TODO
+        # do nothing, I think...?
       end
-    else
-      self.activated = true
     end
 
+    self.activated = true
     self.save!
   end
 
@@ -51,7 +50,7 @@ class PeerReviewCycle < ActiveRecord::Base
   # TODO: generalise this for the case where people send their assignments to
   # more than one other student.
   def swap_simultaneously
-    submittors = self.assignment.students_who_have_submitted
+    submittors = self.assignment.students_who_have_submitted.uniq
     mapping = submittors.zip(submittors.shuffle)
     while (mapping.any?{|k,v| k==v}) do
       mapping = submittors.zip(submittors.shuffle)
@@ -69,8 +68,6 @@ class PeerReviewCycle < ActiveRecord::Base
     self.submission_permissions.each {|p| p.destroy }
     self.peer_marks.each {|p| p.destroy }
     self.comments.each {|p| p.destroy }
-
-
   end
 
   def mark_for_submission(submission)
@@ -84,10 +81,51 @@ class PeerReviewCycle < ActiveRecord::Base
 
     self.submission_permissions.where(:user_id => user.id).each do |permission|
       unless permission.assignment_submission.commented_on_by_user?(user)
-
         return true
       end
     end
     false
   end
+
+  def receive_submission(submission)
+    if self.distribution_scheme == "send_to_previous"
+      send_to_previous(submission)
+    end
+  end
+
+  def send_to_previous(submission)
+
+    user_submissions =  self.assignment
+                            .submissions
+                            .where("created_at > ?", self.activation_time)
+                            .where(:user_id => submission.user)
+
+    puts ("User submissions are "+user_submissions.all.to_s)
+
+    return unless user_submissions.length == 1
+
+    previous_users = self.assignment
+                         .submissions
+                         .where("created_at > ?", self.activation_time)
+                         .order('created_at DESC')
+                         .map { |s| s.user }
+
+    previous_users.each do |previous_user|
+      next if submission.user == previous_user
+      if self.permitted_submissions_for_user(previous_user).empty?
+        p "*"*100
+        submission.add_permission(previous_user, self.id)
+        return
+      end
+    end
+
+    submission.add_permission(assignment.conveners.first, self.id)
+  end
+
+  def permitted_submissions_for_user(user)
+    self.submission_permissions.where(:user_id => user.id).map do |x|
+      x.assignment_submission
+    end
+  end
+
 end

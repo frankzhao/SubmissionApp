@@ -25,12 +25,7 @@ class AssignmentSubmission < ActiveRecord::Base
 
   # TODO: rewrite with SQL
   def permits?(user)
-    permitted_people = ([self.user] +
-                        assignment.courses.map(&:staff).flatten +
-                        assignment.courses.map(&:convener) +
-                        self.permitted_users)
-
-    permitted_people.include?(user)
+    !! self.relationship_to_user(user)
   end
 
   def group
@@ -134,6 +129,10 @@ class AssignmentSubmission < ActiveRecord::Base
     if self.assignment.behavior_on_submission.include? "check_compiling_haskell"
       self.check_compiling_haskell
     end
+
+    self.assignment.peer_review_cycles.each do |cycle|
+      cycle.receive_submission(self)
+    end
   end
 
   def add_anonymous_comment(body)
@@ -163,6 +162,6 @@ class AssignmentSubmission < ActiveRecord::Base
 
   def commented_on_by_user?(user)
     ! self.comments.select { |c| c.user == user }
-                 .empty?
+                   .empty?
   end
 end
