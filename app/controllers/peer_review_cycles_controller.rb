@@ -16,8 +16,8 @@ class PeerReviewCyclesController < ApplicationController
       redirect_to assignment_cycles_url(params[:assignment_id])
     else
       @assignment = Assignment.find(params[:assignment_id])
-      flash.now[:error] = @peer_review_cycle.errors.full_messages
-      render :index
+      flash[:error] = @peer_review_cycle.errors.full_messages
+      redirect_to assignment_cycles_url(params[:assignment_id])
     end
   end
 
@@ -26,6 +26,32 @@ class PeerReviewCyclesController < ApplicationController
     @peer_review_cycle.activate!
 
     flash[:notifications] = ["Peer review cycle successfully activated"]
-    redirect_to @peer_review_cycle.assignment
+    redirect_to assignment_cycles_url(params[:assignment_id])
+  end
+
+  def deactivate
+    @peer_review_cycle = PeerReviewCycle.find(params[:id])
+    @peer_review_cycle.deactivate!
+
+    flash[:notifications] = ["Peer review cycle successfully deactivated"]
+    redirect_to assignment_cycles_url(params[:assignment_id])
+  end
+
+  def edit
+    @assignment = Assignment.find(params[:assignment_id])
+    @peer_review_cycle = PeerReviewCycle.find(params[:id])
+  end
+
+  def update
+    @peer_review_cycle = PeerReviewCycle.find(params[:id])
+    @peer_review_cycle.update_attributes(params[:peer_review_cycle])
+    redirect_to assignment_cycles_url(params[:assignment_id])
+  end
+
+  def delete
+    @peer_review_cycle = PeerReviewCycle.find(params[:id])
+    @peer_review_cycle.delete_children
+    @peer_review_cycle.destroy
+    redirect_to assignment_cycles_url(params[:assignment_id])
   end
 end

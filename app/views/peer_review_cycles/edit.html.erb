@@ -1,0 +1,16 @@
+<div class="row">
+  <div class="col-sm-8 col-sm-offset-2">
+    <h2>Edit peer review cycle for <%= link_to @assignment.name, @assignment %></h2>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <%= form_for @peer_review_cycle, html: {:class => "form", :role => "form"}, url: {action: "edit"} do |f| %>
+
+        <%= render :partial => "form",
+                   :locals => { :peer_review_cycle => @peer_review_cycle,
+                                :f => f } %>
+          <%= f.submit("Update peer review cycle", :class => "btn btn-default") %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-sm-8 col-sm-offset-2">
-    <h2>Peer review cycles for <%= @assignment.name %></h2>
+    <h2>Peer review cycles for <%= link_to @assignment.name, @assignment %></h2>
 
     <% @assignment.peer_review_cycles.each do |cycle| %>
       <h3><%= cycle.activation_time %>
@@ -8,53 +8,48 @@
           <span class="label label-success">Activated</span>
         <% end %>
       </h3>
-      <p>Anonymise: <%= cycle.anonymise %></p>
-      <p>Distribution scheme: <%= cycle.distribution_scheme %></p>
-      <p>Shut off submission: <%= cycle.shut_off_submission %></p>
-      <p>Maximum mark: <%= cycle.maximum_mark %></p>
-      <p>Activated: <%= cycle.activated %></p>
-      <% unless cycle.activated %>
+      <p><strong>Anonymise:</strong> <%= cycle.anonymise %></p>
+      <p><strong>Distribution scheme:</strong> <%= cycle.distribution_scheme %></p>
+      <p><strong>Shut off submission:</strong> <%= cycle.shut_off_submission %></p>
+      <p><strong>Maximum mark:</strong> <%= cycle.maximum_mark %></p>
+      <p><strong>Activated:</strong> <%= cycle.activated %></p>
+      <% if cycle.activated %>
+        <%= button_to "Deactivate",
+                  assignment_cycle_deactivate_url(@assignment.id, cycle.id),
+                    :class => "btn btn-success" %>
+      <% else %>
         <%= button_to "Activate",
-                  assignment_cycle_activate_url(cycle.id, @assignment.id),
-                    :class => "btn btn-danger" %>
+                  assignment_cycle_activate_url(@assignment.id, cycle.id),
+                    :class => "btn btn-success" %>
       <% end %>
+      <%= button_to "Delete", assignment_cycles_delete_url(@assignment, cycle),
+                    :class => "btn btn-danger"
+      %>
+      <%= button_to "Edit", assignment_cycles_edit_url(
+          @assignment.id, cycle.id), :method => :get,
+                    :class => "btn btn-default" %>
     <% end %>
 
     <div class="panel panel-default">
-      <div class="panel-body">
-        <h3>Create new peer review cycle</h3>
-        <%= form_for @peer_review_cycle, html: {:class => "form", :role => "form"},url: {action: "create"} do |f| %>
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#createCycleDiv">
+            Create new peer review cycle
+          </a>
+        </h4>
+      </div>
+      <div id="createCycleDiv" class="panel-collapse collapse
+        <%= "in" if @assignment.peer_review_cycles.empty? %>
+      ">
+        <div class="panel-body">
+          <%= form_for @peer_review_cycle, html: {:class => "form", :role => "form"},url: {action: "create"} do |f| %>
 
-          <div class="form-group">
-            <%= label_tag(:activation_time, "Activation time") %>
-            <%= f.datetime_select(:activation_time, :class => "form-control") %>
-          </div>
-
-          <div class="form-group">
-            <%= label_tag(:distribution_scheme, "Distribution scheme") %>
-            <%= f.select(:distribution_scheme,
-            options_for_select([
-              ['Swap simultaneously', 'swap_simultaneously'],
-              ['Send to previous', 'Send to previous']], "swap_simultaneously")) %>
-          </div>
-
-          <div class="form-group">
-            <%= label_tag(:anonymise, "Anonymise") %>
-            <%= f.check_box(:anonymise) %>
-          </div>
-
-          <div class="form-group">
-            <%= label_tag(:shut_off_submission, "Shut off submission until they comment") %>
-            <%= f.check_box(:shut_off_submission) %>
-          </div>
-
-          <div class="form-group">
-            <%= label_tag(:maximum_mark, "Maximum mark") %>
-            <%= f.text_field(:maximum_mark, :class => "form-control") %>
-          </div>
-
-          <%= f.submit("Create peer review cycle", :class => "btn btn-default") %>
-        <% end %>
+          <%= render :partial => "form",
+                     :locals => { :peer_review_cycle => @peer_review_cycle,
+                                  :f => f } %>
+            <%= f.submit("Create peer review cycle", :class => "btn btn-primary") %>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>

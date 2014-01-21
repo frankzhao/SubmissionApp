@@ -5,18 +5,19 @@ class PeerReviewCycle < ActiveRecord::Base
 
   belongs_to :assignment
 
-  has_many :marks
-
   has_many :submission_permissions
+
+  has_many :comments
+  has_many :peer_marks, :through => :comments, :source => :peer_marks
 
   validates :assignment_id, :distribution_scheme, :presence => :true
 
+  before_destroy :delete_children
 
 
   DISTRIBUTION_SCHEMES = %w(swap_simultaneously send_to_previous)
 
   validates :distribution_scheme, :inclusion => { :in => DISTRIBUTION_SCHEMES }
-
 
   def activate!
     if self.activated
@@ -34,6 +35,18 @@ class PeerReviewCycle < ActiveRecord::Base
     self.save!
   end
 
+  def deactivate!
+    if ! self.activated
+      throw "I'm not already activated"
+    else
+      self.activated = false
+      self.submission_permissions.delete_all
+    end
+
+    self.save!
+  end
+
+
   # TODO: generalise this for the case where people send their assignments to
   # more than one other student.
   def swap_simultaneously
@@ -44,9 +57,20 @@ class PeerReviewCycle < ActiveRecord::Base
     end
 
     mapping.each do |source, destination|
-      submission = source.most_recent_submission(self)
+      submission = source.most_recent_submission(self.assignment)
       submission.add_permission(destination, self.id)
     end
     mapping
+  end
+
+  def delete_children
+    # TODO: can this be made more elegant?
+    self.submission_permissions.each {|p| p.destroy }
+  end
+
+  def mark_for_submission(submission)
+    comments = self.comments.where(:assignment_submission_id => submission.id).order('created_at DESC')
+
+    comments.map { |x| x.peer_mark }.select { |x| x }.first.try(:value)
   end
 end

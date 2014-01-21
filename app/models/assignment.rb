@@ -65,8 +65,19 @@ class Assignment < ActiveRecord::Base
 
   #TODO: Add "marker" as a field here.
   def marks_csv
-    marking_category_names = self.marking_categories.map(&:name).join(",")
-    out = ["name,uni id,submission time,#{marking_category_names}"]
+    marking_category_names = self.marking_categories.map(&:name)
+
+    first_line = ["name", "uni id", "submission time"] + marking_category_names
+
+
+    peer_review_cycles.each do |cycle|
+      if cycle.maximum_mark
+        first_line << "Peer review cycle id #{cycle.id}"
+      end
+    end
+
+    out = [first_line.join(",")]
+
     self.students.each do |student|
       most_recent_submission = student.most_recent_submission(self)
       submission_time = most_recent_submission.created_at rescue ""
@@ -74,6 +85,11 @@ class Assignment < ActiveRecord::Base
       self.marking_categories.each do |category|
         marks << category.mark_for_submission(most_recent_submission) rescue ""
       end
+      peer_review_cycles.each do |cycle|
+      if cycle.maximum_mark
+        marks << cycle.mark_for_submission(most_recent_submission) rescue ""
+      end
+    end
       out << "#{student.name},#{student.uni_id},#{submission_time},#{marks.join(",")}"
     end
     out.join("\n")

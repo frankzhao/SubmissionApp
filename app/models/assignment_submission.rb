@@ -12,6 +12,7 @@ class AssignmentSubmission < ActiveRecord::Base
 
   has_many :comments
   has_many :marks, :through => :comments, :source => :marks
+  has_many :peer_marks, :through => :comments, :source => :peer_marks
 
   has_many :submission_permissions
 
@@ -90,6 +91,8 @@ class AssignmentSubmission < ActiveRecord::Base
   end
 
   def context_name(user, current_user)
+    return user.name unless which_peer_review_cycle(user).try(:anonymise)
+    throw ",sdklnfdsajkb"
     if current_user == self.user
       if self.permitted_users.include?(user)
         return "Anonymous Reviewer"
@@ -144,7 +147,7 @@ class AssignmentSubmission < ActiveRecord::Base
   # TODO: what happens if there's more than one peer review cycle which pairs
   # the same person and assignment?
   def which_peer_review_cycle(user)
-    self.submission_permissions.where(:user_id => user.id).first.peer_review_cycle
+    self.submission_permissions.where(:user_id => user.id).first.try(:peer_review_cycle)
   end
 
 end

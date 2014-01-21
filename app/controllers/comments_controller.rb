@@ -4,10 +4,8 @@ class CommentsController < ApplicationController
     @comment = Comment.new(params[:comment])
     @comment.user = current_user
     @comment.assignment_submission = AssignmentSubmission.find(params[:assignment_submission_id])
-
-    p "*"*100
-    p params[:mark]
-
+    cycle = @comment.assignment_submission.which_peer_review_cycle(current_user)
+    @comment.peer_review_cycle_id = cycle.id if cycle
 
     if @comment.assignment_submission.user == current_user
       @comment.mark = nil
@@ -23,6 +21,13 @@ class CommentsController < ApplicationController
         else
           raise "You tried to access a mark you don't have access to"
         end
+      end
+
+      if params[:peer_mark]
+        #TODO: checks
+        peer_mark = PeerMark.new(:comment_id => @comment.id,
+                                 :value => params[:peer_mark])
+        peer_mark.save!
       end
 
       redirect_to(assignment_assignment_submission_url(params[:assignment_id],

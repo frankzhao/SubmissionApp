@@ -30,7 +30,7 @@
       <h3>Submissions for peer review</h3>
       <ul>
       <% @permitted_submissions.each do |submission| %>
-        <li> <%= link_to("Anonymous submission",
+        <li> <%= link_to("Submission #{submission.id}",
                   assignment_assignment_submission_url(
                             @assignment, submission)) %> </li>
       <% end %>

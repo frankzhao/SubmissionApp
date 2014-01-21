@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140118000105) do
+ActiveRecord::Schema.define(:version => 20140121005637) do
 
   create_table "assignment_submissions", :force => true do |t|
     t.integer  "user_id",       :null => false
@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(:version => 20140118000105) do
     t.string   "body"
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
+    t.integer  "peer_review_cycle_id"
   end
 
   create_table "courses", :force => true do |t|
@@ -97,11 +98,18 @@ ActiveRecord::Schema.define(:version => 20140118000105) do
   end
 
   create_table "marks", :force => true do |t|
-    t.integer  "value",              :null => false
-    t.integer  "comment_id",         :null => false
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.integer  "value",               :null => false
+    t.integer  "comment_id",          :null => false
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
     t.integer  "marking_category_id"
+  end
+
+  create_table "peer_marks", :force => true do |t|
+    t.integer  "comment_id", :null => false
+    t.integer  "value",      :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "peer_review_cycles", :force => true do |t|

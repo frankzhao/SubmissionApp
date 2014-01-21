@@ -24,8 +24,14 @@ SubmissionApp::Application.routes.draw do
 
     get 'cycles', :to => 'peer_review_cycles#index', :as => "cycles"
     post 'cycles', :to => 'peer_review_cycles#create'
+    put 'cycles/:id/edit', :to => 'peer_review_cycles#update'
+    #TODO: this is an ugly hack and should be fixed
+    post 'cycles/:id', :to => 'peer_review_cycles#delete', :as => "cycles_delete"
+    get 'cycles/:id/edit', :to => 'peer_review_cycles#edit', :as => "cycles_edit"
     post 'cycles/:id/activate', :to => 'peer_review_cycles#activate',
                                 :as => "cycle_activate"
+    post 'cycles/:id/deactivate', :to => 'peer_review_cycles#deactivate',
+                                :as => "cycle_deactivate"
   end
 
   get 'assignments/:id/marks.csv', :to => 'assignments#get_csv',
