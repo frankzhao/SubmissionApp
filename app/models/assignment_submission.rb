@@ -90,19 +90,26 @@ class AssignmentSubmission < ActiveRecord::Base
                                  :peer_review_cycle_id => cycle_id)
   end
 
-  def context_name(user, current_user)
-    return user.name unless which_peer_review_cycle(user).try(:anonymise)
-    throw ",sdklnfdsajkb"
-    if current_user == self.user
-      if self.permitted_users.include?(user)
+  def context_name(user_to_be_named, current_user)
+    peer_review_cycle = which_peer_review_cycle(user_to_be_named)
+    unless peer_review_cycle
+      peer_review_cycle = which_peer_review_cycle(current_user)
+    end
+
+    unless peer_review_cycle.try(:anonymise)
+      return user_to_be_named.name
+    end
+
+    if current_user == self.user # as in, you're the user who created the assignment
+      if self.permitted_users.include?(user_to_be_named)
         return "Anonymous Reviewer"
       end
     elsif self.permitted_users.include?(current_user)
-      if self.user == user
+      if self.user == user_to_be_named
         return "Anonymous Submitter"
       end
     end
-    return "#{user.name} (u#{user.uni_id})"
+    return "#{user_to_be_named.name} (u#{user_to_be_named.uni_id})"
   end
 
   def zip_contents
@@ -139,7 +146,7 @@ class AssignmentSubmission < ActiveRecord::Base
     elsif (assignment.courses.map(&:staff).flatten +
                         assignment.courses.map(&:convener)).include?(user)
       return :staff
-    elsif self.permitted_users.include? user
+    elsif self.which_peer_review_cycle(user)
       return :peer
     end
   end
@@ -147,7 +154,15 @@ class AssignmentSubmission < ActiveRecord::Base
   # TODO: what happens if there's more than one peer review cycle which pairs
   # the same person and assignment?
   def which_peer_review_cycle(user)
-    self.submission_permissions.where(:user_id => user.id).first.try(:peer_review_cycle)
+    permission = self.submission_permissions.where(:user_id => user.id)
+                               .first
+    if permission.try(:peer_review_cycle).try(:activated)
+      permission.try(:peer_review_cycle)
+    end
   end
 
+  def commented_on_by_user?(user)
+    ! self.comments.select { |c| c.user == user }
+                 .empty?
+  end
 end

@@ -19,12 +19,17 @@
       </ul>
     <% end %>
 
-    <% unless @assignment.already_due %>
-    <%= link_to("Submit assignment",
-              new_assignment_assignment_submission_url(@assignment)) %>
-    <% else %>
+    <% if @assignment.disable_submitting_until_comment(current_user) %>
+      <p>You can't submit again until you've commented on your peer review
+        submissions.</p>
+    <% elsif @assignment.already_due %>
       <p>Submissions have closed.</p>
+    <% else %>
+      <%= link_to("Submit assignment",
+                new_assignment_assignment_submission_url(@assignment)) %>
     <% end %>
+
+
 
     <% unless @permitted_submissions.empty? %>
       <h3>Submissions for peer review</h3>
@@ -32,7 +37,11 @@
       <% @permitted_submissions.each do |submission| %>
         <li> <%= link_to("Submission #{submission.id}",
                   assignment_assignment_submission_url(
-                            @assignment, submission)) %> </li>
+                            @assignment, submission)) %>
+            <% unless submission.commented_on_by_user?(current_user) %>
+              <span class="label label-default">Needs comment</span>
+            <% end %>
+        </li>
       <% end %>
       </ul>
     <% end %>

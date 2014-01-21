@@ -8,7 +8,7 @@ class PeerReviewCycle < ActiveRecord::Base
   has_many :submission_permissions
 
   has_many :comments
-  has_many :peer_marks, :through => :comments, :source => :peer_marks
+  has_many :peer_marks, :through => :comments, :source => :peer_mark
 
   validates :assignment_id, :distribution_scheme, :presence => :true
 
@@ -22,7 +22,7 @@ class PeerReviewCycle < ActiveRecord::Base
   def activate!
     if self.activated
       throw "I've already been activated"
-    else
+    elsif self.submission_permissions.empty?
       case self.distribution_scheme
       when "swap_simultaneously"
         self.swap_simultaneously
@@ -30,6 +30,8 @@ class PeerReviewCycle < ActiveRecord::Base
       when "send_to_previous"
         raise "not implemented yet" # TODO
       end
+    else
+      self.activated = true
     end
 
     self.save!
@@ -40,7 +42,6 @@ class PeerReviewCycle < ActiveRecord::Base
       throw "I'm not already activated"
     else
       self.activated = false
-      self.submission_permissions.delete_all
     end
 
     self.save!
@@ -66,6 +67,10 @@ class PeerReviewCycle < ActiveRecord::Base
   def delete_children
     # TODO: can this be made more elegant?
     self.submission_permissions.each {|p| p.destroy }
+    self.peer_marks.each {|p| p.destroy }
+    self.comments.each {|p| p.destroy }
+
+
   end
 
   def mark_for_submission(submission)
@@ -75,17 +80,14 @@ class PeerReviewCycle < ActiveRecord::Base
   end
 
   def disable_submissions(user)
-    return false unless self.disable_submissions
+    return false unless self.shut_off_submission
 
     self.submission_permissions.where(:user_id => user.id).each do |permission|
-      if self.comments.where(:user_id => user_id)
-                      .where(:assignment_submission_id => permission.assignment_submission_id)
-                      .empty?
+      unless permission.assignment_submission.commented_on_by_user?(user)
+
         return true
       end
     end
     false
-  end
-    end
   end
 end

@@ -123,4 +123,8 @@ class Assignment < ActiveRecord::Base
   def maximum_mark
     self.marking_categories.map{|x| x.maximum_mark}.sum
   end
+
+  def disable_submitting_until_comment(user)
+    self.peer_review_cycles.any? { | cycle | cycle.disable_submissions(user) }
+  end
 end

@@ -23,7 +23,8 @@ class CommentsController < ApplicationController
         end
       end
 
-      if params[:peer_mark]
+      if params[:peer_mark] && params[:peer_mark].length > 0
+        throw "gah"
         #TODO: checks
         peer_mark = PeerMark.new(:comment_id => @comment.id,
                                  :value => params[:peer_mark])
