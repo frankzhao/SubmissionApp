@@ -73,4 +73,19 @@ class PeerReviewCycle < ActiveRecord::Base
 
     comments.map { |x| x.peer_mark }.select { |x| x }.first.try(:value)
   end
+
+  def disable_submissions(user)
+    return false unless self.disable_submissions
+
+    self.submission_permissions.where(:user_id => user.id).each do |permission|
+      if self.comments.where(:user_id => user_id)
+                      .where(:assignment_submission_id => permission.assignment_submission_id)
+                      .empty?
+        return true
+      end
+    end
+    false
+  end
+    end
+  end
 end

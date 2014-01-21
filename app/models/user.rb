@@ -128,4 +128,12 @@ class User < ActiveRecord::Base
     (self.student_assignments + self.staffed_assignments +
         self.convened_assignments).uniq
   end
+
+  def has_compulsary_outstanding_comments
+    self.permitted_submissions.any do |submission|
+      submission.assignment.peer_review_cycles.any do |cycle|
+        cycle.disable_submissions(self)
+      end
+    end
+  end
 end
