@@ -13,5 +13,5 @@ class Comment < ActiveRecord::Base
 
   has_one :peer_mark
 
-  validates :assignment_submission_id, :body, :user_id, :presence => true
+  validates :assignment_submission_id, :body, :presence => true
 end

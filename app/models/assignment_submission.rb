@@ -126,17 +126,11 @@ class AssignmentSubmission < ActiveRecord::Base
   end
 
   def do_custom_things
-    if self.assignment.behavior_on_submission.include? "check_compiling_haskell"
-      self.check_compiling_haskell
-    end
-
-    self.assignment.peer_review_cycles.each do |cycle|
-      cycle.receive_submission(self)
-    end
+    self.assignment.receive_submission(self)
   end
 
   def add_anonymous_comment(body)
-    Comment.create(:body => body, :assignment_submission_id => self.id)
+    Comment.create!(:body => body, :assignment_submission_id => self.id)
   end
 
   def relationship_to_user(user)

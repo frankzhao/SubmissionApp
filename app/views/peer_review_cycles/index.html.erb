@@ -13,21 +13,23 @@
       <p><strong>Shut off submission:</strong> <%= cycle.shut_off_submission %></p>
       <p><strong>Maximum mark:</strong> <%= cycle.maximum_mark %></p>
       <p><strong>Activated:</strong> <%= cycle.activated %></p>
-      <% if cycle.activated %>
-        <%= button_to "Deactivate",
-                  assignment_cycle_deactivate_url(@assignment.id, cycle.id),
-                    :class => "btn btn-success" %>
-      <% else %>
-        <%= button_to "Activate",
-                  assignment_cycle_activate_url(@assignment.id, cycle.id),
-                    :class => "btn btn-success" %>
-      <% end %>
-      <%= button_to "Delete", assignment_cycles_delete_url(@assignment, cycle),
-                    :class => "btn btn-danger"
-      %>
-      <%= button_to "Edit", assignment_cycles_edit_url(
-          @assignment.id, cycle.id), :method => :get,
-                    :class => "btn btn-default" %>
+      <div class="btn-group">
+        <% if cycle.activated %>
+          <%= button_to "Deactivate",
+                    assignment_cycle_deactivate_url(@assignment.id, cycle.id),
+                      :class => "btn btn-success" %>
+        <% else %>
+          <%= button_to "Activate",
+                    assignment_cycle_activate_url(@assignment.id, cycle.id),
+                      :class => "btn btn-success" %>
+        <% end %>
+        <%= button_to "Delete", assignment_cycles_delete_url(@assignment, cycle),
+                      :class => "btn btn-danger"
+        %>
+        <%= button_to "Edit", assignment_cycles_edit_url(
+            @assignment.id, cycle.id), :method => :get,
+                      :class => "btn btn-default" %>
+      </div>
     <% end %>
 
     <div class="panel panel-default">

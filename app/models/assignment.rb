@@ -127,4 +127,14 @@ class Assignment < ActiveRecord::Base
   def disable_submitting_until_comment(user)
     self.peer_review_cycles.any? { | cycle | cycle.disable_submissions(user) }
   end
+
+  def receive_submission(submission)
+    if self.behavior_on_submission.include? "check_compiling_haskell"
+      submission.check_compiling_haskell
+    end
+
+    self.peer_review_cycles.each do |cycle|
+      cycle.receive_submission(self)
+    end
+  end
 end

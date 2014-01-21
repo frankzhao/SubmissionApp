@@ -60,10 +60,9 @@ class AssignmentSubmissionsController < ApplicationController
             return
           end
         end
-
         redirect_to(assignment_assignment_submission_url(params[:assignment_id],@submission))
       else
-        flash[:errors] = @submission.errors.full_messages
+        flash[:errors] = ["Assignment was not successfully saved"] + @submission.errors.full_messages
         render :new
       end
     else
