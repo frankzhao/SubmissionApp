@@ -5,9 +5,11 @@
 
 This project uses Rails 3.2.15, as it says in the Gemfile.
 
-Currently, it uses sqlite3 for a database. This will change before the project goes into production. It also stores data files in `/upload`.
+Currently, it uses sqlite3 for a database. This will probably change before the project goes into production. It also stores data files in `/upload`.
 
-Once you download it, install necessary dependencies with `bundle install`. Then run `rake db:reset` to get the database set up. To seed it with demo data, run `rake db:seed`.
+On a Mac, get Rails set up, install necessary dependencies with `bundle install`. Then run `rake db:reset` to get the database set up. To seed it with demo data, run `rake db:seed`.
+
+On Ubuntu, if you run the `ubuntu_setup.sh` script, it should install necessary dependencies and get the whole thing set up. 
 
 To run the tests, first run `rake db:test:prepare`, then run `rspec`. You should see lots of pretty green lines.
 
@@ -33,9 +35,9 @@ The seed database includes, among other items:
 - Uwe, who convenes 1100 and 1130. Uwe's username is u2222222.
 - Buck, who has an 1100/1130 lab. Buck's username is u5192430.
 - The two users who have submitted Wireworld are:
-	- Katelyn Collier (u5817236)
-	- Brooks Kris (u4911177)
-- A user who is in 1100 and hasn't is Demarcus Johns, u4500384.
+	- Katelyn Collier (u5555551)
+	- Brooks Kris (u5555552)
+- A user who is in 1100 and hasn't is Demarcus Johns, u5555553.
 - James Fellows, who is an admin. His username is u1234567.
 
 Things you can do:
@@ -48,7 +50,7 @@ Things you can do:
 - Currently, Wireworld is set up to put an automatic comment on submissions as to whether they compile.
 - As Uwe, download a zip of all submissions or a csv of all marks.
 - As Uwe or James, create a course and upload students by CSV.
-- As Uwe, click the "Start Peer Review" button on an assignment webpage. This means that each student who has submitted something gets access to a random other student's most recent submission. They can comment on it. Neither the reviewer nor the reviewee see each other's names.
+- As Uwe, access the peer review cycles for an assignment under the Edit pane. This lets you create peer review cycles and activate them.
 
 ## Miscellaneous
 
