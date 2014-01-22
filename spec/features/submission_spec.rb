@@ -23,7 +23,6 @@ feature "submitting assignments" do
     visit "/assignments/wireworld/assignment_submissions/new"
     expect(page).to have_content("New assignment submission for Wireworld")
     fill_in "submission[body]", :with => "main = undefined"
-    save_and_open_page
     click_button "Submit!"
     expect(page).to have_content("Submission for Wireworld")
     expect(page).to have_content("main = undefined")

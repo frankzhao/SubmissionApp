@@ -1,9 +1,14 @@
 class CommentsController < ApplicationController
   def create
-    #TODO: check that the person is allowed to comment
     @comment = Comment.new(params[:comment])
     @comment.user = current_user
     @comment.assignment_submission = AssignmentSubmission.find(params[:assignment_submission_id])
+
+    unless @comment.assignment_submission.relationship_to_user(current_user)
+      flash[:errors] = ["You don't have permission to comment on that assigment."]
+      redirect_to "/"
+    end
+
     cycle = @comment.assignment_submission.which_peer_review_cycle(current_user)
     @comment.peer_review_cycle_id = cycle.id if cycle
 

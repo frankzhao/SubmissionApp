@@ -43,12 +43,16 @@ class AssignmentSubmissionsController < ApplicationController
   end
 
   def create
-    # TODO: require the user to be in the course
     @assignment = Assignment.find(params[:assignment_id])
+
+    if current_user.relationship_to_assignment(@assignment) != :student
+      flash[:errors] = ["You aren't enrolled in a course with that assignment."]
+      redirect_to "/"
+    end
 
     unless @assignment.already_due
       @submission = AssignmentSubmission.new(params[:submission])
-      @submission.assignment_id = params[:assignment_id]
+      @submission.assignment = Assignment.find(params[:assignment_id])
       @submission.user_id = current_user.id
       if @submission.save
         if @assignment.submission_format == "zipfile"
