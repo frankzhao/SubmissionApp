@@ -32,6 +32,8 @@ SubmissionApp::Application.routes.draw do
                                 :as => "cycle_activate"
     post 'cycles/:id/deactivate', :to => 'peer_review_cycles#deactivate',
                                 :as => "cycle_deactivate"
+
+    resources :marking_categories, :only => [:create, :destroy, :update, :index]
   end
 
   get 'assignments/:id/marks.csv', :to => 'assignments#get_csv',

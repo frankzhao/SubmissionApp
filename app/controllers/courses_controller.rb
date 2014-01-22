@@ -50,7 +50,7 @@ class CoursesController < ApplicationController
     end
 
     @convener = @course.convener
-    @staffs = @course.staff # I am aware that the plural of staff isn't staffs
+    @staffs = @course.staff # Yes, I am aware that the plural of staff isn't staffs
     if current_user.courses.include?(@course)
       @students = @course.students
       @group_types = @course.group_types

@@ -36,7 +36,8 @@ feature "the sign in process" do
     end
 
     it "lets you log out" do
-      expect(page).to have_button("Log out")
+      click_on "Dolly O'Keefe"
+      expect(page).to have_content("Log Out")
     end
   end
 
@@ -48,7 +49,10 @@ feature "the sign in process" do
     end
 
     it "logs in successfully" do
-      expect(page).to have_content("Hello Uwe Zimmer")
+      # Note that this doesn't actually guarantee that you
+      # were signed in as the right person. It does guarantee
+      # that you were logged in, though.
+      expect(page).to have_content("Uwe Zimmer")
     end
 
     it "redirects to Courses page on successful login" do
@@ -56,17 +60,14 @@ feature "the sign in process" do
       expect(page).to have_content("Comp1100 (Uwe Zimmer)")
     end
 
-    it "knows you are a convener" do
-      expect(page).to have_content("You're a convener!")
-      expect(page).to_not have_content("You're an admin!")
-    end
-
     it "lets you log out" do
-      expect(page).to have_button("Log out")
+      click_on "Uwe Zimmer"
+      expect(page).to have_content("Log Out")
     end
 
     it "logs out properly" do
-      click_button("Log out")
+      click_on "Uwe Zimmer"
+      click_on "Log Out"
       expect(page).to_not have_content("Uwe Zimmer")
     end
   end

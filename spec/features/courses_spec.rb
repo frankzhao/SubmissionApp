@@ -36,7 +36,7 @@ feature "viewing courses" do
   end
 
   it "lets you click on assignments" do
-    click_on "Wireworld"
+    first(:link, "Wireworld").click
     expect(page).to have_content "cellular automata!"
   end
 end

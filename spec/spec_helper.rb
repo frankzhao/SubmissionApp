@@ -38,3 +38,13 @@ RSpec.configure do |config|
   config.order = "random"
 end
 
+def sign_in(uni_id)
+  visit new_sessions_url
+  fill_in 'Uni ID', :with => uni_id
+  click_button "Log in"
+end
+
+def sign_out(name)
+  click_on name
+  click_on "Log Out"
+end

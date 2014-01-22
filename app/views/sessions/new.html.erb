@@ -1,17 +1,20 @@
 <div class="row">
   <div class="col-sm-9 col-sm-offset-2">
-    <h2>Log in</h2>
+      <h2>Log in</h2>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <form method="POST" action=<%= sessions_url %>
+              class="form-inline" role="form">
+          <label for="user_uni_id" class="sr-only">Uni ID</label>
+          <input type="text" id="user_uni_id" name="user[uni_id]" value="<%=@uni_id%>" placeholder="uxxxxxxx">
 
-    <form method="POST" action=<%= sessions_url %>
-          class="form-horizontal" role="form">
-      <label for="user_uni_id">Uni ID</label>
-      <input type="text" id="user_uni_id" name="user[uni_id]" value="<%=@uni_id%>">
-        <br>
-      <label for="user_password">Password</label>
-      <input type="password" id="user_password" name="user[password]">
+          <label for="user_password" class="sr-only">Password</label>
+          <input type="password" id="user_password" name="user[password]"
+          placeholder="password">
 
-      <br>
-      <input type="submit" value="Log in" class="btn btn-default">
-    </form>
+          <input type="submit" value="Log in" class="btn btn-default">
+        </form>
+      </div>
+    </div>
   </div>
 </div>
