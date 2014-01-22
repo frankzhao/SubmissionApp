@@ -1,5 +1,5 @@
 
-# Instructions taken from https://www.digitalocean.com/community/articles/how-to-install-ruby-on-rails-on-ubuntu-12-04-lts-precise-pangolin-with-rvm
+# Instructions slightly altered from https://www.digitalocean.com/community/articles/how-to-install-ruby-on-rails-on-ubuntu-12-04-lts-precise-pangolin-with-rvm
 # See there for more details.
 sudo apt-get update
 sudo apt-get install curl -y
@@ -25,4 +25,4 @@ bundle install
 sh setup.sh
 
 # This runs it
-rails server -p 80
+rails server
