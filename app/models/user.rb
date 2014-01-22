@@ -110,13 +110,16 @@ class User < ActiveRecord::Base
     end
   end
 
-  #TODO: can't join groups twice
   def join_group!(group)
-    GroupStudentMembership.create!(:group_id => group.id, :user_id => self.id)
+    unless self.student_groups.include?(group)
+      GroupStudentMembership.create!(:group_id => group.id, :user_id => self.id)
+    end
   end
 
   def join_group_as_staff!(group)
-    GroupStaffMembership.create!(:group_id => group.id, :user_id => self.id)
+    unless self.student_groups.include?(group)
+      GroupStaffMembership.create!(:group_id => group.id, :user_id => self.id)
+    end
   end
 
   def permitted_submissions(assignment)
