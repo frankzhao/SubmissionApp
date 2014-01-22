@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140121005637) do
+ActiveRecord::Schema.define(:version => 20140122014449) do
 
   create_table "assignment_submissions", :force => true do |t|
     t.integer  "user_id",       :null => false
@@ -33,7 +33,10 @@ ActiveRecord::Schema.define(:version => 20140121005637) do
     t.string   "submission_format",      :default => "plaintext", :null => false
     t.string   "behavior_on_submission", :default => ""
     t.boolean  "is_due_date_compulsary", :default => false
+    t.string   "slug"
   end
+
+  add_index "assignments", ["slug"], :name => "index_assignments_on_slug", :unique => true
 
   create_table "comments", :force => true do |t|
     t.integer  "assignment_submission_id", :null => false
@@ -50,7 +53,21 @@ ActiveRecord::Schema.define(:version => 20140121005637) do
     t.integer  "convener_id", :null => false
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+    t.string   "slug"
   end
+
+  add_index "courses", ["slug"], :name => "index_courses_on_slug", :unique => true
+
+  create_table "friendly_id_slugs", :force => true do |t|
+    t.string   "slug",                         :null => false
+    t.integer  "sluggable_id",                 :null => false
+    t.string   "sluggable_type", :limit => 40
+    t.datetime "created_at"
+  end
+
+  add_index "friendly_id_slugs", ["slug", "sluggable_type"], :name => "index_friendly_id_slugs_on_slug_and_sluggable_type", :unique => true
+  add_index "friendly_id_slugs", ["sluggable_id"], :name => "index_friendly_id_slugs_on_sluggable_id"
+  add_index "friendly_id_slugs", ["sluggable_type"], :name => "index_friendly_id_slugs_on_sluggable_type"
 
   create_table "group_course_memberships", :force => true do |t|
     t.integer  "course_id",     :null => false

@@ -1,4 +1,5 @@
 class Course < ActiveRecord::Base
+
   attr_accessible :name, :convener_id
 
   validates :name, :presence => true, :uniqueness => true
@@ -17,6 +18,10 @@ class Course < ActiveRecord::Base
 
   has_many :assignments, :through => :group_types,
                          :source => :assignments
+
+  extend FriendlyId
+
+  friendly_id :name, :use => :slugged
 
   def add_students_by_csv(csv_string)
     students = User.create_by_csv!(csv_string)

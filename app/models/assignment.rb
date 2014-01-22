@@ -25,6 +25,10 @@ class Assignment < ActiveRecord::Base
 
   after_create :make_directory
 
+  extend FriendlyId
+
+  friendly_id :name, :use => :slugged
+
   def relevant_submissions(user)
     case user.relationship_to_assignment(self)
     when :student

@@ -24,6 +24,7 @@ gem 'net-ldap'
 gem 'faker'
 gem 'rubyzip'
 gem 'whenever'
+gem 'friendly_id'
 
 group :test do
   gem 'capybara'
