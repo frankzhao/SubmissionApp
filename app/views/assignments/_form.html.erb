@@ -40,21 +40,35 @@
     <span class="help-block"> TODO: restrict allowed HTML here. Currently you can do whatever you want</span>
   </div>
 </div>
-<!--
-<%= assignment.marking_categories.to_json %> -->
 
 <div class="row">
   <label for="marking_scheme" class="col-sm-6 col-sm-offset-2">Assignment marking scheme</label>
 </div>
 <div class="row">
   <div class="col-sm-7 col-sm-offset-2">
-    <textarea class="form-control" id="marking_scheme" rows="6" name="marking_scheme">[{:name => "Style",
-:description => "how good the code is",
-:maximum_mark => 30},
-{:name => "Correctness",
-:description => "how correct the code is",
-:maximum_mark => 30}]</textarea>
-    <span class="help-block">Obviously, this should be replaced by a real input. TODO</span>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <% @assignment.marking_categories.each do |category| %>
+          <h4><%= category.name %>
+            <span class="small"><%= category.maximum_mark %> marks</span></h4>
+          <p><%= category.description %></p>
+        <% end %><br>
+
+        <button id="new_marking_category" class="btn btn-default">
+          Add category
+        </button>
+
+<!--         <h4>New category</h4>
+        <label for="marking_category_name">Name</label>
+        <input name="marking_category[name]" id="marking_category_name"><br>
+        <label for="marking_category_maximum_mark">Maximum mark</label>
+        <input name="marking_category[maximum_mark]" id="marking_category_maximum_mark"><br>
+        <label for="marking_category_description">Description</label>
+        <input name="marking_category[description]" id="marking_category_description"><br> -->
+
+
+      </div>
+    </div>
   </div>
 </div>
 
