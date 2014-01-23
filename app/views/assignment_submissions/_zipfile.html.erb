@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
-    <p><%= link_to "Download submission", submission.zip_path,
+    <p><%= link_to "Download submission", assignment_submission_zip_url(submission.assignment_id, submission),
                 :class=>"btn btn-default" %> </p>
     <h3>File listing</h3>
   </div>

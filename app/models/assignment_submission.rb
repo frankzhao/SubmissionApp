@@ -68,7 +68,7 @@ class AssignmentSubmission < ActiveRecord::Base
   def file_path
     name = self.user.name.gsub(" ","_")
     datetime = self.created_at.to_s.gsub(" ","_")
-    self.assignment.path + "/#{name}_#{self.id}_#{datetime}"
+    self.assignment.path + "/#{self.id}_#{datetime}"
   end
 
   def zip_path
@@ -110,13 +110,18 @@ class AssignmentSubmission < ActiveRecord::Base
   def zip_contents
     zip_contents = {}
     Zip::File.open(self.zip_path) do |zipfile|
-        names = zipfile.map{|e| e.name}
-               .select{|x| x[0..5]!= "__MACO" }
-               .select{ |x| [".rb",".js",".hs"].any? {|y| tail_match?(x,y)}}
+      names = zipfile.map{|e| e.name}
+             .select{|x| x[0..5]!= "__MACO" }
 
-        names.each do |name|
-          zip_contents[name] = zipfile.read(name)
-        end
+      filetypes_to_show = self.assignment.filetypes_to_show
+
+      if filetypes_to_show
+        names.select! { |x| filetypes_to_show.any? {|y| tail_match?(x,y)}}
+      end
+
+      names.each do |name|
+        zip_contents[name] = zipfile.read(name) if zip_contents[name]
+      end
     end
     zip_contents
   end
