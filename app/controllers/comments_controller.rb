@@ -30,11 +30,15 @@ class CommentsController < ApplicationController
       end
 
       if params[:peer_mark] && params[:peer_mark].length > 0
-        throw "gah"
         #TODO: checks
         peer_mark = PeerMark.new(:comment_id => @comment.id,
                                  :value => params[:peer_mark])
-        peer_mark.save!
+        unless peer_mark.save
+          redirect_to(assignment_assignment_submission_url(params[:assignment_id],
+                            params[:assignment_submission_id]))
+          flash[:errors] = peer_mark.errors.full_messages
+          return
+        end
       end
 
       if (params[:upload] and params[:upload]["datafile"])
