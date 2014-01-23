@@ -10,7 +10,7 @@ class PeerReviewCyclesController < ApplicationController
   def create
     #TODO: check permission
     @peer_review_cycle = PeerReviewCycle.new(params[:peer_review_cycle])
-    @peer_review_cycle.assignment_id = params[:assignment_id]
+    @peer_review_cycle.assignment_id = Assignment.find(params[:assignment_id]).id
 
     if @peer_review_cycle.save
       redirect_to assignment_cycles_url(params[:assignment_id])
