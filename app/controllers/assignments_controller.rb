@@ -29,8 +29,8 @@ class AssignmentsController < ApplicationController
 
   def create
     @assignment = Assignment.new(params[:assignment])
-    @assignment.create_marking_scheme(eval(params[:marking_scheme]))
     if @assignment.save
+      @assignment.create_marking_scheme(eval(params[:marking_scheme]))
       redirect_to @assignment
     else
       flash.now[:errors] = @assignment.errors.full_messages

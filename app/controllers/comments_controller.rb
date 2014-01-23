@@ -36,12 +36,28 @@ class CommentsController < ApplicationController
         peer_mark.save!
       end
 
+      if (params[:upload] and params[:upload]["datafile"])
+        @comment.file_name = params[:upload]["datafile"].original_filename
+        @comment.has_file = true
+        @comment.save!
+
+        @comment.save_data(params[:upload]["datafile"].read)
+      end
+
       redirect_to(assignment_assignment_submission_url(params[:assignment_id],
                             params[:assignment_submission_id]))
     else
       redirect_to(assignment_assignment_submission_url(params[:assignment_id],
                             params[:assignment_submission_id]))
       flash[:errors] = @comment.errors.full_messages
+    end
+  end
+
+  def get_file
+    comment = Comment.find(params[:id])
+    submission = comment.assignment_submission
+    if submission.permits?(current_user)
+      send_file(comment.file_path)
     end
   end
 end

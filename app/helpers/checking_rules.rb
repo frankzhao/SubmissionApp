@@ -6,7 +6,8 @@ module CheckingRules
         add_anonymous_comment("This code compiles!")
       else
         add_anonymous_comment(
-            "This code doesn't compile, with the following error:<br>"+errors)
+          "<strong>This code doesn't compile</strong>, with the following error:<br>
+            <pre>#{errors}</pre>")
       end
     else
       check_compiling_haskell_module(self.zip_path)

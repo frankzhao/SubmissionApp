@@ -16,8 +16,10 @@ class Assignment < ActiveRecord::Base
   has_many :students, :through => :groups, :source => :students
   has_many :staff, :through => :groups, :source => :staff
 
-  validate :info, :name, :group_type_id, :due_date, :submission_format, :behavior_on_submission,
-          :presence => true
+  validates :info, :name, :group_type_id, :submission_format,
+           :presence => true
+
+  validate :name_is_acceptable
 
   has_many :marking_categories
 
@@ -28,6 +30,16 @@ class Assignment < ActiveRecord::Base
   extend FriendlyId
 
   friendly_id :name, :use => :slugged
+
+  def name_is_acceptable
+    if self.name == "comment_related_files"
+      record.errors[:name] << 'That name is reserved by the system.'
+    end
+    unless self.name.match /\A[a-zA-Z:_0-9 ]+\Z/
+      record.errors[:name] << "The name must match this regex: /\A[a-zA-Z:0-9 ]+\Z/. " +
+                       "That is to say, it may only have letters, numbers, colons and spaces."
+    end
+  end
 
   def relevant_submissions(user)
     case user.relationship_to_assignment(self)
@@ -52,7 +64,7 @@ class Assignment < ActiveRecord::Base
   end
 
   def path_without_upload
-    "#{self.id}_#{self.name}"
+    "#{self.id}"
   end
 
   def update_zip
@@ -109,7 +121,7 @@ class Assignment < ActiveRecord::Base
 
   def add_marking_category!(hash)
     category = MarkingCategory.new(hash)
-    category.assignment = self
+    category.assignment_id = self.id
     category.save!
   end
 

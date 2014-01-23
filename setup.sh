@@ -1,4 +1,4 @@
 bundle install
 mkdir upload
 mkdir temp
-rake db:reset
+mkdir upload/comment_related_files

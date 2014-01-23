@@ -58,8 +58,12 @@
             <% end %>
           </h4>
           <p>
-            <%= comment.body %>
+            <%= comment.body.html_safe %>
           </p>
+          <% if comment.has_file %>
+            <strong>Attached file:</strong>
+            <%= link_to comment.file_name, comment_file_url(comment) %>
+          <% end %>
         </div>
       <% end %>
 
@@ -78,7 +82,6 @@
           </div>
 
           <div class="form-group">
-            Attach file: (currently this doesn't do anything)
             <%= file_field 'upload', 'datafile' %>
           </div>
 

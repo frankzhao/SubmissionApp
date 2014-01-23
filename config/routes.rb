@@ -49,5 +49,9 @@ SubmissionApp::Application.routes.draw do
                                     :to => 'assignment_submissions#get_zip',
                                     :as => 'assignment_submission_zip'
 
+  get 'comment_files/:id', :to => 'comments#get_file',
+                           :as => 'comment_file'
+
+
   root :to => 'courses#index'
 end

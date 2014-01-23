@@ -58,6 +58,14 @@ class AssignmentSubmissionsController < ApplicationController
         if @assignment.submission_format == "zipfile"
           if (params[:upload] and params[:upload]["datafile"])
             @submission.save_data(params[:upload]["datafile"].read)
+
+            valid = @submission.zip_contents rescue false
+            unless valid
+              flash[:errors] = ["That file couldn't be read as a zip file."]
+              render :new
+              return
+            end
+
           else
             flash[:errors] = ["Please select a file to upload."]
             render :new
@@ -81,6 +89,7 @@ class AssignmentSubmissionsController < ApplicationController
 
     if @submission.permits?(current_user)
       send_file(@submission.zip_path)
+      #TODO: what about if it isn't a zip assignment?
     else
       flash[:errors] = ["You don't have permission to access that page"]
       redirect_to "/"
