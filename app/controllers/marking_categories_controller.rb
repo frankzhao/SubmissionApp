@@ -13,31 +13,31 @@ class MarkingCategoriesController < ApplicationController
   def create
     category = MarkingCategory.new(params[:marking_category])
     category.assignment_id = params[:assignment_id]
-    render :json => category
+    category.save!
+    redirect_to assignment_marking_categories_url(category.assignment_id)
   end
 
   def update
     category = MarkingCategory.find(params[:id])
     category.update_attributes(params[:marking_category])
     if category.save
-      render :json => category
+      flash[:errors] = category.errors.full_messages
     else
-      render :json => category.errors.full_messages
+      flash[:errors] = category.errors.full_messages
     end
+    redirect_to assignment_marking_categories_url(category.assignment_id)
   end
 
   def destroy
     category = MarkingCategory.find(params[:id])
 
-    if category.destroy
-      render :json => category
-    else
-      render :json => category.errors.full_messages
-    end
+    category.destroy
+    redirect_to assignment_marking_categories_url(category.assignment_id)
   end
 
   def index
-    assignment = Assignment.find(params[:assignment_id])
-    render :json => assignment.marking_categories
+    @assignment = Assignment.find(params[:assignment_id])
+    @marking_categories = @assignment.marking_categories
+    render :index
   end
 end

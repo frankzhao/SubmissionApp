@@ -4,6 +4,8 @@ class MarkingCategory < ActiveRecord::Base
   validates :assignment, :description, :maximum_mark, :name,
             :presence => true
 
+  validates :maximum_mark, :numericality => true
+
   belongs_to :assignment
   has_many :marks
 

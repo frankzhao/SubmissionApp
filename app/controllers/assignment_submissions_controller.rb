@@ -59,7 +59,7 @@ class AssignmentSubmissionsController < ApplicationController
           if (params[:upload] and params[:upload]["datafile"])
             @submission.save_data(params[:upload]["datafile"].read)
 
-            valid = @submission.zip_contents # rescue false
+            valid = @submission.zip_contents rescue false
             unless valid
               flash[:errors] = ["That file couldn't be read as a zip file."]
               render :new

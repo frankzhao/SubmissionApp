@@ -9,7 +9,8 @@ User.create!([
   { :name => "James Fellows", :uni_id => 1234567 }
   ])
 
-
+`rm -rf upload/*`
+`mkdir upload/comment_related_files`
 
 uwe = User.find_by_name("Uwe Zimmer")
 

@@ -21,7 +21,12 @@
   <%= assignment.info.html_safe %>
 </p>
 
-<h3>Marking scheme</h3>
+<h3>Marking scheme
+<% if assignment.conveners.include?(current_user) %>
+<span class="small"><%= link_to "edit", assignment_marking_categories_url(assignment) %>
+</span>
+<% end %>
+</h3>
 <% assignment.marking_categories.each do |category| %>
   <h4><%= category.name %>
     <small>(<%= category.maximum_mark %> marks)</small>
