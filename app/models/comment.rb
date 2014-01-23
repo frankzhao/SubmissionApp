@@ -14,6 +14,10 @@ class Comment < ActiveRecord::Base
 
   has_one :peer_mark
 
+  has_many :children, :class_name => "Comment",
+                      :foreign_key => :parent_id,
+                      :primary_key => :id
+
   before_save :friendlify_filename
 
   validates :assignment_submission_id, :body, :presence => true

@@ -30,8 +30,6 @@ class AssignmentsController < ApplicationController
   def create
     @assignment = Assignment.new(params[:assignment])
     if @assignment.save
-      throw "Creating assignments is temporarily broken. It's all under control, I promise."
-      @assignment.create_marking_scheme(eval(params[:marking_scheme]))
       redirect_to @assignment
     else
       flash.now[:errors] = @assignment.errors.full_messages

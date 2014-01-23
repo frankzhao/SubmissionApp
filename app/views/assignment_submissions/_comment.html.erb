@@ -1,0 +1,31 @@
+<div class="comment">
+  <h4>
+    <% if comment.user %>
+      <%= submission.context_name(comment.user, current_user) %>
+    <% else %>
+      Automatic comment
+    <% end %>
+  </h4>
+  <p>
+    <%= comment.body.html_safe %>
+  </p>
+  <% if comment.has_file %>
+    <strong>Attached file:</strong>
+    <%= link_to comment.file_name, comment_file_url(comment) %>
+  <% end %>
+
+  <% comment.children.each do |child| %>
+    <%= render :partial => "comment", :locals =>
+                          { :comment => child,
+                            :submission => @submission,
+                            :relationship => @relationship,
+                            :assignment => @assignment
+                            } %>
+  <% end %>
+
+  <%= render :partial => "new_comment",
+             :locals => { :relationship => @relationship,
+                          :submission => @submission,
+                          :assignment => @assignment,
+                          :parent_id => comment.id } %>
+</div>

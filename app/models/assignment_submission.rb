@@ -142,6 +142,10 @@ class AssignmentSubmission < ActiveRecord::Base
     Comment.create!(:body => body, :assignment_submission_id => self.id)
   end
 
+  def top_level_comments
+    self.comments.where(:parent_id => nil)
+  end
+
   def relationship_to_user(user)
     if user == self.user
       return :creator
