@@ -113,16 +113,20 @@ class AssignmentSubmission < ActiveRecord::Base
       names = zipfile.map{|e| e.name}
              .select{|x| x[0..5]!= "__MACO" }
 
-      filetypes_to_show = self.assignment.filetypes_to_show
+      filetypes_to_show = self.assignment.filetypes_to_show.try(:split," ")
 
-      if filetypes_to_show
+      if filetypes_to_show && filetypes_to_show.length > 0
         names.select! { |x| filetypes_to_show.any? {|y| tail_match?(x,y)}}
       end
 
       names.each do |name|
-        zip_contents[name] = zipfile.read(name) if zip_contents[name]
+        begin
+          zip_contents[name] = zipfile.read(name) if zipfile.read(name)
+        rescue NoMethodError
+        end
       end
     end
+
     zip_contents
   end
 
