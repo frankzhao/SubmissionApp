@@ -17,7 +17,6 @@ class AssignmentSubmissionsController < ApplicationController
     end
   end
 
-  # TODO: Should I have some sort of "log dodginess" functionality?
   def new
     @assignment = Assignment.find(params[:assignment_id])
 

@@ -3,6 +3,8 @@
 <div class="form-group">
   <%= label_tag(:activation_time, "Activation time") %>
   <%= f.datetime_select(:activation_time, :class => "form-control") %>
+  <span>
+  For timezone inference, when you loaded this page the time was <%= Time.now %></span>
 </div>
 
 <div class="form-group">

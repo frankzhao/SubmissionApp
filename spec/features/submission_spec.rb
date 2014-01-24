@@ -14,6 +14,7 @@ feature "submitting assignments" do
     visit "/group_types/1/assignments/new"
     fill_in 'assignment_name', :with => "Wireworld"
     fill_in "Assignment description", :with => "Cellular automata!!!"
+    fill_in "assignment_behavior_on_submission", :with => "check_compiling_haskell"
     click_button "Create assignment"
     sign_out "Uwe Zimmer"
   end
@@ -26,5 +27,17 @@ feature "submitting assignments" do
     click_button "Submit!"
     expect(page).to have_content("Submission for Wireworld")
     expect(page).to have_content("main = undefined")
+    expect(page).to have_content("This code compiles!")
+  end
+
+  it "complains about invalid Haskell" do
+    sign_in "u5555551"
+    visit "/assignments/wireworld/assignment_submissions/new"
+    expect(page).to have_content("New assignment submission for Wireworld")
+    fill_in "submission[body]", :with => "main = 2 wre23undefined"
+    click_button "Submit!"
+    expect(page).to have_content("Submission for Wireworld")
+    expect(page).to have_content("main = 2 wre23undefined")
+    expect(page).to have_content("This code doesn't compile, with the following error:")
   end
 end

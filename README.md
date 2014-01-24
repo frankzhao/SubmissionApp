@@ -9,7 +9,7 @@ Currently, it uses sqlite3 for a database. This will probably change before the 
 
 On a Mac, get Rails set up, install necessary dependencies with `bundle install`. Then run `rake db:reset` to get the database set up. To seed it with demo data, run `rake db:seed`.
 
-On Ubuntu, if you run the `ubuntu_setup.sh` script, it should install necessary dependencies and get the whole thing set up. 
+On Ubuntu, if you run the `ubuntu_setup.sh` script, it should install necessary dependencies and get the whole thing set up.
 
 To run the tests, first run `rake db:test:prepare`, then run `rspec`. You should see lots of pretty green lines.
 
@@ -55,3 +55,7 @@ Things you can do:
 ## Miscellaneous
 
 I've used American English throughout in spelling of variable names etc.
+
+## Security holes I'm aware of
+
+- You can execute dodgy stuff when Haskell is compiled. Uwe knows how to deal with that.

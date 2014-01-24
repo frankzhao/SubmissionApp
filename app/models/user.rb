@@ -122,7 +122,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def permitted_submissions(assignment)
+  def permitted_submissions_for_assignment(assignment)
     self.submission_permissions.select { |s| s.assignment == assignment }
                                .select { |s| s.peer_review_cycle.activated }
                                .map(&:assignment_submission)
