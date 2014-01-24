@@ -47,3 +47,49 @@ end
 def sign_out
   click_on "Log Out"
 end
+
+def set_up_example_course
+  dolly = User.create!(:name => "Dolly O'Keefe", :uni_id => 5555551)
+  uwe = User.create!(:name => "Uwe Zimmer", :uni_id => 2222222)
+  comp1100 = Course.create!(:name => "Comp1100", :convener_id => uwe.id)
+  dolly.enroll_in_course!(comp1100)
+
+  brooks = User.create!(:name => "Brooks Kris", :uni_id => 5555552)
+
+  tute = GroupType.create!(:name => "Comp1100/1130 labs",
+                       :courses => [comp1100])
+  dolly.join_group!(tute)
+  buck = User.create!(:name => "Buck Shlegeris", :uni_id => 5192430)
+  buck.enroll_staff_in_course!(comp1100)
+  buck_tute = tute.create_groups("Thursday A"=>[buck])
+
+  tessa = User.create!(:name => "Tessa Bradbury", :uni_id => 5423452)
+
+  wireworld = Assignment.create!(:name => "Wireworld",
+                                 :info => "cellular automata!",
+                                 :group_type_id => 1,
+                                 :due_date => "2014-05-03 23:04:26")
+  wireworld.add_marking_category!(:name => "Correctness",
+                                  :description => "how wrong it is",
+                                  :maximum_mark => 50)
+end
+
+def submit_wireworld_as_user(user)
+  sign_in user
+  visit "/assignments/wireworld/assignment_submissions/new"
+  expect(page).to have_content("New assignment submission for Wireworld")
+  fill_in "submission[body]", :with => "main = \"#{user}\""
+  click_button "Submit!"
+  sign_out
+end
+
+def mark_submission(uni_id, mark)
+  sign_in uni_id
+  visit "/assignments/wireworld/assignment_submissions/1"
+  within(:css, "div#comment-") do
+    fill_in "comment[body]", :with => "look at #{uni_id} commenting"
+    fill_in "mark_Correctness", :with => "#{mark}"
+    click_on "Post comment"
+  end
+  sign_out
+end
