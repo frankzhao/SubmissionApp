@@ -4,4 +4,12 @@
 # If you change this key, all old signed cookies will become invalid!
 # Make sure the secret is at least 30 characters and all random,
 # no regular words or you'll be exposed to dictionary attacks.
-SubmissionApp::Application.config.secret_token = 'e1778b31e3427b9c29648b7d4963c0887a63e939535f9caf0e591207739d5e141848a56d030289eaa89ba4c976e145fd5386072ea29d57e1924365afe69140d3'
+begin
+    token_file = Rails.root.to_s + "/secret_token"
+    to_load = open(token_file).read
+    Snpr::Application.configure do
+        config.secret_token = to_load
+    end
+rescue LoadError, Errno::ENOENT => e
+    raise "Secret token couldn't be loaded! Error: #{e}"
+end

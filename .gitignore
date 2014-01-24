@@ -15,4 +15,4 @@
 /tmp/*
 /upload/*
 
-/config/initializers/secret_token.rb
+secret_token
