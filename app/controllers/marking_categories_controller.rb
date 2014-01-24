@@ -12,9 +12,11 @@ class MarkingCategoriesController < ApplicationController
 
   def create
     category = MarkingCategory.new(params[:marking_category])
-    category.assignment_id = params[:assignment_id]
-    category.save!
-    redirect_to assignment_marking_categories_url(category.assignment_id)
+    category.assignment_id = Assignment.find(params[:assignment_id]).id
+    if ! category.save
+      flash[:errors] = category.errors.full_messages
+    end
+    redirect_to assignment_marking_categories_url(params[:assignment_id])
   end
 
   def update
@@ -25,14 +27,14 @@ class MarkingCategoriesController < ApplicationController
     else
       flash[:errors] = category.errors.full_messages
     end
-    redirect_to assignment_marking_categories_url(category.assignment_id)
+    redirect_to assignment_marking_categories_url(category.assignment)
   end
 
   def destroy
     category = MarkingCategory.find(params[:id])
 
     category.destroy
-    redirect_to assignment_marking_categories_url(category.assignment_id)
+    redirect_to assignment_marking_categories_url(category.assignment)
   end
 
   def index

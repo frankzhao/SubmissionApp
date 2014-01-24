@@ -9,7 +9,7 @@
           <span class="small"><%= marking_category.maximum_mark %> marks</span>
           </h3>
           <div class="btn-group">
-            <%= button_to "Delete category",
+            <%= link_to "Delete category",
                     assignment_marking_category_url(@assignment, marking_category),
                       :method => :delete,
                       :class => "btn btn-danger btn-sm",
@@ -30,35 +30,35 @@
 </div>
 
 <script type="text/template" id="category_template">
-<div class="panel panel-default">
-  <div class="panel-body">
-    <div class="form-group">
-    <%% if(marking_category.name) { %>
-      <h3><%%= marking_category.name || "New category" %></h3>
-      <form method="POST" action=
-            "<%= assignment_marking_categories_url(@assignment) %>/<%%= marking_category.id %>"
-            role="form">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="form-group">
+      <%% if(marking_category.name) { %>
+        <h3><%%= marking_category.name || "New category" %></h3>
+        <form method="POST" action=
+              "<%= assignment_marking_categories_url(@assignment) %>/<%%= marking_category.id %>"
+              role="form">
 
-      <input type="hidden" name="_method" value="PUT">
-    <%% } else { %>
-      <form method="POST" action="<%= assignment_marking_categories_url %>">
-    <%% } %>
-      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
-      <label for="marking_category_name">Name</label>
-      <input id="marking_category_name" name="marking_category[name]"
-      value="<%%= marking_category.name %>"><br>
+        <input type="hidden" name="_method" value="PUT">
+      <%% } else { %>
+        <form method="POST" action="<%= assignment_marking_categories_url(@assignment) %>">
+      <%% } %>
+        <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+        <label for="marking_category_name">Name</label>
+        <input id="marking_category_name" name="marking_category[name]"
+        value="<%%= marking_category.name %>"><br>
 
-      <label for="marking_category_maximum_mark">Maximum mark</label>
-      <input id="marking_category_maximum_mark" name="marking_category[maximum_mark]"
-      value="<%%= marking_category.maximum_mark %>"><br>
+        <label for="marking_category_maximum_mark">Maximum mark</label>
+        <input id="marking_category_maximum_mark" name="marking_category[maximum_mark]"
+        value="<%%= marking_category.maximum_mark %>"><br>
 
-      <label for="marking_category_description">Description</label>
-      <textarea class="form-control" id="marking_category_description" name="marking_category[description]"><%%= marking_category.description %></textarea><br>
-      <input type="Submit" class="btn brn-default">
-    </form>
+        <label for="marking_category_description">Description</label>
+        <textarea class="form-control" id="marking_category_description" name="marking_category[description]"><%%= marking_category.description %></textarea><br>
+        <input type="Submit" class="btn brn-default">
+      </form>
+      </div>
     </div>
   </div>
-</div>
 </script>
 
 <script type="text/javascript">
