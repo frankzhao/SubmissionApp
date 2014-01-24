@@ -44,7 +44,6 @@ def sign_in(uni_id)
   click_button "Log in"
 end
 
-def sign_out(name)
-  click_on name
+def sign_out
   click_on "Log Out"
 end

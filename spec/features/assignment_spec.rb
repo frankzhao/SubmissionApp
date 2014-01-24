@@ -32,7 +32,7 @@ feature "creating assignments" do
     end
 
     it "is visible to others" do
-      sign_out("Uwe Zimmer")
+      sign_out
       sign_in("u5555551")
 
       visit "/assignments/1"
