@@ -59,3 +59,4 @@ I've used American English throughout in spelling of variable names etc.
 ## Security holes I'm aware of
 
 - You can execute dodgy stuff when Haskell is compiled. Uwe knows how to deal with that.
+  - Actually, we now use the -XSafe flag, so this issue should be fine

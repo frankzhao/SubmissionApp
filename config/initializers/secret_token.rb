@@ -7,7 +7,7 @@
 begin
     token_file = Rails.root.to_s + "/secret_token"
     to_load = open(token_file).read
-    Snpr::Application.configure do
+    SubmissionApp::Application.configure do
         config.secret_token = to_load
     end
 rescue LoadError, Errno::ENOENT => e
