@@ -47,7 +47,7 @@ class User < ActiveRecord::Base
   end
 
   def is_convener?
-    !self.convened_courses.empty?
+    ! self.convened_courses.empty?
   end
 
   def is_admin_or_convener?
@@ -123,7 +123,9 @@ class User < ActiveRecord::Base
   end
 
   def permitted_submissions_for_assignment(assignment)
-    self.submission_permissions.select { |s| s.assignment == assignment }
+    self.submission_permissions.includes(:assignment)
+                               .includes(:peer_review_cycle)
+                               .select { |s| s.assignment == assignment }
                                .select { |s| s.peer_review_cycle.activated }
                                .map(&:assignment_submission)
   end

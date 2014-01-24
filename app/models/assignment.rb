@@ -124,7 +124,6 @@ class Assignment < ActiveRecord::Base
   # Does the assignment have a due date in the past?
   # If it doesn't have a due date, it's never overdue.
   # If the due date isn't compulsary, it's never overdue
-  # TODO: check this carefully.
   def already_due
     self.due_date && self.is_due_date_compulsary && self.due_date < Time.now
   end

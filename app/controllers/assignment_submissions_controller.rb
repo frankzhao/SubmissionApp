@@ -24,6 +24,7 @@ class AssignmentSubmissionsController < ApplicationController
     unless current_user.relationship_to_assignment(@assignment)
       flash[:errors] = ["You're not allowed to submit that assignment..."]
       redirect_to courses_url
+      return
     end
 
 

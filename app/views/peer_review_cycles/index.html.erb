@@ -3,7 +3,7 @@
     <h2>Peer review cycles for <%= link_to @assignment.name, @assignment %></h2>
 
     <% @assignment.peer_review_cycles.each do |cycle| %>
-      <h3><%= cycle.activation_time %>
+      <h3><%= cycle.created_at %>
         <% if cycle.activated %>
           <span class="label label-success">Activated</span>
         <% end %>
@@ -11,28 +11,28 @@
       <p><strong>Anonymise:</strong> <%= cycle.anonymise %></p>
       <p><strong>Distribution scheme:</strong> <%= cycle.distribution_scheme %></p>
       <% if cycle.distribution_scheme == "swap_simultaneously" %>
-        <p><strong>Number of swaps:</strong> <%= cycle.number_of_swaps %></p>
+        <p><strong>Number of swaps:</strong> <%= cycle.number_of_swaps || 1 %></p>
       <% end %>
       <p><strong>Shut off submission:</strong> <%= cycle.shut_off_submission %></p>
-      <p><strong>Maximum mark:</strong> <%= cycle.maximum_mark %></p>
-      <p><strong>Activated:</strong> <%= cycle.activated %></p>
+      <p><strong>Maximum mark:</strong> <%= cycle.maximum_mark || "no peer marking" %></p>
       <div class="btn-group">
         <% if cycle.activated %>
           <%= link_to "Deactivate",
                     assignment_cycle_deactivate_url(@assignment.id, cycle.id),
-                      :class => "btn btn-success", :method => :post %>
+                      :class => "btn btn-sm btn-success", :method => :post %>
         <% else %>
           <%= link_to "Activate",
                     assignment_cycle_activate_url(@assignment.id, cycle.id),
-                      :class => "btn btn-success", :method => :post %>
+                      :class => "btn btn-sm btn-success", :method => :post %>
         <% end %>
         <%= link_to "Delete", assignment_cycles_delete_url(@assignment, cycle),
-                      :class => "btn btn-danger", :method => :delete
+                      :class => "btn btn-sm btn-danger", :method => :delete
         %>
         <%= link_to "Edit", assignment_cycles_edit_url(
             @assignment.id, cycle.id), :method => :get,
-                      :class => "btn btn-default" %>
+                      :class => "btn btn-sm btn-default" %>
       </div>
+      <hr>
     <% end %>
 
     <div class="panel panel-default">

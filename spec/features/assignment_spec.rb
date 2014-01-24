@@ -41,3 +41,16 @@ feature "creating assignments" do
     end
   end
 end
+
+feature "making assignments with helper method" do
+  it "seems to let you submit things correctly" do
+    set_up_example_course
+    submit_wireworld_as_user("u5555551")
+    submit_wireworld_as_user("u5555552")
+    sign_in "u2222222"
+    visit "/assignments/wireworld"
+    expect(page).to have_content("Download all submissions as zip")
+    expect(page).to have_content("Dolly O'Keefe (u5555551)")
+    expect(page).to have_content("Brooks Kris (u5555552)")
+  end
+end

@@ -35,7 +35,6 @@ class AssignmentsController < ApplicationController
     end
   end
 
-  #TODO: this permits all conveners
   def edit
     @assignment = Assignment.find(params[:id])
     render :edit
@@ -79,8 +78,6 @@ class AssignmentsController < ApplicationController
     redirect_to "/"
   end
 
-
-  # TODO: check whether this is idiomatic
   def get_csv
     @assignment = Assignment.find(params[:id])
     render :text => @assignment.marks_csv

@@ -55,10 +55,12 @@ def set_up_example_course
   dolly.enroll_in_course!(comp1100)
 
   brooks = User.create!(:name => "Brooks Kris", :uni_id => 5555552)
+  brooks.enroll_in_course!(comp1100)
 
   tute = GroupType.create!(:name => "Comp1100/1130 labs",
                        :courses => [comp1100])
   dolly.join_group!(tute)
+  brooks.join_group!(tute)
   buck = User.create!(:name => "Buck Shlegeris", :uni_id => 5192430)
   buck.enroll_staff_in_course!(comp1100)
   buck_tute = tute.create_groups("Thursday A"=>[buck])

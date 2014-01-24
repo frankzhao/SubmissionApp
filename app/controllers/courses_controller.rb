@@ -13,12 +13,13 @@ class CoursesController < ApplicationController
       @course.convener = current_user
     end
 
-    # TODO: make these two in a transaction, deal with invalid code
-    @course.save!
-    @course.add_students_by_csv(params[:students_csv])
-    flash[:notifications] =
-          ["Course #{@course.name} created with #{@course.students.length} students."]
-    redirect_to @course
+    ActiveRecord::Base.transaction do
+      @course.save!
+      @course.add_students_by_csv(params[:students_csv])
+      flash[:notifications] =
+            ["Course #{@course.name} created with #{@course.students.length} students."]
+      redirect_to @course
+    end
   end
 
   def destroy

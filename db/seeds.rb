@@ -48,7 +48,7 @@ wireworld = Assignment.create!(:name => "Wireworld",
                                :info => wireworld_description,
                                :group_type => tute,
                                :due_date => "2014-05-03 23:04:26",
-                               :behavior_on_submission => "check_compiling_haskell")
+                               :behavior_on_submission => '{"check compiling haskell": []}')
 
 wireworld.create_marking_scheme([{:name => "Style",
                                   :description => "how good the code is",

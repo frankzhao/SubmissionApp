@@ -46,12 +46,16 @@ module CheckingRules
     text = self.body
     results = []
 
+    score = 0
+
     tests.each do |test|
       File.open("tmp/temp.hs","w") { |f| f.write(text) }
-      results << test + ": "+ `ghc -XSafe tmp/temp.hs 2>&1 -e "#{test}"`.strip
+      result = `ghc -XSafe tmp/temp.hs 2>&1 -e "#{test}"`.strip
+      if result == "True"
+        score += 1
+      end
+      results << test + ": "+ result
     end
-
-    score = results.count("True")
 
     add_anonymous_comment(
           "You got #{score} out of #{tests.length} test cases correct. " +

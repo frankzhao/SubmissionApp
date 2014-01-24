@@ -24,6 +24,7 @@ class AssignmentSubmission < ActiveRecord::Base
   validates :assignment_id, :user_id, :presence => true
 
   # TODO: rewrite with SQL
+
   def permits?(user)
     !! self.relationship_to_user(user)
   end
@@ -157,10 +158,10 @@ class AssignmentSubmission < ActiveRecord::Base
     end
   end
 
-  # TODO: what happens if there's more than one peer review cycle which pairs
-  # the same person and assignment?
+  # If a user has access to a submission through two seperate cycles, the
   def which_peer_review_cycle(user)
     permission = self.submission_permissions.where(:user_id => user.id)
+                               .order('created_at DESC')
                                .first
     if permission.try(:peer_review_cycle).try(:activated)
       permission.try(:peer_review_cycle)

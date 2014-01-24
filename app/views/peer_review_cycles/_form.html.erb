@@ -1,11 +1,11 @@
 <p>TODO: improve datetime selection</p>
-
+<!--
 <div class="form-group">
   <%= label_tag(:activation_time, "Activation time") %>
   <%= f.datetime_select(:activation_time, :class => "form-control") %>
   <span>
   For timezone inference, when you loaded this page the time was <%= Time.now %></span>
-</div>
+</div> -->
 
 <div class="form-group">
   <%= label_tag(:distribution_scheme, "Distribution scheme") %>
@@ -27,7 +27,8 @@
 
 <div class="form-group">
   <%= label_tag(:number_of_swaps, "Number of swaps") %>
-  <%= f.text_field(:number_of_swaps, :class => "form-control") %>
+  <%= f.text_field(:number_of_swaps, :class => "form-control",
+                      :html => { :placeholder => "1"}) %>
 </div>
 
 <div class="form-group">

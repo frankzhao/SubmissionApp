@@ -29,3 +29,5 @@ All of this stuff works with both a plain text submission and a zip submission:
   If we have two students, and we try to swap immediately to two other students, it fails.
 
   When the convener downloads the marks.csv file, he can see the grades he put, as well as the grades from peer review.
+
+Downloading a zip works
