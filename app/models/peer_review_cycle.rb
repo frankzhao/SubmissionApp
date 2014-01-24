@@ -1,7 +1,7 @@
 class PeerReviewCycle < ActiveRecord::Base
   attr_accessible :anonymise, :assignment_id, :distribution_scheme,
                   :shut_off_submission, :activation_time,
-                  :maximum_mark
+                  :maximum_mark, :number_of_swaps
 
   belongs_to :assignment
 
@@ -10,7 +10,8 @@ class PeerReviewCycle < ActiveRecord::Base
   has_many :comments
   has_many :peer_marks, :through => :comments, :source => :peer_mark
 
-  validates :assignment_id, :distribution_scheme, :presence => :true
+  validates :assignment_id, :distribution_scheme, :presence => true
+  validates :maximum_mark, :number_of_swaps, :numericality => true, :allow_blank => true
 
   before_destroy :delete_children
 
@@ -25,10 +26,10 @@ class PeerReviewCycle < ActiveRecord::Base
       case self.distribution_scheme
       when "swap_simultaneously"
         p "swapping swap_simultaneously"
-        self.swap_simultaneously
+        self.swap_simultaneously_n_times(self.number_of_swaps || 1)
         p "finished swap"
       when "send_to_previous"
-        # do nothing, I think...?
+        # do nothing.
       end
     end
 
@@ -47,14 +48,36 @@ class PeerReviewCycle < ActiveRecord::Base
   end
 
 
-  # TODO: generalise this for the case where people send their assignments to
-  # more than one other student.
-  def swap_simultaneously
-    submittors = self.assignment.students_who_have_submitted.uniq
-    mapping = submittors.zip(submittors.shuffle)
-    while (mapping.any?{|k,v| k==v}) do
-      mapping = submittors.zip(submittors.shuffle)
+  def is_legit(submission_mapping)
+    submission_mapping.all? do |source, destination|
+      source != destination
+    end and submission_mapping.all? do |source, destination|
+      submission = source.most_recent_submission(self.assignment)
+      ! submission.permitted_users.include? destination
     end
+  end
+
+  def get_mapping
+    submittors = self.assignment.students_who_have_submitted.uniq
+
+    mapping = []
+    1000.times do |time|
+      puts "looping, loop #{time} of 1000"
+      mapping = submittors.zip(submittors.shuffle)
+      return mapping if self.is_legit(mapping)
+    end
+
+    raise Exception("mapping could not be found")
+  end
+
+  def swap_simultaneously_n_times(n)
+    n.times do
+      swap_simultaneously_once
+    end
+  end
+
+  def swap_simultaneously_once
+    mapping = self.get_mapping
 
     mapping.each do |source, destination|
       submission = source.most_recent_submission(self.assignment)

@@ -10,6 +10,9 @@
       </h3>
       <p><strong>Anonymise:</strong> <%= cycle.anonymise %></p>
       <p><strong>Distribution scheme:</strong> <%= cycle.distribution_scheme %></p>
+      <% if cycle.distribution_scheme == "swap_simultaneously" %>
+        <p><strong>Number of swaps:</strong> <%= cycle.number_of_swaps %></p>
+      <% end %>
       <p><strong>Shut off submission:</strong> <%= cycle.shut_off_submission %></p>
       <p><strong>Maximum mark:</strong> <%= cycle.maximum_mark %></p>
       <p><strong>Activated:</strong> <%= cycle.activated %></p>

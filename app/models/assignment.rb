@@ -102,10 +102,10 @@ class Assignment < ActiveRecord::Base
         marks << category.mark_for_submission(most_recent_submission) rescue ""
       end
       peer_review_cycles.each do |cycle|
-      if cycle.maximum_mark
-        marks << cycle.mark_for_submission(most_recent_submission) rescue ""
+        if cycle.maximum_mark
+          marks << cycle.mark_for_submission(most_recent_submission) rescue ""
+        end
       end
-    end
       out << "#{student.name},#{student.uni_id},#{submission_time},#{marks.join(",")}"
     end
     out.join("\n")

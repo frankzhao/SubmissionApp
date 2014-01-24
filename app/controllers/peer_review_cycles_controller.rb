@@ -23,9 +23,18 @@ class PeerReviewCyclesController < ApplicationController
 
   def activate
     @peer_review_cycle = PeerReviewCycle.find(params[:id])
-    @peer_review_cycle.activate!
+    begin
+      @peer_review_cycle.activate!
+    rescue Exception => e
+      flash[:errors] = ["Peer review cycle could not be activated. The problem "  +
+                        "is probably that there's no acceptable distribution which "+
+                        "follows the constraints of no-one getting an assignment "+
+                        "which they already had."]
+    else
+      flash[:notifications] = ["Peer review cycle successfully activated"]
+    end
 
-    flash[:notifications] = ["Peer review cycle successfully activated"]
+
     redirect_to assignment_cycles_url(params[:assignment_id])
   end
 

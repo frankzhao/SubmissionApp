@@ -6,5 +6,4 @@ class SubmissionPermission < ActiveRecord::Base
   belongs_to :user
 
   belongs_to :peer_review_cycle
-
 end
