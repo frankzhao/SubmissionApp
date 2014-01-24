@@ -48,7 +48,7 @@ module CheckingRules
 
     tests.each do |test|
       File.open("tmp/temp.hs","w") { |f| f.write(text) }
-      results << `ghc -XSafe tmp/temp.hs 2>&1 -e "#{test}"`.strip
+      results << test + ": "+ `ghc -XSafe tmp/temp.hs 2>&1 -e "#{test}"`.strip
     end
 
     score = results.count("True")

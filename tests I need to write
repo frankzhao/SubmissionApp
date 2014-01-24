@@ -1,0 +1,31 @@
+If we make an assignment, and Person A has access to the assignment, they can submit to it.
+  They can then see that submission.
+  So can their tutor.
+  So can their convener.
+  Other students can't see it.
+
+  They can comment on the assignment.
+  So can conveners.
+    All of them can see the comments.
+
+  The convener can set marks.
+    The student can see these marks.
+
+  The convener can't set marks which are too high or low.
+
+All of this stuff works with both a plain text submission and a zip submission:
+  If we have two students who have submitted, and we set up the peer review cycle "swap immediately" without the ability to mark
+    One of them gets access to the other's assignment.
+    He can comment on it.
+    He can't mark it.
+
+  If we set it up as previous, but with the ability to mark
+    The peer can mark it
+    The peer can't mark it in an invalid fashion
+    That mark is visible to the peer
+    That mark is visible to the student
+    That mark is visible to the convener
+
+  If we have two students, and we try to swap immediately to two other students, it fails.
+
+  When the convener downloads the marks.csv file, he can see the grades he put, as well as the grades from peer review.
