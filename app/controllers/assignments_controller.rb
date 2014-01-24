@@ -4,8 +4,6 @@ class AssignmentsController < ApplicationController
                                           :get_csv, :get_zipfile, :peer_review]
   before_filter :require_convener_or_admin, :only => [:new, :create]
 
-  # Session IP lock
-
   def require_permission
     @assignment = Assignment.find(params[:id])
     unless @assignment.group_type.conveners.include? current_user

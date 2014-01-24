@@ -88,7 +88,6 @@ class AssignmentSubmissionsController < ApplicationController
 
     if @submission.permits?(current_user)
       send_file(@submission.zip_path)
-      #TODO: what about if it isn't a zip assignment?
     else
       flash[:errors] = ["You don't have permission to access that page"]
       redirect_to "/"
