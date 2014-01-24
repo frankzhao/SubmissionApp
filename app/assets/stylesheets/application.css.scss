@@ -18,9 +18,11 @@ body {
   padding-bottom: 30px;
 }
 
-.navbar-right {
-  margin-right: 20px;
+.navbar {
+  padding-left: 20px;
+  padding-right: 20px;
 }
+
 
 .extra_space_button {
   margin-top: 10px;
@@ -30,3 +32,4 @@ body {
 textarea {
   width: 100%;
 }
+html,body{overflow-x: hidden;}
