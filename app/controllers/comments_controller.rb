@@ -7,6 +7,7 @@ class CommentsController < ApplicationController
     unless @comment.assignment_submission.relationship_to_user(current_user)
       flash[:errors] = ["You don't have permission to comment on that assigment."]
       redirect_to "/"
+      return
     end
 
     cycle = @comment.assignment_submission.which_peer_review_cycle(current_user)
@@ -15,6 +16,7 @@ class CommentsController < ApplicationController
     if @comment.assignment_submission.user == current_user
       @comment.mark = nil
     end
+
     if @comment.save
       params[:mark] && params[:mark].each do |category_id, value|
         next if value == ""
@@ -23,7 +25,12 @@ class CommentsController < ApplicationController
                         :value => value)
         if mark.marking_category.relevant_to_user(@comment.assignment_submission,
                                                   current_user)
-          mark.save!
+          unless mark.save
+            flash[:errors] = mark.errors.full_messages
+            redirect_to(assignment_assignment_submission_url(params[:assignment_id],
+                            params[:assignment_submission_id]))
+            return
+          end
         else
           raise "You tried to access a mark you don't have access to"
         end

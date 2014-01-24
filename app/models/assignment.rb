@@ -155,6 +155,7 @@ class Assignment < ActiveRecord::Base
   end
 
   def receive_submission(submission)
+    return if self.behavior_on_submission.empty?
     behavior_on_submission = JSON.parse(self.behavior_on_submission)
 
     behavior_on_submission.each do |command, args|

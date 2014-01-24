@@ -39,7 +39,7 @@ RSpec.configure do |config|
 end
 
 def sign_in(uni_id)
-  visit new_sessions_url
+  visit "/"
   fill_in 'Uni ID', :with => uni_id
   click_button "Log in"
 end
