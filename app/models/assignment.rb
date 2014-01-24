@@ -20,6 +20,7 @@ class Assignment < ActiveRecord::Base
            :presence => true
 
   validate :name_is_acceptable
+  validate :behavior_on_submission_is_json
 
   has_many :marking_categories
 
@@ -33,11 +34,20 @@ class Assignment < ActiveRecord::Base
 
   def name_is_acceptable
     if self.name == "comment_related_files"
-      record.errors[:name] << 'That name is reserved by the system.'
+      self.errors[:name] << 'That name is reserved by the system.'
     end
     unless self.name.match /\A[a-zA-Z:_0-9 ]+\Z/
-      record.errors[:name] << "The name must match this regex: /\A[a-zA-Z:0-9 ]+\Z/. " +
+      self.errors[:name] << "The name must match this regex: /\A[a-zA-Z:0-9 ]+\Z/. " +
                        "That is to say, it may only have letters, numbers, colons and spaces."
+    end
+  end
+
+  def behavior_on_submission_is_json
+    return if self.behavior_on_submission == ""
+    begin
+      json = JSON.parse(self.behavior_on_submission)
+    rescue JSON::ParserError => e
+      self.errors[:behavior_on_submission] << "JSON parse error: #{e}"
     end
   end
 
@@ -145,8 +155,10 @@ class Assignment < ActiveRecord::Base
   end
 
   def receive_submission(submission)
-    if self.behavior_on_submission.include? "check_compiling_haskell"
-      submission.check_compiling_haskell
+    behavior_on_submission = JSON.parse(self.behavior_on_submission)
+
+    behavior_on_submission.each do |command, args|
+      submission.interpret(command, args)
     end
 
     self.peer_review_cycles.each do |cycle|

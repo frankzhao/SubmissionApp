@@ -1,4 +1,16 @@
 module CheckingRules
+
+  def interpret(command, args)
+    case command
+    when "check compiling haskell"
+      self.check_compiling_haskell
+    when "test haskell"
+      self.test_haskell(args)
+    else
+      throw "Unrecognised command: #{command}, #{args}"
+    end
+  end
+
   def check_compiling_haskell
     if self.assignment.submission_format == "plaintext"
       ans, errors = check_compiling_haskell_string(self.body)
@@ -27,5 +39,23 @@ module CheckingRules
   def check_compiling_haskell_module
     Dir.mkdir('temp') unless Dir.exists? 'temp'
     todo
+  end
+
+  def test_haskell(tests)
+    throw "not implemented for zips" if self.assignment.submission_format == "zipfile"
+    text = self.body
+    results = []
+
+    tests.each do |test|
+      File.open("tmp/temp.hs","w") { |f| f.write(text) }
+      results << `ghc -XSafe tmp/temp.hs 2>&1 -e "#{test}"`.strip
+    end
+
+    score = results.count("True")
+
+    add_anonymous_comment(
+          "You got #{score} out of #{tests.length} test cases correct. " +
+          "Here's the results of each of the test cases:" +
+          "<ol>#{results.map{|x| "<li>#{x}</li>" }.join()}</ol>")
   end
 end

@@ -14,7 +14,7 @@ feature "submitting assignments" do
     visit "/group_types/1/assignments/new"
     fill_in 'assignment_name', :with => "Wireworld"
     fill_in "Assignment description", :with => "Cellular automata!!!"
-    fill_in "assignment_behavior_on_submission", :with => "check_compiling_haskell"
+    fill_in "assignment_behavior_on_submission", :with => "{\"check compiling haskell\":[]}"
     click_button "Create assignment"
     sign_out "Uwe Zimmer"
   end

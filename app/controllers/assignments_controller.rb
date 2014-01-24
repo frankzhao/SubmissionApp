@@ -46,8 +46,8 @@ class AssignmentsController < ApplicationController
     if @assignment.save
       redirect_to @assignment
     else
-      flash.now[:errors] = @assignment.errors.full_messages
-      render :new
+      flash[:errors] = @assignment.errors.full_messages
+      redirect_to edit_assignment_url(@assignment)
     end
   end
 

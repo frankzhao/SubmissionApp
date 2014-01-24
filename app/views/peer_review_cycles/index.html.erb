@@ -18,18 +18,18 @@
       <p><strong>Activated:</strong> <%= cycle.activated %></p>
       <div class="btn-group">
         <% if cycle.activated %>
-          <%= button_to "Deactivate",
+          <%= link_to "Deactivate",
                     assignment_cycle_deactivate_url(@assignment.id, cycle.id),
-                      :class => "btn btn-success" %>
+                      :class => "btn btn-success", :method => :post %>
         <% else %>
-          <%= button_to "Activate",
+          <%= link_to "Activate",
                     assignment_cycle_activate_url(@assignment.id, cycle.id),
-                      :class => "btn btn-success" %>
+                      :class => "btn btn-success", :method => :post %>
         <% end %>
-        <%= button_to "Delete", assignment_cycles_delete_url(@assignment, cycle),
-                      :class => "btn btn-danger"
+        <%= link_to "Delete", assignment_cycles_delete_url(@assignment, cycle),
+                      :class => "btn btn-danger", :method => :delete
         %>
-        <%= button_to "Edit", assignment_cycles_edit_url(
+        <%= link_to "Edit", assignment_cycles_edit_url(
             @assignment.id, cycle.id), :method => :get,
                       :class => "btn btn-default" %>
       </div>
