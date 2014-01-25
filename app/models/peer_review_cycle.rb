@@ -10,7 +10,8 @@ class PeerReviewCycle < ActiveRecord::Base
   has_many :comments
   has_many :peer_marks, :through => :comments, :source => :peer_mark
 
-  validates :assignment_id, :distribution_scheme, :presence => true
+  validates :assignment_id, :distribution_scheme,
+            :shut_off_submission, :anonymise, :presence => true
   validates :maximum_mark, :number_of_swaps, :numericality => true, :allow_blank => true
 
   before_destroy :delete_children

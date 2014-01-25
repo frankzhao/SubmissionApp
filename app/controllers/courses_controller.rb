@@ -1,5 +1,5 @@
 class CoursesController < ApplicationController
-  before_filter :require_logged_in
+  before_filter :require_logged_in, :except => [:index]
   before_filter :require_convener_or_admin, :except => [:show, :index]
 
   def new
@@ -37,10 +37,13 @@ class CoursesController < ApplicationController
   end
 
   def index
-    require_logged_in
-    @user_courses = current_user.courses
-    @other_courses = Course.all - @user_courses
-    render :index
+    if current_user
+      @user_courses = current_user.courses
+      @other_courses = Course.all - @user_courses
+      render :index
+    else
+      redirect_to new_sessions_url
+    end
   end
 
   def show

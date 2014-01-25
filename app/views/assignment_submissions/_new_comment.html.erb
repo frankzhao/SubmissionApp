@@ -21,9 +21,10 @@
       <textarea name="comment[body]" class="form-control"></textarea>
     </div>
 
-    <% if relationship != :creator %>
+    <% if relationship == :staff || submission.which_peer_review_cycle(
+                                      current_user).try(:maximum_mark) %>
       <p data-toggle="collapse" data-target="#marks-<%= parent_id %>">
-        Add marks
+        Add mark
       </p>
 
       <div id="marks-<%= parent_id %>" class="collapse">
