@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140124214658) do
+ActiveRecord::Schema.define(:version => 20140127175743) do
 
   create_table "assignment_submissions", :force => true do |t|
     t.integer  "user_id",       :null => false
@@ -136,8 +136,8 @@ ActiveRecord::Schema.define(:version => 20140124214658) do
   create_table "peer_review_cycles", :force => true do |t|
     t.integer  "assignment_id",                          :null => false
     t.string   "distribution_scheme",                    :null => false
-    t.boolean  "shut_off_submission",                    :null => false
-    t.boolean  "anonymise",                              :null => false
+    t.boolean  "shut_off_submission", :default => false, :null => false
+    t.boolean  "anonymise",           :default => false, :null => false
     t.datetime "activation_time"
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false

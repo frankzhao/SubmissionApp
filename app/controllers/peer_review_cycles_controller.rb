@@ -12,11 +12,13 @@ class PeerReviewCyclesController < ApplicationController
     @peer_review_cycle = PeerReviewCycle.new(params[:peer_review_cycle])
     @peer_review_cycle.assignment_id = Assignment.find(params[:assignment_id]).id
 
+    p @peer_review_cycle
+
     if @peer_review_cycle.save
       redirect_to assignment_cycles_url(params[:assignment_id])
     else
       @assignment = Assignment.find(params[:assignment_id])
-      flash[:error] = @peer_review_cycle.errors.full_messages
+      flash[:errors] = @peer_review_cycle.errors.full_messages
       redirect_to assignment_cycles_url(params[:assignment_id])
     end
   end

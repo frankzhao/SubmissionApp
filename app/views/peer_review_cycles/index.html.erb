@@ -14,7 +14,7 @@
         <p><strong>Number of swaps:</strong> <%= cycle.number_of_swaps || 1 %></p>
       <% end %>
       <p><strong>Shut off submission:</strong> <%= cycle.shut_off_submission %></p>
-      <p><strong>Maximum mark:</strong> <%= cycle.maximum_mark || "no peer marking" %></p>
+      <p><strong>Maximum mark:</strong> <%= cycle.maximum_mark || "N.A. (no peer marking)" %></p>
       <div class="btn-group">
         <% if cycle.activated %>
           <%= link_to "Deactivate",
