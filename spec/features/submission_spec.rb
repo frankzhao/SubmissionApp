@@ -50,6 +50,58 @@ feature "submitting assignments" do
       expect(page).to_not have_content("main = \"u5555551\"")
     end
 
+    it "is not visible to others even when there's a peer review cycle" do
+      cycle = PeerReviewCycle.create(:assignment_id => 1,
+                             :distribution_scheme => "swap_simultaneously",
+                             :shut_off_submission => false,
+                             :anonymise => false)
+      cycle.activated = true
+      cycle.save!
+
+      sign_in "u5555552"
+      visit "/assignments/wireworld/assignment_submissions/1"
+      expect(page).to have_content("You don't have permission to access that page")
+      expect(page).to_not have_content("Submission for Wireworld")
+      expect(page).to_not have_content("main = \"u5555551\"")
+    end
+
+    feature "peer review" do
+      it "is invisible when cycles aren't activated" do
+        cycle = PeerReviewCycle.create(:assignment_id => 1,
+                               :distribution_scheme => "swap_simultaneously",
+                               :shut_off_submission => false,
+                               :anonymise => false)
+
+        assignment_submission = AssignmentSubmission.find(1)
+        assignment_submission.add_permission(User.find_by_uni_id(5555552), 1)
+
+        p assignment_submission.permits? User.find_by_uni_id(5555552)
+
+        sign_in "u5555552"
+        visit "/assignments/wireworld/assignment_submissions/1"
+        expect(page).to have_content("You don't have permission to access that page")
+        expect(page).to_not have_content("Submission for Wireworld")
+        expect(page).to_not have_content("main = \"u5555551\"")
+      end
+
+      it "is visible when cycles are activated" do
+        cycle = PeerReviewCycle.create(:assignment_id => 1,
+                               :distribution_scheme => "swap_simultaneously",
+                               :shut_off_submission => false,
+                               :anonymise => false)
+        cycle.activated = true
+        cycle.save!
+        assignment_submission = AssignmentSubmission.find(1)
+        assignment_submission.add_permission(User.find_by_uni_id(5555552), 1)
+
+        sign_in "u5555552"
+        visit "/assignments/wireworld/assignment_submissions/1"
+        expect(page).to have_content("Submission for Wireworld")
+        expect(page).to have_content("main = \"u5555551\"")
+      end
+
+    end
+
     feature "comments" do
       ["u5555551", "u2222222", "u5192430"].each do |uni_id|
         feature "letting the submitter comment as #{uni_id}" do
