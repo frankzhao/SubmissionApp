@@ -21,7 +21,9 @@ feature "peer review cycles" do
     before(:each) do
       PeerReviewCycle.create(:assignment_id => 1,
                              :distribution_scheme => "swap_simultaneously",
-                             :shut_off_submission => false)
+                             :shut_off_submission => false,
+                             :anonymise => false)
+      @time = Time.now.to_s
     end
 
     it "lets you see it" do
@@ -29,9 +31,8 @@ feature "peer review cycles" do
       visit "/assignments/wireworld"
       click_on "Peer review cycles"
 
-      save_and_open_page
-
       expect(page).to have_content("Peer review cycles for Wireworld")
+      expect(page).to have_css('div.cycle')
     end
   end
 end
