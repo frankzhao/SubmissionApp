@@ -23,7 +23,6 @@ feature "peer review cycles" do
                              :distribution_scheme => "swap_simultaneously",
                              :shut_off_submission => false,
                              :anonymise => false)
-      @time = Time.now.to_s
     end
 
     it "lets you see it" do
@@ -43,7 +42,7 @@ feature "peer review cycles" do
       expect(page).to have_content("Activated")
     end
 
-    feature "activating peer review cycles" do
+    feature "using swap_simultaneously" do
       before(:each) do
         PeerReviewCycle.first.activate!
       end
@@ -55,7 +54,11 @@ feature "peer review cycles" do
         expect(page).to have_content("Brooks Kris (u5555552) (visible to Dolly O'Keefe)")
       end
 
-      feature "viewing each other's stuff"
+      it "lets peers see their assignments" do
+        sign_in "u5555551"
+        visit "/assignments/wireworld/assignment_submissions/2"
+        save_and_open_page
+      end
     end
   end
 end
