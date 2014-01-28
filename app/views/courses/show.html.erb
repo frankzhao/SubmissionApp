@@ -2,7 +2,9 @@
   <div class="col-sm-9 col-sm-offset-2">
     <h2><%= @course.name %></h2>
 
-    <em>Course convener: <%= link_to @convener.name, user_url(@convener) %></em>
+    <p><em>Course convener: <%= link_to @convener.name, user_url(@convener) %></em></p>
+
+    <p><%= link_to "Create new group type", new_group_type_url %></p>
 
     <% if current_user == @convener %>
       <p><%= link_to("Enroll students", new_course_user_url(@course)) %></p>

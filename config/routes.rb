@@ -11,7 +11,7 @@ SubmissionApp::Application.routes.draw do
 
   resources :users, :only => [:show]
 
-  resources :group_types, :only => [:show] do
+  resources :group_types, :only => [:show, :create, :new] do
     resources :assignments, :only => [:new]
   end
 
@@ -50,7 +50,6 @@ SubmissionApp::Application.routes.draw do
 
   get 'comment_files/:id', :to => 'comments#get_file',
                            :as => 'comment_file'
-
 
   root :to => 'courses#index'
 end

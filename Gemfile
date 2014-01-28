@@ -16,6 +16,7 @@ group :development do
   gem 'binding_of_caller'
   gem 'brakeman', :require => false
   gem 'ruby-prof'
+  gem 'quiet_assets'
 end
 
 gem 'sqlite3'

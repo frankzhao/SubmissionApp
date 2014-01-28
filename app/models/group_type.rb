@@ -10,6 +10,8 @@ class GroupType < ActiveRecord::Base
   has_many :students, :through => :group, :source => :students
   has_many :conveners, :through => :courses, :source => :convener
 
+  validates :name, uniqueness: true
+
   def create_groups(group_hash)
     [].tap do |groups|
       group_hash.each do |name, staff|
@@ -20,5 +22,9 @@ class GroupType < ActiveRecord::Base
         groups << group
       end
     end
+  end
+
+  def add_course!(course)
+    GroupCourseMembership.create!(:group_type_id => self.id, :course_id => course.id)
   end
 end
