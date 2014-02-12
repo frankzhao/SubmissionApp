@@ -1,0 +1,25 @@
+<p><%= label_tag(:name, "Name") %>
+<%= f.text_field(:name) %></p>
+
+<h4>Courses</h4>
+
+<% group_type.courses.each do |course| %>
+  <input
+      type="checkbox"
+      name="group_type[courses][]"
+      id="group_type_course_<%= course.id %>"
+      value="<%= course.id %>"
+      checked>
+  <label for="group_type_course_<%= course.id %>"><%= course.name %></label>
+  <br>
+<% end %>
+
+<% (Course.all - group_type.courses).each do |course| %>
+        <input
+      type="checkbox"
+      name="group_type[courses][]"
+      id="group_type_course_<%= course.id %>"
+      value="<%= course.id %>">
+  <label for="group_type_course_<%= course.id %>"><%= course.name %></label>
+  <br>
+<% end %>

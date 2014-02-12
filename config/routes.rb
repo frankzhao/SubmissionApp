@@ -11,7 +11,7 @@ SubmissionApp::Application.routes.draw do
 
   resources :users, :only => [:show]
 
-  resources :group_types, :only => [:show, :create, :new] do
+  resources :group_types do
     resources :assignments, :only => [:new]
   end
 

@@ -21,10 +21,11 @@ end
 
 gem 'sqlite3'
 
+gem 'thin'
+
 gem 'jquery-rails'
-gem 'net-ldap'
+gem 'anu-ldap'
 gem 'faker'
-gem 'rubyzip'
 gem 'whenever'
 gem 'friendly_id'
 
