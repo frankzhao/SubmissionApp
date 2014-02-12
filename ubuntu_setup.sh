@@ -27,4 +27,4 @@ sudo apt-get install nodejs -y
 bundle install
 sh setup.sh
 
-echo "Run `rails server` to see it running on port 3000"
+echo "Run `rails server` to see it running on port 3000"\n
