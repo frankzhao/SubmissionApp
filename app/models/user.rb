@@ -11,7 +11,11 @@ class User < ActiveRecord::Base
   has_many :staffed_assignments, :through => :staffed_courses, :source => :assignments
 
   has_many :group_student_memberships
-  has_many :student_groups, :through => :group_student_memberships, :source => :group
+  has_many :student_groups, :through => :group_student_memberships, :source => :group do
+    def find_by_group_type(group_type)
+      where(:group_type_id => group_type.id)
+    end
+  end
 
   has_many :group_staff_memberships
   has_many :staffed_groups, :through => :group_staff_memberships, :source => :group
@@ -44,6 +48,12 @@ class User < ActiveRecord::Base
         out << user
       end
     end
+  end
+
+  def self.touch(name, uni_id)
+    user = User.find_by_uni_id(uni_id)
+    return user if user
+    User.create!(:name => name, :uni_id => uni_id)
   end
 
   def is_convener?
@@ -104,6 +114,15 @@ class User < ActiveRecord::Base
     end
   end
 
+  def drop_course!(course)
+    course.group_types.each do |group_type|
+      self.drop_group_type!(group_type)
+    end
+
+    StudentEnrollment.find_by_user_id_and_course_id(self.id, course.id)
+                     .try(:destroy)
+  end
+
   def enroll_staff_in_course!(course)
     unless self.staffed_courses.include? course
       StaffEnrollment.create!(:course_id => course.id, :user_id => self.id)
@@ -113,6 +132,17 @@ class User < ActiveRecord::Base
   def join_group!(group)
     unless self.student_groups.include?(group)
       GroupStudentMembership.create!(:group_id => group.id, :user_id => self.id)
+    end
+  end
+
+  def drop_group!(group)
+    GroupStudentMembership.find_by_user_id_and_group_id(self.id, group.id)
+                     .try(:destroy)
+  end
+
+  def drop_group_type!(group_type)
+    self.student_groups.each do |group|
+      self.drop_group(group)
     end
   end
 
@@ -134,4 +164,5 @@ class User < ActiveRecord::Base
     (self.student_assignments + self.staffed_assignments +
         self.convened_assignments).uniq
   end
+
 end

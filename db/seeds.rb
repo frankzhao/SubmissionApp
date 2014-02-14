@@ -2,21 +2,13 @@ require "faker"
 
 
 User.create!([
-  { :name => "Uwe Zimmer", :uni_id => 2222222 },
-  { :name => "Buck Shlegeris", :uni_id => 5192430 },
-  { :name => "Tessa Bradbury", :uni_id => 3333333 },
-  { :name => "Eric McCreath", :uni_id => 4444444 },
-  { :name => "James Fellows", :uni_id => 1234567 }
+  { :name => "Uwe Zimmer", :uni_id => 4037267 }
   ])
 
 `rm -rf upload/*`
 `mkdir upload/comment_related_files`
 
 uwe = User.find_by_name("Uwe Zimmer")
-
-james = User.find_by_name("James Fellows")
-james.is_admin = true
-james.save!
 
 comp1100 = Course.new(:name => "Comp1100")
 comp1100.convener = uwe
@@ -26,27 +18,14 @@ comp1130 = Course.new(:name => "Comp1130")
 comp1130.convener = uwe
 comp1130.save!
 
-eric = User.find_by_name("Eric McCreath")
-comp2300 = Course.new(:name => "Comp2300")
-comp2300.convener = eric
-comp2300.save!
-
-buck = User.find_by_name("Buck Shlegeris")
-buck.enroll_staff_in_course!(comp1100)
-buck.enroll_staff_in_course!(comp1130)
-
-tessa = User.find_by_name("Tessa Bradbury")
-tessa.enroll_staff_in_course!(comp1100)
-tessa.enroll_staff_in_course!(comp1130)
-
-tute = GroupType.create!(:name => "Comp1100/1130 labs",
+labs = GroupType.create!(:name => "Comp1100/1130 labs",
                          :courses => [comp1130, comp1100])
 
 wireworld_description = "<p>Cellular automata!</p>"+ Faker::Lorem.paragraphs.map{|x| "<p>#{x}</p>"}.join("\n")
 
 wireworld = Assignment.create!(:name => "Wireworld",
                                :info => wireworld_description,
-                               :group_type => tute,
+                               :group_type => labs,
                                :due_date => "2014-05-03 23:04:26",
                                :behavior_on_submission => '{"check compiling haskell": []}')
 
@@ -59,12 +38,18 @@ wireworld.create_marking_scheme([{:name => "Style",
 
 kalaha = Assignment.create!(:name => "Kalaha",
                              :info => "board game!",
-                             :group_type => tute,
+                             :group_type => labs,
                              :due_date => "2014-03-33 23:04:26",
                              :submission_format => "zipfile")
 
-buck_tute, tessa_tute = tute.create_groups("Thursday A"=>[buck],
-                                      "Thursday B"=>[tessa])
+tutors =  [ { :name => "Buck Shlegeris", :uni_id => 5192430 },
+  { :name => "Frank Zhao", :uni_id => 5180967 },
+  { :name => "Ivan Miljenovic", :uni_id => 4800393 },
+  { :name => "Malcolm Macdonald", :uni_id => 9606423 },
+  { :name => "Matt Alger", :uni_id => 5365162 },
+  { :name => "Probie", :uni_id => 4849459 },
+  { :name => "Vaibhav (V) Sagar", :uni_id => 4729291 }]
+
 
 people = [['Michele Hirthe',5689215],
           ['Etha Medhurst',5167449],
@@ -93,40 +78,25 @@ people = [['Michele Hirthe',5689215],
           ['Brooks Kris',5555552],
           ['Katelyn Collier',5555551]]
 
-
-[buck_tute, tessa_tute].each do |tute|
-  [comp1100, comp1130].each do |course|
-    5.times do |time|
+tutors.each do |tutor|
+  tutor = User.create!(tutor)
+  tutor.enroll_staff_in_course!(comp1100)
+  tutor.enroll_staff_in_course!(comp1130)
+  lab = labs.create_groups("#{tutor.name}'s lab" => [tutor])[0]
+  1.times do
+    [comp1100, comp1130].each do |course|
       name, id = people.pop
+      p name, id
       user = User.create!({ :name => name, :uni_id => id })
 
       user.enroll_in_course!(course)
-      user.join_group!(tute)
+      user.join_group!(lab)
+
+      AssignmentSubmission.create!(:user_id => user.id,
+                              :body => "-- btw I'm bad at Haskell\nmain = error \"first unimplemented\"",
+                              :assignment_id => wireworld.id)
     end
   end
 end
 
-5.times do |time|
-  name, id = people.pop
-  user = User.create!({ :name => name, :uni_id => id })
-  user.enroll_in_course!(comp2300)
-end
 
-0.times do |time|
-  p time
-  name, id = "student#{time}", time
-  user = User.create!({ :name => name, :uni_id => id })
-  user.enroll_in_course!(comp1100)
-  user.join_group!(buck_tute)
-  AssignmentSubmission.create!(:user_id => user.id,
-                              :body => "main = error \"first unimplemented\"",
-                              :assignment_id => wireworld.id)
-end
-
-sub1 = AssignmentSubmission.create!(:user_id => buck_tute.students[0].id,
-                              :body => "main = error \"first unimplemented\"",
-                              :assignment_id => wireworld.id)
-
-sub2 = AssignmentSubmission.create!(:user_id => buck_tute.students[1].id,
-                              :body => "main = error \"unimplemented\"",
-                              :assignment_id => wireworld.id)

@@ -12,6 +12,11 @@ class Group < ActiveRecord::Base
 
   has_many :assignments, :through => :group_type, :source => :assignment
 
+  def self.touch(group_type, name)
+    return if Group.find_by_name(name)
+    Group.create!(:group_type => group_type, :name => name)
+  end
+
   def submissions(assignment)
     # TODO: rewrite this as SQL
     assignment.submissions.select do |submission|

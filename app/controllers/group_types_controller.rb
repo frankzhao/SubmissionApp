@@ -59,4 +59,10 @@ class GroupTypesController < ApplicationController
     end
   end
 
+  def destroy
+    @group_type = GroupType.find(params[:id])
+    @group_type.destroy
+    redirect_to :back
+  end
+
 end

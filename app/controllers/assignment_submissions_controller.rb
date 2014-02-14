@@ -1,4 +1,3 @@
-require "zip"
 
 class AssignmentSubmissionsController < ApplicationController
   before_filter :require_logged_in

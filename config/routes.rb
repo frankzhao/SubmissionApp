@@ -7,7 +7,7 @@ SubmissionApp::Application.routes.draw do
 
   resources :courses, :only => [:new, :create, :index, :show, :destroy] do
     resources :users, :only => [:new, :create]
-   # resources :student_enrollments => [:create, :destroy]
+    resources :student_enrollments, :only => [:create, :destroy]
   end
 
   resources :users, :only => [:show]

@@ -27,4 +27,21 @@ class GroupType < ActiveRecord::Base
   def add_course!(course)
     GroupCourseMembership.create!(:group_type_id => self.id, :course_id => course.id)
   end
+
+  def update_student_membership(user, group_name)
+    current_group = user.student_groups
+                        .find_by_group_type(self)
+                        .first
+
+    if current_group.nil?
+      unless group_name == ""
+        user.join_group!(Group.find_by_group_type_id_and_name(self.id, group_name))
+      end
+    else
+      unless group_name == current_group.name
+        user.drop_group!(current_group)
+        user.join_group!(Group.find_by_group_type_id_and_name(self.id, group_name))
+      end
+    end
+  end
 end
