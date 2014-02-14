@@ -7,12 +7,15 @@ SubmissionApp::Application.routes.draw do
 
   resources :courses, :only => [:new, :create, :index, :show, :destroy] do
     resources :users, :only => [:new, :create]
+   # resources :student_enrollments => [:create, :destroy]
   end
 
   resources :users, :only => [:show]
 
   resources :group_types do
     resources :assignments, :only => [:new]
+    resources :groups, :only => [:create]
+    post 'csv', :to => 'groups#edit_by_csv', :as => 'edit_by_csv'
   end
 
   resources :groups, :only => [:show]

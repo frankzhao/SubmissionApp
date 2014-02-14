@@ -1,5 +1,3 @@
-require 'zip'
-
 class AssignmentSubmission < ActiveRecord::Base
   include CheckingRules
 
@@ -24,7 +22,6 @@ class AssignmentSubmission < ActiveRecord::Base
   validates :assignment_id, :user_id, :presence => true
 
   # TODO: rewrite with SQL
-
   def permits?(user)
     !! self.relationship_to_user(user)
   end
@@ -36,6 +33,8 @@ class AssignmentSubmission < ActiveRecord::Base
         return group
       end
     end
+
+
   end
 
   # This is all the people who are permitted to see the assignment.
@@ -43,7 +42,7 @@ class AssignmentSubmission < ActiveRecord::Base
   # staff for the course see all the assignments.
   # Also, SQL, obviously
   def staff
-    group.staff + group.group_type.courses.map(&:convener)
+    group.staff + group.group_type.courses.pluck(:convener)
   end
 
   def url

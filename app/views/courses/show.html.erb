@@ -16,7 +16,7 @@
         <h3><%= link_to group_type.name, group_type_url(group_type) %></h3>
 
         <% if current_user == @convener %>
-    <p><%= link_to "New assignment", new_group_type_assignment_url(group_type) %></p>
+          <p><%= link_to "New assignment", new_group_type_assignment_url(group_type) %></p>
         <% end %>
 
           <ul>
@@ -50,6 +50,8 @@
       <ul>
         <% @students.each do |student| %>
           <li> <%= link_to student.name, user_url(student) %> </li>
+          <% if @course.convener == current_user %>
+            <%= link_to "Unenroll",
         <% end %>
       </ul>
     <% elsif @course.students.include? current_user %>

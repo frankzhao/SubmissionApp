@@ -21,5 +21,32 @@
         </li>
       <% end %>
     </ul>
+
+    <% if @group_type.conveners.include? current_user %>
+
+      <h5 data-toggle="collapse" data-target="#new-group">
+        New group (TODO)
+      </h5>
+
+      <div id="new-group" class="collapse">
+        <form method="POST"
+              action="/"
+              enctype="multipart/form-data"
+              role="form"
+              class="form"
+              >
+          <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
+
+          <div class="form-group">
+            <textarea name="comment[body]" class="form-control"></textarea>
+          </div>
+
+          <div class="form-group">
+            <input class="btn btn-primary extra_space_button" type="submit" value="Post comment">
+          </div>
+        </form>
+      </div>
+
+    <% end %>
   </div>
 </div>

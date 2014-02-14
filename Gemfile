@@ -21,8 +21,6 @@ end
 
 gem 'sqlite3'
 
-gem 'thin'
-
 gem 'jquery-rails'
 gem 'anu-ldap'
 gem 'faker'
