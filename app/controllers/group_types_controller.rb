@@ -65,4 +65,9 @@ class GroupTypesController < ApplicationController
     redirect_to :back
   end
 
+  def edit_by_csv
+    @group_type = GroupType.find(params[:group_type_id])
+    @group_type.edit_by_csv(params[:group_type_csv])
+    redirect_to :back
+  end
 end

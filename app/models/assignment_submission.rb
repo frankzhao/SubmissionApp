@@ -21,11 +21,6 @@ class AssignmentSubmission < ActiveRecord::Base
 
   validates :assignment_id, :user_id, :presence => true
 
-  # TODO: rewrite with SQL
-  def permits?(user)
-    !! self.relationship_to_user(user)
-  end
-
   def group
     #TODO: this is horribly inefficient. Rewrite it properly.
     self.user.student_groups.each do |group|
@@ -35,10 +30,22 @@ class AssignmentSubmission < ActiveRecord::Base
     end
   end
 
+  # TODO: remove the n+1 shit
+  def relationship_to_user(user)
+    if user == self.user
+      return :creator
+    elsif (assignment.courses.map(&:staff).flatten +
+                        assignment.courses.map(&:convener)).include?(user)
+      return :staff
+    elsif self.which_peer_review_cycle(user)
+      return :peer
+    end
+  end
+
   # This is all the people who are permitted to see the assignment.
   # TODO: make it so that the assignment has a setting to let all
   # staff for the course see all the assignments.
-  # Also, SQL, obviously
+  # Also, faster, obviously
   def staff
     group.staff + group.group_type.courses.map(&:convener)
   end
@@ -81,6 +88,10 @@ class AssignmentSubmission < ActiveRecord::Base
     SubmissionPermission.create!(:user_id => user.id,
                                  :assignment_submission_id => self.id,
                                  :peer_review_cycle_id => cycle_id)
+  end
+
+  def permits?(user)
+    !! self.relationship_to_user(user)
   end
 
   def context_name(user_to_be_named, current_user)
@@ -144,18 +155,10 @@ class AssignmentSubmission < ActiveRecord::Base
     self.comments.where(:parent_id => nil)
   end
 
-  def relationship_to_user(user)
-    if user == self.user
-      return :creator
-    elsif (assignment.courses.map(&:staff).flatten +
-                        assignment.courses.map(&:convener)).include?(user)
-      return :staff
-    elsif self.which_peer_review_cycle(user)
-      return :peer
-    end
-  end
 
   # If a user has access to a submission through two seperate cycles, the
+  # latter one controls the conditions of viewing.
+  # This shouldn't happen though.
   def which_peer_review_cycle(user)
     permission = self.submission_permissions.where(:user_id => user.id)
                                .order('created_at DESC')

@@ -15,7 +15,7 @@ SubmissionApp::Application.routes.draw do
   resources :group_types do
     resources :assignments, :only => [:new]
     resources :groups, :only => [:create]
-    post 'csv', :to => 'groups#edit_by_csv', :as => 'edit_by_csv'
+    post 'csv', :to => 'group_types#edit_by_csv', :as => 'edit_by_csv'
   end
 
   resources :groups, :only => [:show]

@@ -152,6 +152,13 @@ class User < ActiveRecord::Base
     end
   end
 
+  def drop_group_as_staff!(group)
+    GroupStaffMembership.find_by_user_id_and_group_id(self.id, group.id)
+                          .try(:destroy)
+  end
+
+
+  #TODO: SQL
   def permitted_submissions_for_assignment(assignment)
     self.submission_permissions.includes(:assignment)
                                .includes(:peer_review_cycle)
