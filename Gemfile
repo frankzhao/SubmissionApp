@@ -19,7 +19,7 @@ group :development do
   gem 'quiet_assets'
 end
 
-gem 'sqlite3'
+gem 'pg'
 
 gem 'jquery-rails'
 gem 'anu-ldap'
