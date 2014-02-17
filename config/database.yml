@@ -13,19 +13,19 @@
 # gem 'pg'
 #
 development:
-  adapter: sqlite3
+  adapter: postgresql
   encoding: unicode
   database: SubmissionApp_development
   pool: 5
-  username: buck2
+  username: appacademy
   password:
 
 test:
-  adapter: sqlite3
+  adapter: postgresql
   encoding: unicode
   database: SubmissionApp_test
   pool: 5
-  username: buck2
+  username: appacademy
   password:
 
   # Connect on a TCP socket. Omitted by default since the client uses a
