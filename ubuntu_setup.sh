@@ -20,6 +20,10 @@ rvm use ruby --default
 rvm rubygems current
 gem install rails --no-ri --no-rdoc
 
+# This installs postgres
+sudo apt-get install libpq-dev
+sudo apt-get install postgresql
+
 # This installs a JS runtime, which Rails needs
 sudo apt-get install nodejs -y
 
