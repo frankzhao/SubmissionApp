@@ -17,6 +17,8 @@
 
         <% if current_user == @convener %>
     <p><%= link_to "New assignment", new_group_type_assignment_url(group_type) %></p>
+
+    <p><%= link_to "Delete "+group_type.name, group_type_url(group_type), :method => :delete %> </p>
         <% end %>
 
           <ul>

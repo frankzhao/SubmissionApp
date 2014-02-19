@@ -20,6 +20,11 @@ rvm use ruby --default
 rvm rubygems current
 gem install rails --no-ri --no-rdoc
 
+# This installs postgres
+sudo apt-get install libpq-dev -y
+sudo apt-get install postgresql -y
+echo "CREATE ROLE vagrant SUPERUSER LOGIN;" | sudo su postgres -c psql
+
 # This installs a JS runtime, which Rails needs
 sudo apt-get install nodejs -y
 

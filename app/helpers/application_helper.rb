@@ -1,23 +1,9 @@
-require "net-ldap"
+require "anu-ldap"
 
 module ApplicationHelper
 
-  ###### These two functions are taken from GitHub. TODO: rewrite them so that
-  # the user information works.
-
-  # Returns _true_ if authentication is successful, and _false_ otherwise.
   def self.ldap_authenticate(uni_id, password)
-    ldap = get_new_ldap()
-    ldap.auth "uid=#{uni_id}, ou=people, o=anu.edu.au", password
-
-    ldap.bind
-  end
-
-  # Get a new connection to the ANU LDAP server.
-  def self.get_new_ldap()
-    Net::LDAP.new(:host => "ldap.anu.edu.au",
-                  :port => 636,
-                  :encryption => :simple_tls)
+    AnuLdap.authenticate(uni_id, password)
   end
 
   def current_user

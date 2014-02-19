@@ -1,0 +1,13 @@
+<div class="row">
+  <div class="col-sm-8 col-sm-offset-2">
+
+    <h2>Edit <%= @group_type.name %></h2>
+    <%= form_for @group_type, url: {action: "update"}, html: {role: "form"} do |f| %>
+      <%= render :partial => "form", :locals => { :group_type => @group_type,
+                                                  :f => f } %>
+
+
+      <p><%= f.submit("Update", :class => "btn btn-primary btn-sm") %></p>
+    <% end %>
+  </div>
+</div>

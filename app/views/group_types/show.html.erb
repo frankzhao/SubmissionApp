@@ -21,5 +21,32 @@
         </li>
       <% end %>
     </ul>
+
+    <% if @group_type.conveners.include? current_user %>
+
+      <h5 data-toggle="collapse" data-target="#edit-groups">
+        Edit groups
+      </h5>
+
+      <div id="edit-groups">
+      THIS SHOULD COLLAPSE
+        <form method="POST"
+              action="<%= group_type_edit_by_csv_url(@group_type) %>"
+              role="form"
+              class="form"
+              >
+          <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
+
+          <div class="form-group">
+            <textarea name="group_type_csv" class="form-control"><%= @group_type.render_csv %></textarea>
+          </div>
+
+          <div class="form-group">
+            <input class="btn btn-primary extra_space_button" type="submit" value="Submit CSV">
+          </div>
+        </form>
+      </div>
+
+    <% end %>
   </div>
 </div>

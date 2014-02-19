@@ -33,9 +33,6 @@ class Assignment < ActiveRecord::Base
   friendly_id :name, :use => :slugged
 
   def name_is_acceptable
-    if self.name == "comment_related_files"
-      self.errors[:name] << 'That name is reserved by the system.'
-    end
     unless self.name.match /\A[a-zA-Z:_0-9 ]+\Z/
       self.errors[:name] << "The name must match this regex: /\A[a-zA-Z:0-9 ]+\Z/. " +
                        "That is to say, it may only have letters, numbers, colons and spaces."
@@ -74,7 +71,7 @@ class Assignment < ActiveRecord::Base
   end
 
   def path_without_upload
-    "#{self.id}"
+    "#{self.id}_#{self.name}"
   end
 
   def update_zip

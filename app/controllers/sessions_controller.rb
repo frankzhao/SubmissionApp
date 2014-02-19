@@ -33,8 +33,6 @@ class SessionsController < ApplicationController
     redirect_to new_sessions_url
   end
 
-
-  # Currently disabled
   def authenticate(uni_id, password)
     return true
     ApplicationHelper.ldap_authenticate(uni_id, password)

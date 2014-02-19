@@ -19,12 +19,11 @@ group :development do
   gem 'quiet_assets'
 end
 
-gem 'sqlite3'
+gem 'pg'
 
 gem 'jquery-rails'
-gem 'net-ldap'
+gem 'anu-ldap'
 gem 'faker'
-gem 'rubyzip'
 gem 'whenever'
 gem 'friendly_id'
 

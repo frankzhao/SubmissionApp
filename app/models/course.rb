@@ -24,13 +24,44 @@ class Course < ActiveRecord::Base
   friendly_id :name, :use => :slugged
 
   def add_students_by_csv(csv_string)
-    students = User.create_by_csv!(csv_string)
-    students.each do |student|
-      student.enroll_in_course!(self)
+    lines = csv_string.split("\n")
+
+    unless "name,uni id," + self.group_types.map(&:name).join(",") == lines[0].chomp
+      raise "invalid csv"
+    end
+
+    users_seen = []
+
+    lines.drop(1).each do |line|
+      row = line.chomp.split(",")
+      u = User.touch(row[0], row[1])
+      u.enroll_in_course!(self)
+      self.group_types.zip(row.drop(2)).each do |group_type, group_name|
+        group_type.update_student_membership(u, group_name)
+      end
+      users_seen << u
+    end
+
+    (self.students - users_seen).each do |failed_student|
+      failed_student.drop_course!(self)
     end
   end
 
   def admin_or_convener?(user)
     user.is_admin || self.convener == user
+  end
+
+  def render_student_csv
+    out = []
+
+    out << "name,uni id," + self.group_types.map(&:name).join(",")
+    self.students.each do |student|
+      row = [student.name, student.uni_id.to_s]
+      self.group_types.each do |group_type|
+        row << student.student_groups.find_by_group_type(group_type).first.try(:name)
+      end
+      out << row.join(",")
+    end
+    out.join("\n")
   end
 end

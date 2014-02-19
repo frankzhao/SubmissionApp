@@ -23,11 +23,11 @@ ActiveRecord::Schema.define(:version => 20140127175743) do
   end
 
   create_table "assignments", :force => true do |t|
-    t.string   "name",                                            :null => false
-    t.text     "info",                                            :null => false
-    t.datetime "created_at",                                      :null => false
-    t.datetime "updated_at",                                      :null => false
-    t.integer  "group_type_id",                                   :null => false
+    t.string   "name",                   :null => false
+    t.text     "info",                   :null => false
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
+    t.integer  "group_type_id",          :null => false
     t.string   "submission_policy"
     t.datetime "due_date"
     t.string   "submission_format",      :default => "plaintext", :null => false
