@@ -99,4 +99,6 @@ tutors.each do |tutor|
   end
 end
 
-
+buck = User.find_by_uni_id(5192430)
+buck.is_admin = true
+buck.save!

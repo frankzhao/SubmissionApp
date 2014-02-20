@@ -30,7 +30,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <% if current_user.is_admin %>
-          <li>You're an admin.</li>
+          <li><a>You're an admin.</a></li>
         <% end %>
         <li>
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%=current_user.name%><b class="caret"></b></a>
