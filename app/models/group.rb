@@ -24,4 +24,8 @@ class Group < ActiveRecord::Base
       self.students.include?(submission.user)
     end
   end
+
+  def jettison_staff
+    GroupStaffMembership.delete_all(:group_id => self.id)
+  end
 end

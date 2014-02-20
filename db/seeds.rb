@@ -83,17 +83,17 @@ tutors.each do |tutor|
   tutor.enroll_staff_in_course!(comp1100)
   tutor.enroll_staff_in_course!(comp1130)
   lab = labs.create_groups("#{tutor.name}'s lab" => [tutor])[0]
-  1.times do
+  10.times do
     [comp1100, comp1130].each do |course|
-      name, id = people.pop
-      p name, id
-      user = User.create!({ :name => name, :uni_id => id })
+      name = Faker::Name.first_name + " " + Faker::Name.last_name
+      user = User.create!({ :name => name,
+                  :uni_id => rand(2_000_000)+4_000_000 })
 
       user.enroll_in_course!(course)
       user.join_group!(lab)
 
       AssignmentSubmission.create!(:user_id => user.id,
-                              :body => "-- btw I'm bad at Haskell\nmain = error \"first unimplemented\"",
+                              :body => "main = error \"unimplemented by #{name}\"",
                               :assignment_id => wireworld.id)
     end
   end

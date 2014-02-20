@@ -34,7 +34,7 @@ class GroupType < ActiveRecord::Base
                         .first
 
     if current_group.nil?
-      unless group_name == ""
+      unless group_name == "" || group_name.nil?
         user.join_group!(Group.find_by_group_type_id_and_name(self.id, group_name))
       end
     else
@@ -60,7 +60,6 @@ class GroupType < ActiveRecord::Base
         user.join_group_as_staff!(Group.find_by_group_type_id_and_name(self.id, group_name))
       end
     end
-    raise 4
   end
 
   def render_csv
@@ -82,17 +81,19 @@ class GroupType < ActiveRecord::Base
     end
 
     groups_seen = []
+    puts "\n"*30
 
     lines.drop(1).each do |line|
       row = line.chomp.split(",")
       g = Group.touch(self, row[0])
-      row.drop(2).each do |staff_uni_id|
+      g.jettison_staff
+      row.drop(1).uniq.each do |staff_uni_id|
         u = User.find_by_uni_id(staff_uni_id)
-        raise "User not known: #{staff_uni_id}" unless u
-        group_type.update_staff_membership(u, group_name)
+        u.join_group_as_staff!(g)
       end
       groups_seen << g
     end
+    # throw "what"
     (self.groups - groups_seen).map(&:delete)
   end
 end

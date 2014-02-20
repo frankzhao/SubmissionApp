@@ -21,6 +21,7 @@ rvm rubygems current
 gem install rails --no-ri --no-rdoc
 
 # This installs postgres
+echo "Installing postgres"
 sudo apt-get install libpq-dev -y
 sudo apt-get install postgresql -y
 echo "CREATE ROLE vagrant SUPERUSER LOGIN;" | sudo su postgres -c psql
@@ -29,6 +30,7 @@ echo "CREATE ROLE vagrant SUPERUSER LOGIN;" | sudo su postgres -c psql
 sudo apt-get install nodejs -y
 
 # This installs the Rails dependencies
+echo "Bundle installing"
 bundle install
 sh setup.sh
 
