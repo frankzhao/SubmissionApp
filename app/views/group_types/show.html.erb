@@ -22,7 +22,7 @@
       <% end %>
     </ul>
 
-    <% if @group_type.conveners.include? current_user %>
+    <% if @group_type.conveners.include? current_user || current_user.is_admin %>
 
       <h5 data-toggle="collapse" data-target="#edit-groups">
         Edit groups
