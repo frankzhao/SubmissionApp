@@ -15,5 +15,9 @@ SubmissionApp_development
 /log/*.log
 /tmp/*
 /upload/*
+
 /vendor/*
 secret_token
+
+secret_tokenSubmissionApp_development
+

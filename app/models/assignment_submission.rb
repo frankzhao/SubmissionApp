@@ -22,12 +22,13 @@ class AssignmentSubmission < ActiveRecord::Base
   validates :assignment_id, :user_id, :presence => true
 
   def group
-    #TODO: this is horribly inefficient. Rewrite it properly.
+    #TODO: this is probably inefficient. Rewrite it properly.
     self.user.student_groups.each do |group|
       if group.group_type == self.assignment.group_type
         return group
       end
     end
+    return nil
   end
 
   # TODO: remove the n+1 shit

@@ -91,5 +91,11 @@ describe User do
         end
       end
     end
+
+    describe "join_group!" do
+      it "makes users join groups" do
+        u = User.create!(:name => "Buck", :uni_id => 12345)
+      end
+    end
   end
 end

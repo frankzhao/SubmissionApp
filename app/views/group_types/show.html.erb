@@ -17,12 +17,16 @@
     <ul>
       <% @group_type.groups.each do |group| %>
         <li>
-          <%= link_to group.name, group_url(group) %>
+          <%= link_to group.name, group_url(group) %> (<%= group.students.count %> students)
         </li>
       <% end %>
     </ul>
 
+
+
     <% if @group_type.conveners.include?(current_user) || current_user.is_admin %>
+
+    Students who don't have a group: <%= @group_type.students_without_a_group_count %>
 
       <h5 data-toggle="collapse" data-target="#edit-groups">
         Edit groups

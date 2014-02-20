@@ -7,7 +7,7 @@ class GroupType < ActiveRecord::Base
   has_many :groups
   has_many :assignments
 
-  has_many :students, :through => :group, :source => :students
+  has_many :students, :through => :groups, :source => :students
   has_many :conveners, :through => :courses, :source => :convener
 
   validates :name, uniqueness: true
@@ -98,5 +98,22 @@ class GroupType < ActiveRecord::Base
     end
     # throw "what"
     (self.groups - groups_seen).map(&:delete)
+  end
+
+  def students_of_courses
+    where_clause = <<-SQL
+    student_enrollments.course_id IN
+        (SELECT courses.id
+          FROM courses
+          JOIN group_course_memberships
+          ON courses.id = group_course_memberships.course_id
+          WHERE group_course_memberships.group_type_id = #{self.id})
+    SQL
+
+    User.joins(:student_enrollments).where(where_clause)
+  end
+
+  def students_without_a_group_count
+    self.students_of_courses.count - self.students.count
   end
 end
