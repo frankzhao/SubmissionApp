@@ -142,7 +142,7 @@ class User < ActiveRecord::Base
 
   def drop_group_type!(group_type)
     self.student_groups.each do |group|
-      self.drop_group(group)
+      self.drop_group!(group)
     end
   end
 
