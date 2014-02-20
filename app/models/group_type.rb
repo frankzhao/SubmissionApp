@@ -58,6 +58,9 @@ class GroupType < ActiveRecord::Base
       unless group_name == current_group.name
         user.drop_group_as_staff!(current_group)
         user.join_group_as_staff!(Group.find_by_group_type_id_and_name(self.id, group_name))
+        self.courses.each do |course|
+          user.enroll_staff_in_course(course)
+        end
       end
     end
   end

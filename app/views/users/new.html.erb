@@ -4,8 +4,11 @@
 
 <p>Stick some CSV here, yo.</p>
 <form method="POST" action=<%= course_users_url(@course) %> role="form">
+ <h3>Students</h3>
   <textarea name="user_details" class="form-control"><%= @course.render_student_csv %></textarea>
-  <input type="submit" value="Create users">
+  <h3>Staff</h3>
+  <textarea name="staff_details" class="form-control"><%= @course.render_staff_csv %></textarea>
+  <input type="submit" value="Create users" class="btn btn-primary btn-sm">
   <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
 
 <p>This edits the course enrollments and group enrollments in this course.</p>

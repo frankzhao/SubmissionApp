@@ -47,6 +47,19 @@ class Course < ActiveRecord::Base
     end
   end
 
+  def add_staff_by_csv(csv_string)
+    lines = csv_string.split("\n")
+    unless "name,uni id"
+      raise "invalid csv"
+    end
+    StaffEnrollment.delete_all(:course_id => self.id)
+    lines.drop(1).each do |line|
+      row = line.chomp.split(",")
+      u = User.touch(row[0], row[1])
+      u.enroll_staff_in_course!(self)
+    end
+  end
+
   def admin_or_convener?(user)
     user.is_admin || self.convener == user
   end
@@ -60,6 +73,16 @@ class Course < ActiveRecord::Base
       self.group_types.each do |group_type|
         row << student.student_groups.find_by_group_type(group_type).first.try(:name)
       end
+      out << row.join(",")
+    end
+    out.join("\n")
+  end
+
+  def render_staff_csv
+    out = []
+    out << "name,uni id"
+    self.staff.each do |staff|
+      row = [staff.name, staff.uni_id.to_s]
       out << row.join(",")
     end
     out.join("\n")

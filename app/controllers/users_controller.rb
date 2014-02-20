@@ -17,6 +17,7 @@ class UsersController < ApplicationController
       # begin
 
         @course.add_students_by_csv(params[:user_details])
+        @course.add_staff_by_csv(params[:staff_details])
         redirect_to course_url(@course)
       # rescue => e
       #   flash[:errors] = [e.to_s]
