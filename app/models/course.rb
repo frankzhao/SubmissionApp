@@ -37,6 +37,7 @@ class Course < ActiveRecord::Base
       u = User.touch(row[0], row[1])
       u.enroll_in_course!(self)
       self.group_types.zip(row.drop(2)).each do |group_type, group_name|
+        next if group_name.nil? || group_name.length == 0
         group_type.update_student_membership(u, group_name)
       end
       users_seen << u

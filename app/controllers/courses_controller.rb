@@ -55,7 +55,7 @@ class CoursesController < ApplicationController
 
     @convener = @course.convener
     @staffs = @course.staff # Yes, I am aware that the plural of staff isn't staffs
-    if current_user.courses.include?(@course)
+    if current_user.courses.include?(@course) || current_user.is_admin
       @students = @course.students
       @group_types = @course.group_types
       @assignments = @course.assignments.order("due_date ASC")
