@@ -1,0 +1,500 @@
+have_func: checking for rb_gc_stat()... -------------------- yes
+
+"gcc -o conftest -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/x86_64-linux -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/ruby/backward -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0 -I.     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC conftest.c  -L. -L/usr/local/rvm/rubies/ruby-2.1.0/lib -Wl,-R/usr/local/rvm/rubies/ruby-2.1.0/lib -L. -fstack-protector -rdynamic -Wl,-export-dynamic     -Wl,-rpath,'/../lib' -Wl,-R -Wl,'/../lib' -L'/../lib' -lruby  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: int main(int argc, char **argv)
+4: {
+5:   return 0;
+6: }
+/* end */
+
+"gcc -o conftest -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/x86_64-linux -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/ruby/backward -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0 -I.     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC conftest.c  -L. -L/usr/local/rvm/rubies/ruby-2.1.0/lib -Wl,-R/usr/local/rvm/rubies/ruby-2.1.0/lib -L. -fstack-protector -rdynamic -Wl,-export-dynamic     -Wl,-rpath,'/../lib' -Wl,-R -Wl,'/../lib' -L'/../lib' -lruby  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:13:32: warning: variable ‘p’ set but not used [-Wunused-but-set-variable]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+13: int t(void) { void ((*volatile p)()); p = (void ((*)()))rb_gc_stat; return 0; }
+/* end */
+
+--------------------
+
+have_func: checking for rb_gc_count()... -------------------- yes
+
+"gcc -o conftest -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/x86_64-linux -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/ruby/backward -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0 -I.     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC conftest.c  -L. -L/usr/local/rvm/rubies/ruby-2.1.0/lib -Wl,-R/usr/local/rvm/rubies/ruby-2.1.0/lib -L. -fstack-protector -rdynamic -Wl,-export-dynamic     -Wl,-rpath,'/../lib' -Wl,-R -Wl,'/../lib' -L'/../lib' -lruby  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:13:32: warning: variable ‘p’ set but not used [-Wunused-but-set-variable]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+13: int t(void) { void ((*volatile p)()); p = (void ((*)()))rb_gc_count; return 0; }
+/* end */
+
+--------------------
+
+have_func: checking for rb_os_allocated_objects()... -------------------- no
+
+"gcc -o conftest -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/x86_64-linux -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/ruby/backward -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0 -I.     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC conftest.c  -L. -L/usr/local/rvm/rubies/ruby-2.1.0/lib -Wl,-R/usr/local/rvm/rubies/ruby-2.1.0/lib -L. -fstack-protector -rdynamic -Wl,-export-dynamic     -Wl,-rpath,'/../lib' -Wl,-R -Wl,'/../lib' -L'/../lib' -lruby  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:13:57: error: ‘rb_os_allocated_objects’ undeclared (first use in this function)
+conftest.c:13:57: note: each undeclared identifier is reported only once for each function it appears in
+conftest.c:13:32: warning: variable ‘p’ set but not used [-Wunused-but-set-variable]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+13: int t(void) { void ((*volatile p)()); p = (void ((*)()))rb_os_allocated_objects; return 0; }
+/* end */
+
+"gcc -o conftest -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/x86_64-linux -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/ruby/backward -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0 -I.     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC conftest.c  -L. -L/usr/local/rvm/rubies/ruby-2.1.0/lib -Wl,-R/usr/local/rvm/rubies/ruby-2.1.0/lib -L. -fstack-protector -rdynamic -Wl,-export-dynamic     -Wl,-rpath,'/../lib' -Wl,-R -Wl,'/../lib' -L'/../lib' -lruby  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:13:1: warning: implicit declaration of function ‘rb_os_allocated_objects’ [-Wimplicit-function-declaration]
+/tmp/ccMel3zv.o: In function `t':
+/dept/dcs/comp1100/supr/SubmissionApp/vendor/bundle/ruby/2.1.0/gems/ruby-prof-0.14.2/ext/ruby_prof/conftest.c:13: undefined reference to `rb_os_allocated_objects'
+collect2: ld returned 1 exit status
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+13: int t(void) { rb_os_allocated_objects(); return 0; }
+/* end */
+
+--------------------
+
+have_func: checking for rb_gc_allocated_size()... -------------------- no
+
+"gcc -o conftest -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/x86_64-linux -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/ruby/backward -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0 -I.     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC conftest.c  -L. -L/usr/local/rvm/rubies/ruby-2.1.0/lib -Wl,-R/usr/local/rvm/rubies/ruby-2.1.0/lib -L. -fstack-protector -rdynamic -Wl,-export-dynamic     -Wl,-rpath,'/../lib' -Wl,-R -Wl,'/../lib' -L'/../lib' -lruby  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:13:57: error: ‘rb_gc_allocated_size’ undeclared (first use in this function)
+conftest.c:13:57: note: each undeclared identifier is reported only once for each function it appears in
+conftest.c:13:32: warning: variable ‘p’ set but not used [-Wunused-but-set-variable]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+13: int t(void) { void ((*volatile p)()); p = (void ((*)()))rb_gc_allocated_size; return 0; }
+/* end */
+
+"gcc -o conftest -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/x86_64-linux -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/ruby/backward -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0 -I.     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC conftest.c  -L. -L/usr/local/rvm/rubies/ruby-2.1.0/lib -Wl,-R/usr/local/rvm/rubies/ruby-2.1.0/lib -L. -fstack-protector -rdynamic -Wl,-export-dynamic     -Wl,-rpath,'/../lib' -Wl,-R -Wl,'/../lib' -L'/../lib' -lruby  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:13:1: warning: implicit declaration of function ‘rb_gc_allocated_size’ [-Wimplicit-function-declaration]
+/tmp/cc6zDIGI.o: In function `t':
+/dept/dcs/comp1100/supr/SubmissionApp/vendor/bundle/ruby/2.1.0/gems/ruby-prof-0.14.2/ext/ruby_prof/conftest.c:13: undefined reference to `rb_gc_allocated_size'
+collect2: ld returned 1 exit status
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+13: int t(void) { rb_gc_allocated_size(); return 0; }
+/* end */
+
+--------------------
+
+have_func: checking for rb_gc_collections()... -------------------- no
+
+"gcc -o conftest -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/x86_64-linux -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/ruby/backward -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0 -I.     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC conftest.c  -L. -L/usr/local/rvm/rubies/ruby-2.1.0/lib -Wl,-R/usr/local/rvm/rubies/ruby-2.1.0/lib -L. -fstack-protector -rdynamic -Wl,-export-dynamic     -Wl,-rpath,'/../lib' -Wl,-R -Wl,'/../lib' -L'/../lib' -lruby  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:13:57: error: ‘rb_gc_collections’ undeclared (first use in this function)
+conftest.c:13:57: note: each undeclared identifier is reported only once for each function it appears in
+conftest.c:13:32: warning: variable ‘p’ set but not used [-Wunused-but-set-variable]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+13: int t(void) { void ((*volatile p)()); p = (void ((*)()))rb_gc_collections; return 0; }
+/* end */
+
+"gcc -o conftest -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/x86_64-linux -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/ruby/backward -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0 -I.     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC conftest.c  -L. -L/usr/local/rvm/rubies/ruby-2.1.0/lib -Wl,-R/usr/local/rvm/rubies/ruby-2.1.0/lib -L. -fstack-protector -rdynamic -Wl,-export-dynamic     -Wl,-rpath,'/../lib' -Wl,-R -Wl,'/../lib' -L'/../lib' -lruby  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:13:1: warning: implicit declaration of function ‘rb_gc_collections’ [-Wimplicit-function-declaration]
+/tmp/ccFqscbH.o: In function `t':
+/dept/dcs/comp1100/supr/SubmissionApp/vendor/bundle/ruby/2.1.0/gems/ruby-prof-0.14.2/ext/ruby_prof/conftest.c:13: undefined reference to `rb_gc_collections'
+collect2: ld returned 1 exit status
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+13: int t(void) { rb_gc_collections(); return 0; }
+/* end */
+
+--------------------
+
+have_func: checking for rb_gc_time()... -------------------- no
+
+"gcc -o conftest -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/x86_64-linux -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/ruby/backward -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0 -I.     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC conftest.c  -L. -L/usr/local/rvm/rubies/ruby-2.1.0/lib -Wl,-R/usr/local/rvm/rubies/ruby-2.1.0/lib -L. -fstack-protector -rdynamic -Wl,-export-dynamic     -Wl,-rpath,'/../lib' -Wl,-R -Wl,'/../lib' -L'/../lib' -lruby  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:13:57: error: ‘rb_gc_time’ undeclared (first use in this function)
+conftest.c:13:57: note: each undeclared identifier is reported only once for each function it appears in
+conftest.c:13:32: warning: variable ‘p’ set but not used [-Wunused-but-set-variable]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+13: int t(void) { void ((*volatile p)()); p = (void ((*)()))rb_gc_time; return 0; }
+/* end */
+
+"gcc -o conftest -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/x86_64-linux -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/ruby/backward -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0 -I.     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC conftest.c  -L. -L/usr/local/rvm/rubies/ruby-2.1.0/lib -Wl,-R/usr/local/rvm/rubies/ruby-2.1.0/lib -L. -fstack-protector -rdynamic -Wl,-export-dynamic     -Wl,-rpath,'/../lib' -Wl,-R -Wl,'/../lib' -L'/../lib' -lruby  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:13:1: warning: implicit declaration of function ‘rb_gc_time’ [-Wimplicit-function-declaration]
+/tmp/cc9Z4QER.o: In function `t':
+/dept/dcs/comp1100/supr/SubmissionApp/vendor/bundle/ruby/2.1.0/gems/ruby-prof-0.14.2/ext/ruby_prof/conftest.c:13: undefined reference to `rb_gc_time'
+collect2: ld returned 1 exit status
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+13: int t(void) { rb_gc_time(); return 0; }
+/* end */
+
+--------------------
+
+have_func: checking for rb_gc_total_time()... -------------------- no
+
+"gcc -o conftest -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/x86_64-linux -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/ruby/backward -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0 -I.     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC conftest.c  -L. -L/usr/local/rvm/rubies/ruby-2.1.0/lib -Wl,-R/usr/local/rvm/rubies/ruby-2.1.0/lib -L. -fstack-protector -rdynamic -Wl,-export-dynamic     -Wl,-rpath,'/../lib' -Wl,-R -Wl,'/../lib' -L'/../lib' -lruby  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:13:57: error: ‘rb_gc_total_time’ undeclared (first use in this function)
+conftest.c:13:57: note: each undeclared identifier is reported only once for each function it appears in
+conftest.c:13:32: warning: variable ‘p’ set but not used [-Wunused-but-set-variable]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+13: int t(void) { void ((*volatile p)()); p = (void ((*)()))rb_gc_total_time; return 0; }
+/* end */
+
+"gcc -o conftest -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/x86_64-linux -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/ruby/backward -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0 -I.     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC conftest.c  -L. -L/usr/local/rvm/rubies/ruby-2.1.0/lib -Wl,-R/usr/local/rvm/rubies/ruby-2.1.0/lib -L. -fstack-protector -rdynamic -Wl,-export-dynamic     -Wl,-rpath,'/../lib' -Wl,-R -Wl,'/../lib' -L'/../lib' -lruby  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:13:1: warning: implicit declaration of function ‘rb_gc_total_time’ [-Wimplicit-function-declaration]
+/tmp/ccvOkT41.o: In function `t':
+/dept/dcs/comp1100/supr/SubmissionApp/vendor/bundle/ruby/2.1.0/gems/ruby-prof-0.14.2/ext/ruby_prof/conftest.c:13: undefined reference to `rb_gc_total_time'
+collect2: ld returned 1 exit status
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+13: int t(void) { rb_gc_total_time(); return 0; }
+/* end */
+
+--------------------
+
+have_func: checking for rb_gc_total_mallocs()... -------------------- no
+
+"gcc -o conftest -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/x86_64-linux -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/ruby/backward -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0 -I.     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC conftest.c  -L. -L/usr/local/rvm/rubies/ruby-2.1.0/lib -Wl,-R/usr/local/rvm/rubies/ruby-2.1.0/lib -L. -fstack-protector -rdynamic -Wl,-export-dynamic     -Wl,-rpath,'/../lib' -Wl,-R -Wl,'/../lib' -L'/../lib' -lruby  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:13:57: error: ‘rb_gc_total_mallocs’ undeclared (first use in this function)
+conftest.c:13:57: note: each undeclared identifier is reported only once for each function it appears in
+conftest.c:13:32: warning: variable ‘p’ set but not used [-Wunused-but-set-variable]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+13: int t(void) { void ((*volatile p)()); p = (void ((*)()))rb_gc_total_mallocs; return 0; }
+/* end */
+
+"gcc -o conftest -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/x86_64-linux -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/ruby/backward -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0 -I.     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC conftest.c  -L. -L/usr/local/rvm/rubies/ruby-2.1.0/lib -Wl,-R/usr/local/rvm/rubies/ruby-2.1.0/lib -L. -fstack-protector -rdynamic -Wl,-export-dynamic     -Wl,-rpath,'/../lib' -Wl,-R -Wl,'/../lib' -L'/../lib' -lruby  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:13:1: warning: implicit declaration of function ‘rb_gc_total_mallocs’ [-Wimplicit-function-declaration]
+/tmp/ccj1Zwnc.o: In function `t':
+/dept/dcs/comp1100/supr/SubmissionApp/vendor/bundle/ruby/2.1.0/gems/ruby-prof-0.14.2/ext/ruby_prof/conftest.c:13: undefined reference to `rb_gc_total_mallocs'
+collect2: ld returned 1 exit status
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+13: int t(void) { rb_gc_total_mallocs(); return 0; }
+/* end */
+
+--------------------
+
+have_func: checking for rb_gc_total_malloced_bytes()... -------------------- no
+
+"gcc -o conftest -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/x86_64-linux -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/ruby/backward -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0 -I.     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC conftest.c  -L. -L/usr/local/rvm/rubies/ruby-2.1.0/lib -Wl,-R/usr/local/rvm/rubies/ruby-2.1.0/lib -L. -fstack-protector -rdynamic -Wl,-export-dynamic     -Wl,-rpath,'/../lib' -Wl,-R -Wl,'/../lib' -L'/../lib' -lruby  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:13:57: error: ‘rb_gc_total_malloced_bytes’ undeclared (first use in this function)
+conftest.c:13:57: note: each undeclared identifier is reported only once for each function it appears in
+conftest.c:13:32: warning: variable ‘p’ set but not used [-Wunused-but-set-variable]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+13: int t(void) { void ((*volatile p)()); p = (void ((*)()))rb_gc_total_malloced_bytes; return 0; }
+/* end */
+
+"gcc -o conftest -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/x86_64-linux -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/ruby/backward -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0 -I.     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC conftest.c  -L. -L/usr/local/rvm/rubies/ruby-2.1.0/lib -Wl,-R/usr/local/rvm/rubies/ruby-2.1.0/lib -L. -fstack-protector -rdynamic -Wl,-export-dynamic     -Wl,-rpath,'/../lib' -Wl,-R -Wl,'/../lib' -L'/../lib' -lruby  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:13:1: warning: implicit declaration of function ‘rb_gc_total_malloced_bytes’ [-Wimplicit-function-declaration]
+/tmp/ccpWeiOm.o: In function `t':
+/dept/dcs/comp1100/supr/SubmissionApp/vendor/bundle/ruby/2.1.0/gems/ruby-prof-0.14.2/ext/ruby_prof/conftest.c:13: undefined reference to `rb_gc_total_malloced_bytes'
+collect2: ld returned 1 exit status
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+13: int t(void) { rb_gc_total_malloced_bytes(); return 0; }
+/* end */
+
+--------------------
+
+have_func: checking for rb_heap_total_mem()... -------------------- no
+
+"gcc -o conftest -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/x86_64-linux -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/ruby/backward -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0 -I.     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC conftest.c  -L. -L/usr/local/rvm/rubies/ruby-2.1.0/lib -Wl,-R/usr/local/rvm/rubies/ruby-2.1.0/lib -L. -fstack-protector -rdynamic -Wl,-export-dynamic     -Wl,-rpath,'/../lib' -Wl,-R -Wl,'/../lib' -L'/../lib' -lruby  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:13:57: error: ‘rb_heap_total_mem’ undeclared (first use in this function)
+conftest.c:13:57: note: each undeclared identifier is reported only once for each function it appears in
+conftest.c:13:32: warning: variable ‘p’ set but not used [-Wunused-but-set-variable]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+13: int t(void) { void ((*volatile p)()); p = (void ((*)()))rb_heap_total_mem; return 0; }
+/* end */
+
+"gcc -o conftest -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/x86_64-linux -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/ruby/backward -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0 -I.     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC conftest.c  -L. -L/usr/local/rvm/rubies/ruby-2.1.0/lib -Wl,-R/usr/local/rvm/rubies/ruby-2.1.0/lib -L. -fstack-protector -rdynamic -Wl,-export-dynamic     -Wl,-rpath,'/../lib' -Wl,-R -Wl,'/../lib' -L'/../lib' -lruby  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:13:1: warning: implicit declaration of function ‘rb_heap_total_mem’ [-Wimplicit-function-declaration]
+/tmp/ccHXWuFw.o: In function `t':
+/dept/dcs/comp1100/supr/SubmissionApp/vendor/bundle/ruby/2.1.0/gems/ruby-prof-0.14.2/ext/ruby_prof/conftest.c:13: undefined reference to `rb_heap_total_mem'
+collect2: ld returned 1 exit status
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+13: int t(void) { rb_heap_total_mem(); return 0; }
+/* end */
+
+--------------------
+
+have_func: checking for rb_gc_heap_info()... -------------------- no
+
+"gcc -o conftest -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/x86_64-linux -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/ruby/backward -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0 -I.     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC conftest.c  -L. -L/usr/local/rvm/rubies/ruby-2.1.0/lib -Wl,-R/usr/local/rvm/rubies/ruby-2.1.0/lib -L. -fstack-protector -rdynamic -Wl,-export-dynamic     -Wl,-rpath,'/../lib' -Wl,-R -Wl,'/../lib' -L'/../lib' -lruby  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:13:57: error: ‘rb_gc_heap_info’ undeclared (first use in this function)
+conftest.c:13:57: note: each undeclared identifier is reported only once for each function it appears in
+conftest.c:13:32: warning: variable ‘p’ set but not used [-Wunused-but-set-variable]
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+13: int t(void) { void ((*volatile p)()); p = (void ((*)()))rb_gc_heap_info; return 0; }
+/* end */
+
+"gcc -o conftest -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/x86_64-linux -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0/ruby/backward -I/usr/local/rvm/rubies/ruby-2.1.0/include/ruby-2.1.0 -I.     -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC conftest.c  -L. -L/usr/local/rvm/rubies/ruby-2.1.0/lib -Wl,-R/usr/local/rvm/rubies/ruby-2.1.0/lib -L. -fstack-protector -rdynamic -Wl,-export-dynamic     -Wl,-rpath,'/../lib' -Wl,-R -Wl,'/../lib' -L'/../lib' -lruby  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:13:1: warning: implicit declaration of function ‘rb_gc_heap_info’ [-Wimplicit-function-declaration]
+/tmp/ccTZ5VbH.o: In function `t':
+/dept/dcs/comp1100/supr/SubmissionApp/vendor/bundle/ruby/2.1.0/gems/ruby-prof-0.14.2/ext/ruby_prof/conftest.c:13: undefined reference to `rb_gc_heap_info'
+collect2: ld returned 1 exit status
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: extern int t(void);
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+13: int t(void) { rb_gc_heap_info(); return 0; }
+/* end */
+
+--------------------
+
