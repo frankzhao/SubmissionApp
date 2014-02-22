@@ -1,28 +1,27 @@
 <div class="row">
   <div class="col-xs-8 col-xs-offset-2">
     <p><%= link_to "Download submission", assignment_submission_zip_url(submission.assignment_id, submission),
-                :class=>"btn btn-default" %> </p>
-    <h3>File listing</h3>
+                :class=>"btn btn-default btn-sm" %> </p>
+    <h3>Files</h3>
   </div>
 </div>
 
 <div class="row">
   <div class="col-xs-9 col-xs-offset-2">
     <div class="panel-group" id="accordion">
-    <% a = 1 %>
     <% submission.zip_contents.each do |filename, file| %>
-      <% a += 1  %>
       <div class="panel panel-default">
         <div class="panel-heading">
           <p class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%= a %>">
+            <a data-toggle="collapse" data-parent="#accordion" href="#<%= filename.hash %>">
                 <%= filename %> (<%= file.length %> bytes)
             </a>
           </p>
         </div>
 
-        <div id="collapse<%= a %>" class="panel-collapse collapse">
-          <code class="prettyprint"><pre><%= file %></pre></code>
+        <div id="<%= filename.hash %>" class="panel-collapse collapse">
+          <pre><code class="prettyprint"><% file.split("\n").each_with_index do |line, index| %><small><a href="#<%= filename.hash %>-line-<%= index %>" ><%=index%></a></small>  <span class="line-of-code" id="<%= filename.hash %>-line-<%= index %>"> <%=line.ljust(80)%></span>
+<% end %></code></pre>
         </div>
       </div>
 
@@ -30,3 +29,12 @@
     </div>
   </div>
 </div>
+
+<script>
+$(document).ready( function () {
+  console.log(window.location.hash.split("-line-")[0]);
+  $('html, body').animate({
+        scrollTop: $(window.location.hash).offset().top - 100
+    }, 200)
+})
+</script>

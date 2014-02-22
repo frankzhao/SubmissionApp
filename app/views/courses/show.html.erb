@@ -49,11 +49,18 @@
 
     <% if (@course.staff+[@course.convener]).include?(current_user) or current_user.is_admin %>
       <h3>Students</h3>
-      <ul>
-        <% @students.each do |student| %>
-          <li> <%= link_to student.name, user_url(student) %> </li>
-        <% end %>
-      </ul>
+      <p>
+        <em data-toggle="collapse" data-target="#students">
+          Show/hide students
+        </em>
+      </p>
+      <div id="students" class="collapse">
+        <ul>
+          <% @students.each do |student| %>
+            <li> <%= link_to student.name, user_url(student) %> </li>
+          <% end %>
+        </ul>
+      </div>
     <% elsif @course.students.include? current_user %>
     <% else %>
       <em>Note that you aren't enrolled in this course--you'd

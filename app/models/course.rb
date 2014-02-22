@@ -24,40 +24,47 @@ class Course < ActiveRecord::Base
   friendly_id :name, :use => :slugged
 
   def add_students_by_csv(csv_string)
-    lines = csv_string.split("\n")
+    ActiveRecord::Base.transaction do
+      lines = csv_string.split("\n")
 
-    unless "name,uni id," + self.group_types.map(&:name).join(",") == lines[0].chomp
-      raise "invalid csv"
-    end
-
-    users_seen = []
-
-    lines.drop(1).each do |line|
-      row = line.chomp.split(",")
-      u = User.touch(row[0], row[1])
-      u.enroll_in_course!(self)
-      self.group_types.zip(row.drop(2)).each do |group_type, group_name|
-        next if group_name.nil? || group_name.length == 0
-        group_type.update_student_membership(u, group_name)
+      unless "name,uni id," + self.group_types.map(&:name).join(",") == lines[0].chomp
+        raise "invalid csv"
       end
-      users_seen << u
-    end
 
-    (self.students - users_seen).each do |failed_student|
-      failed_student.drop_course!(self)
+      users_seen = []
+
+      lines.drop(1).each do |line|
+        row = line.chomp.split(",")
+        u = User.touch(row[0], row[1])
+        u.enroll_in_course!(self)
+        self.group_types.zip(row.drop(2)).each do |group_type, group_name|
+          if group_name.nil? || group_name.length == 0
+            u.drop_group_type!(group_type)
+            next
+          end
+          group_type.update_student_membership(u, group_name)
+        end
+        users_seen << u
+      end
+
+      (self.students - users_seen).each do |failed_student|
+        failed_student.drop_course!(self)
+      end
     end
   end
 
   def add_staff_by_csv(csv_string)
-    lines = csv_string.split("\n")
-    unless "name,uni id"
-      raise "invalid csv"
-    end
-    StaffEnrollment.delete_all(:course_id => self.id)
-    lines.drop(1).each do |line|
-      row = line.chomp.split(",")
-      u = User.touch(row[0], row[1])
-      u.enroll_staff_in_course!(self)
+    ActiveRecord::Base.transaction do
+      lines = csv_string.split("\n")
+      unless "name,uni id"
+        raise "invalid csv"
+      end
+      StaffEnrollment.delete_all(:course_id => self.id)
+      lines.drop(1).each do |line|
+        row = line.chomp.split(",")
+        u = User.touch(row[0], row[1])
+        u.enroll_staff_in_course!(self)
+      end
     end
   end
 

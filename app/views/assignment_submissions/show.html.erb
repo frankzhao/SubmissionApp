@@ -14,7 +14,7 @@
     <% elsif current_user == @submission.user %>
       <% unless @assignment.already_due %>
         <%= link_to "Submit new version", new_assignment_assignment_submission_url(
-                            @assignment), :class => "btn btn-default"%>
+                            @assignment), :class => "btn btn-default btn-sm"%>
       <% end %>
     <% else %>
       <h3> <%= link_to(@submission.user.name,user_url(@submission.user)) %>
@@ -74,4 +74,5 @@
     </div>
   </div>
 </div>
+
 

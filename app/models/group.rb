@@ -12,7 +12,7 @@ class Group < ActiveRecord::Base
 
   has_many :assignments, :through => :group_type, :source => :assignment
 
-  def self.touch(group_type, name)
+  def self.touch(name, group_type)
     g = Group.find_by_name_and_group_type_id(name, group_type.id)
     return g if g
     Group.create!(:group_type => group_type, :name => name)
@@ -28,4 +28,5 @@ class Group < ActiveRecord::Base
   def jettison_staff
     GroupStaffMembership.delete_all(:group_id => self.id)
   end
+
 end

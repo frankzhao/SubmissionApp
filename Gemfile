@@ -26,6 +26,7 @@ gem 'anu-ldap'
 gem 'faker'
 gem 'whenever'
 gem 'friendly_id'
+gem 'rubyzip'
 
 group :test do
   gem 'capybara'

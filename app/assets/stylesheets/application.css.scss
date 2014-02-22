@@ -37,3 +37,11 @@ textarea.form-control {
   resize:vertical;
 }
 html,body{overflow-x: hidden;}
+
+:target {
+  background-color: yellow
+}
+
+.line-of-code:hover {
+  background-color: #FFD
+}
