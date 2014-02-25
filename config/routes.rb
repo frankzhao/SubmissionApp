@@ -10,7 +10,7 @@ SubmissionApp::Application.routes.draw do
     resources :student_enrollments, :only => [:create, :destroy]
   end
 
-  resources :users, :only => [:show]
+  resources :users, :only => [:show, :index]
 
   resources :group_types do
     resources :assignments, :only => [:new]
