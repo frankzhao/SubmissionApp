@@ -15,4 +15,5 @@
 /tmp/*
 /upload/*
 
-secret_tokenSubmissionApp_development
+secret_token
+SubmissionApp_development
