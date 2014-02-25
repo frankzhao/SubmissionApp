@@ -27,7 +27,8 @@ class Course < ActiveRecord::Base
     ActiveRecord::Base.transaction do
       lines = csv_string.split("\n")
 
-      unless "name,uni id," + self.group_types.map(&:name).join(",") == lines[0].chomp
+      unless "name,uni id" + self.group_types.map{|x| ",#{x.name}"}
+                                              .join("") == lines[0].chomp
         raise "invalid csv"
       end
 
