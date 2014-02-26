@@ -67,7 +67,7 @@ class Assignment < ActiveRecord::Base
   end
 
   def path
-    "upload/#{self.path_without_upload}"
+    "#{Rails.root.to_s}/upload/#{self.path_without_upload}"
   end
 
   def path_without_upload
