@@ -124,7 +124,10 @@ class PeerReviewCycle < ActiveRecord::Base
                                  .where("created_at > ?", self.activation_time)
                                  .where(:user_id => submission.user)
 
-    return unless user_submissions.length == 1
+    unless user_submissions.length == 1
+      puts "The user has #{user_submissions.length} submissions, so we're returning."
+      return
+    end
 
     previous_users = self.assignment
                          .submissions
@@ -136,10 +139,12 @@ class PeerReviewCycle < ActiveRecord::Base
       next if submission.user == previous_user
       if self.permitted_submissions_for_user(previous_user).empty?
         submission.add_permission(previous_user, self.id)
+        puts "Permission added for #{previous_user.name}"
         return
       end
     end
 
+    puts "Permission added for #{assignment.conveners.first.name}"
     submission.add_permission(assignment.conveners.first, self.id)
   end
 
