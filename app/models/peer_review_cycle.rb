@@ -117,13 +117,10 @@ class PeerReviewCycle < ActiveRecord::Base
   end
 
   def send_to_previous(submission)
-
-    user_submissions =  self.assignment
-                            .submissions
-                            .where("created_at > ?", self.activation_time)
-                            .where(:user_id => submission.user)
-
-    puts ("User submissions are "+user_submissions.all.to_s)
+    previous_user_submissions =  self.assignment
+                                 .submissions
+                                 .where("created_at > ?", self.activation_time)
+                                 .where(:user_id => submission.user)
 
     return unless user_submissions.length == 1
 
@@ -136,7 +133,6 @@ class PeerReviewCycle < ActiveRecord::Base
     previous_users.each do |previous_user|
       next if submission.user == previous_user
       if self.permitted_submissions_for_user(previous_user).empty?
-        p "*"*100
         submission.add_permission(previous_user, self.id)
         return
       end
