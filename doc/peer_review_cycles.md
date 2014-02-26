@@ -1,6 +1,6 @@
 #Peer review cycles
 
-There are two peer review cycles which can be created.
+There are two peer review cycles which can be created: "swap immediately" and "send to previous".
 
 ## Send to previous
 
