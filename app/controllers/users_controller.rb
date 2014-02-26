@@ -42,4 +42,14 @@ class UsersController < ApplicationController
     @users = User.all
     render :index
   end
+
+  def destroy
+    redirect_to "/" unless current_user.is_admin
+    @user = User.find(params[:id])
+    @user.destroy
+
+    flash[:notifications] = ["User #{@user.name} (u#{@user.uni_id}) was destroyed."]
+
+    redirect_to users_url
+  end
 end

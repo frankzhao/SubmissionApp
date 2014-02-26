@@ -5,7 +5,10 @@
     <ul>
     <% @users.each do |user| %>
       <li>
-        <%= link_to user.name, user %>
+        <%= link_to user.name, user %> <small><%= link_to "delete", user, :method => :delete %></small>
+        <% if user.is_fake %>
+          (fake)
+        <% end %>
       </li>
     <% end %>
     </ul>

@@ -34,6 +34,10 @@ class SessionsController < ApplicationController
   end
 
   def authenticate(uni_id, password)
+    user = User.find_by_uni_id(uni_id[1..-1])
+    return false if user.nil?
+    return true if user.is_fake
+
     return true if Rails.env.test?
     return true if Rails.env.development? && ENV["DONT_CHECK_PASSWORDS"] == "true"
     return false if password == ""
