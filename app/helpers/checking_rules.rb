@@ -28,11 +28,13 @@ module CheckingRules
 
   # TODO: this stuff should be more resilient against files named "temp"
   def check_compiling_haskell_string(text)
-    Dir.mkdir('temp') unless Dir.exists? 'temp'
-    File.open("tmp/temp.hs","w") { |f| f.write(text) }
-    comments = `ghc -XSafe tmp/temp.hs 2>&1`
-    ans = File.exist?("tmp/temp")
-    system('rm tmp/temp*')
+    root = Rails.root.to_s
+
+    Dir.mkdir("#{root}/temp") unless Dir.exists? "#{root}/temp"
+    File.open("#{root}/temp/temp.hs","w") { |f| f.write(text) }
+    comments = `ghc -XSafe #{root}/temp/temp.hs 2>&1`
+    ans = File.exist?("#{root}/temp/temp")
+    system("rm #{root}/temp/temp*")
     [ans, comments]
   end
 
@@ -49,8 +51,9 @@ module CheckingRules
     score = 0
 
     tests.each do |test|
-      File.open("tmp/temp.hs","w") { |f| f.write(text) }
-      result = `ghc -XSafe tmp/temp.hs 2>&1 -e "#{test}"`.strip
+      root = Rails.root.to_s
+      File.open("#{root}/temp/temp.hs","w") { |f| f.write(text) }
+      result = `ghc -XSafe #{root}/temp/temp.hs 2>&1 -e "#{test}"`.strip
       if result == "True"
         score += 1
       end
