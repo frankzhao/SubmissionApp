@@ -159,7 +159,7 @@ class Assignment < ActiveRecord::Base
     end
 
     self.peer_review_cycles.each do |cycle|
-      cycle.receive_submission(self)
+      cycle.receive_submission(submission)
     end
   end
 end
