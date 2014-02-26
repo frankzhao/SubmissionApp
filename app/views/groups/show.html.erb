@@ -3,7 +3,7 @@
     <h2><%= @group.name %></h2>
     <p><%= @group.name %> is an instance of <%= link_to @group_type.name, @group_type %>.</p>
 
-    <h3>Staff:</h3>
+    <h3>Staff</h3>
     <ul>
       <% @staff.each do |user| %>
         <li>
@@ -12,7 +12,7 @@
       <% end %>
     </ul>
 
-    <h3> Students</h3>
+    <h3>Students</h3>
 
     <ul>
       <% @users.each do |user| %>

@@ -36,4 +36,10 @@ class UsersController < ApplicationController
     @convened_courses = @user.convened_courses
     render :show
   end
+
+  def index
+    redirect_to "/" unless current_user.is_admin
+    @users = User.all
+    render :index
+  end
 end

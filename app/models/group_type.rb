@@ -35,12 +35,12 @@ class GroupType < ActiveRecord::Base
 
     if current_group.nil?
       unless group_name == "" || group_name.nil?
-        user.join_group!(Group.find_by_group_type_id_and_name(self.id, group_name))
+        user.join_group!(Group.touch(group_name, self))
       end
     else
       unless group_name == current_group.name
         user.drop_group!(current_group)
-        user.join_group!(Group.find_by_group_type_id_and_name(self.id, group_name))
+        user.join_group!(Group.touch(group_name, self))
       end
     end
   end
@@ -52,12 +52,12 @@ class GroupType < ActiveRecord::Base
 
     if current_group.nil?
       unless group_name == ""
-        user.join_group_as_staff!(Group.find_by_group_type_id_and_name(self.id, group_name))
+        user.join_group_as_staff!(Group.touch(group_name, self))
       end
     else
       unless group_name == current_group.name
         user.drop_group_as_staff!(current_group)
-        user.join_group_as_staff!(Group.find_by_group_type_id_and_name(self.id, group_name))
+        user.join_group_as_staff!(Group.touch(group_name, self))
         self.courses.each do |course|
           user.enroll_staff_in_course(course)
         end
@@ -77,27 +77,28 @@ class GroupType < ActiveRecord::Base
   end
 
   def edit_by_csv(csv_string)
-    lines = csv_string.split("\n")
+    ActiveRecord::Base.transaction do
+      lines = csv_string.split("\n")
 
-    unless "group name,staff..." == lines[0].chomp
-      raise "invalid csv"
-    end
-
-    groups_seen = []
-    puts "\n"*30
-
-    lines.drop(1).each do |line|
-      row = line.chomp.split(",")
-      g = Group.touch(self, row[0])
-      g.jettison_staff
-      row.drop(1).uniq.each do |staff_uni_id|
-        u = User.find_by_uni_id(staff_uni_id)
-        u.join_group_as_staff!(g)
+      unless "group name,staff..." == lines[0].chomp
+        raise "invalid csv"
       end
-      groups_seen << g
+
+      groups_seen = []
+      puts "\n"*30
+
+      lines.drop(1).each do |line|
+        row = line.chomp.split(",")
+        g = Group.touch(row[0], self)
+        g.jettison_staff
+        row.drop(1).uniq.each do |staff_uni_id|
+          u = User.find_by_uni_id(staff_uni_id)
+          u.join_group_as_staff!(g)
+        end
+        groups_seen << g
+      end
+      (self.groups - groups_seen).map(&:delete)
     end
-    # throw "what"
-    (self.groups - groups_seen).map(&:delete)
   end
 
   def students_of_courses
