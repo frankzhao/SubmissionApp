@@ -33,7 +33,26 @@
               @assignment.id, cycle.id), :method => :get,
                         :class => "btn btn-sm btn-default" %>
         </div>
-      </div>
+
+        <h4>Swaps:</h4>
+        <% if cycle.submission_permissions.empty? %>
+          No-one has swapped yet.
+        <% else %>
+          <a data-toggle="collapse" href="#swap-<%= cycle.id %>">
+            View all swaps (there are <%= cycle.submission_permissions.count %> of them)
+          </a>
+          <div id="swap-<%= cycle.id %>" class="collapse">
+            <ul>
+              <% cycle.submission_permissions.each do |perm| %>
+                <li>
+                  <%= link_to "##{perm.assignment_submission_id}",
+                        assignment_assignment_submission_url(@assignment, perm.assignment_submission) %> is visible to
+                  <%= link_to perm.user.name, perm.user %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
       <hr>
     <% end %>
 

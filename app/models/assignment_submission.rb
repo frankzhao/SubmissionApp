@@ -147,6 +147,7 @@ class AssignmentSubmission < ActiveRecord::Base
   end
 
   def do_custom_things
+    puts "doing custom things...."
     self.assignment.receive_submission(self)
   end
 

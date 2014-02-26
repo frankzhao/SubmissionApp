@@ -151,11 +151,12 @@ class Assignment < ActiveRecord::Base
   end
 
   def receive_submission(submission)
-    return if self.behavior_on_submission.empty?
-    behavior_on_submission = JSON.parse(self.behavior_on_submission)
+    unless self.behavior_on_submission.empty?
+      behavior_on_submission = JSON.parse(self.behavior_on_submission)
 
-    behavior_on_submission.each do |command, args|
-      submission.interpret(command, args)
+      behavior_on_submission.each do |command, args|
+        submission.interpret(command, args)
+      end
     end
 
     self.peer_review_cycles.each do |cycle|

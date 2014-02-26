@@ -33,6 +33,7 @@ class PeerReviewCycle < ActiveRecord::Base
       end
     end
 
+    self.activation_time = Time.now
     self.activated = true
     self.save!
   end
@@ -117,7 +118,8 @@ class PeerReviewCycle < ActiveRecord::Base
   end
 
   def send_to_previous(submission)
-    previous_user_submissions =  self.assignment
+    puts "Sending to previous...."
+    user_submissions =  self.assignment
                                  .submissions
                                  .where("created_at > ?", self.activation_time)
                                  .where(:user_id => submission.user)
