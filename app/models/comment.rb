@@ -23,7 +23,7 @@ class Comment < ActiveRecord::Base
   validates :assignment_submission_id, :body, :presence => true
 
   def file_path
-    "upload/comment_related_files/#{self.id}_#{self.file_name}"
+    "#{Rails.root.to_s}/upload/comment_related_files/#{self.id}_#{self.file_name}"
   end
 
   def friendlify_filename
