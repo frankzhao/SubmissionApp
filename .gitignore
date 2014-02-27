@@ -16,13 +16,7 @@ SubmissionApp_development
 /tmp/*
 /upload/*
 
-<<<<<<< HEAD
 /vendor/*
 secret_token
 
 SubmissionApp_development
-
-=======
-secret_token
-SubmissionApp_development
->>>>>>> 9ff19f9f0fb1f8ec50d32ebffc1601dc67e612ab

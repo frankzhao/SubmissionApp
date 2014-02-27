@@ -45,6 +45,7 @@
             <ul>
               <% cycle.submission_permissions.each do |perm| %>
                 <li>
+                  <%= perm.assignment_submission.user.name %>'s submission
                   <%= link_to "##{perm.assignment_submission_id}",
                         assignment_assignment_submission_url(@assignment, perm.assignment_submission) %> is visible to
                   <%= link_to perm.user.name, perm.user %>
