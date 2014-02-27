@@ -19,7 +19,16 @@
   <% if current_user %>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a href="/courses">Courses</a></li>
+        <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Courses<b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="/courses">Course index</a></li>
+            <li class="divider"></li>
+            <% current_user.courses.each do |course| %>
+              <li><%= link_to course.name, course %></li>
+            <% end %>
+          </ul>
+        </li>
+
         <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Assignments<b class="caret"></b></a>
           <ul class="dropdown-menu">
             <% current_user.all_assignments.each do |assignment| %>
@@ -28,6 +37,7 @@
           </ul>
         </li>
       </ul>
+
       <ul class="nav navbar-nav navbar-right">
         <% if current_user.is_admin %>
           <li><a>You're an admin.</a></li>
