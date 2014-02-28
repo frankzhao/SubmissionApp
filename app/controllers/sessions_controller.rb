@@ -39,7 +39,7 @@ class SessionsController < ApplicationController
     return true if user.is_fake
 
     return true if Rails.env.test?
-    return true if Rails.env.development? && ENV["DONT_CHECK_PASSWORDS"] == "true"
+    return true if ENV["DONT_CHECK_PASSWORDS"] == "true"
     return false if password == ""
     ApplicationHelper.ldap_authenticate(uni_id, password)
   end
