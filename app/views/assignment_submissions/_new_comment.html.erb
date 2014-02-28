@@ -37,17 +37,16 @@
                      class="form-control">
             </div>
           <% end %>
-        <% elsif relationship == :peer %>
-          <% peer_review_cycle = submission.which_peer_review_cycle(
-                                                  current_user) %>
-          <% if peer_review_cycle.maximum_mark %>
-            <div class="form-group">
-              Mark (out of <%= peer_review_cycle.maximum_mark %>)
-              <input id="peer_mark"
-                     name="peer_mark"
-                     class="form-control">
-            </div>
-          <% end %>
+        <% end %>
+        <% peer_review_cycle = submission.which_peer_review_cycle(
+                                                current_user) %>
+        <% if peer_review_cycle && peer_review_cycle.maximum_mark %>
+          <div class="form-group">
+            Mark (out of <%= peer_review_cycle.maximum_mark %>)
+            <input id="peer_mark"
+                   name="peer_mark"
+                   class="form-control">
+          </div>
         <% end %>
       </div>
     <% end %>

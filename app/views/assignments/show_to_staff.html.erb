@@ -34,8 +34,9 @@
 
     <h3>Submissions</h3>
         <% if @relation == :staff %>
-          You can't currently download all of your students' submissions as a
-          zip. Sorry about that.
+          As a tutor, you can't currently download all of your students' submissions as a
+          zip. Sorry about that. You can, however, view and download them
+          individually.
         <% elsif @relation == :convener %>
         <p><%= link_to "Download all submissions as zip",
                 "/assignments/#{@assignment.id}/submissions.zip" %></p>

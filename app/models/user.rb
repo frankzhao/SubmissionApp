@@ -11,11 +11,7 @@ class User < ActiveRecord::Base
   has_many :staffed_assignments, :through => :staffed_courses, :source => :assignments
 
   has_many :group_student_memberships
-  has_many :student_groups, :through => :group_student_memberships, :source => :group do
-    def find_by_group_type(group_type)
-      where(:group_type_id => group_type.id)
-    end
-  end
+  has_many :student_groups, :through => :group_student_memberships, :source => :group
 
   has_many :group_staff_memberships
   has_many :staffed_groups, :through => :group_staff_memberships, :source => :group
@@ -180,4 +176,8 @@ class User < ActiveRecord::Base
         self.convened_assignments).uniq
   end
 
+  # this is the submissions which you need to comment on
+  def uncommented_submissions
+    self.permitted_submissions.uncommented(self)
+  end
 end

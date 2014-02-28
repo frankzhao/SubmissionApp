@@ -23,6 +23,15 @@ class AssignmentSubmission < ActiveRecord::Base
 
   validates :assignment_id, :user_id, :presence => true
 
+  def self.uncommented(user)
+    where(<<-SQL, user.id)
+      (SELECT COUNT(*)
+      FROM comments
+      WHERE comments.assignment_submission_id = assignment_submissions.id
+      AND comments.user_id = ?) = 0
+    SQL
+  end
+
   def group
     #TODO: this is probably inefficient. Rewrite it properly.
     self.user.student_groups.each do |group|
