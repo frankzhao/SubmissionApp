@@ -17,17 +17,20 @@
       <% end %>
     </ul>
 
-    <h3>Other courses</h3>
-    <ul>
-      <% @other_courses.each do |course| %>
-        <li>
-          <%= link_to course.name, course_url(course) %>
-          (<%= course.convener.name %>)
-          <% if current_user.is_admin || course.convener == current_user %>
-            <%= button_to "Delete course", course_url(course), :method => :delete, :class => "btn btn-danger btn-xs" %>
-          <% end %>
-        </li>
-      <% end %>
-    </ul>
+    <% if current_user.is_admin %>
+
+      <h3>Other courses</h3>
+      <ul>
+        <% @other_courses.each do |course| %>
+          <li>
+            <%= link_to course.name, course_url(course) %>
+            (<%= course.convener.name %>)
+            <% if current_user.is_admin || course.convener == current_user %>
+              <%= button_to "Delete course", course_url(course), :method => :delete, :class => "btn btn-danger btn-xs" %>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
   </div>
 </div>

@@ -30,6 +30,7 @@
       <p><%= category.name %>: <%= category.mark_for_submission(@submission) || "-"%>/<%= category.maximum_mark %></p>
     <% end %>
     <% @assignment.peer_review_cycles.each do |cycle| %>
+      <% next unless cycle.maximum_mark %>
       <p>Peer review mark for cycle <%= cycle.id %>:
           <%= cycle.mark_for_submission(@submission) || "-"%>/<%=
                                                         cycle.maximum_mark %></p>
