@@ -109,8 +109,11 @@ class User < ActiveRecord::Base
   end
 
   def enroll_in_course!(course)
-    unless self.student_courses.include? course
+    if self.student_courses.include? course
+      false
+    else
       StudentEnrollment.create!(:course_id => course.id, :user_id => self.id)
+      true
     end
   end
 
@@ -143,7 +146,9 @@ class User < ActiveRecord::Base
   def drop_group_type!(group_type)
     self.student_groups.each do |group|
       self.drop_group!(group) if group.group_type == group_type
+      return 1
     end
+    return 0
   end
 
   def join_group_as_staff!(group)

@@ -24,12 +24,15 @@ class Course < ActiveRecord::Base
   friendly_id :name, :use => :slugged
 
   def add_students_by_csv(csv_string)
+    output = Hash.new(0)
     ActiveRecord::Base.transaction do
       lines = csv_string.split("\n")
 
-      unless "name,uni id" + self.group_types.map{|x| ",#{x.name}"}
-                                              .join("") == lines[0].chomp
-        raise "invalid csv"
+      correct_first_line = "name,uni id" + self.group_types.map{|x| ",#{x.name}"}
+                                              .join("")
+
+      unless correct_first_line == lines[0].chomp
+        raise "The first line of the staff csv was wrong. It should be 'name,uni id'."
       end
 
       users_seen = []
@@ -37,36 +40,52 @@ class Course < ActiveRecord::Base
       lines.drop(1).each do |line|
         row = line.chomp.split(",")
         u = User.touch(row[0], row[1])
-        u.enroll_in_course!(self)
+        new_enroll = u.enroll_in_course!(self)
+        output["New enrollments"] += 1 if new_enroll
+
         self.group_types.zip(row.drop(2)).each do |group_type, group_name|
           if group_name.nil? || group_name.length == 0
-            u.drop_group_type!(group_type)
+            output["Students dropping groups"] += u.drop_group_type!(group_type)
             next
           end
-          group_type.update_student_membership(u, group_name)
+          details = group_type.update_student_membership(u, group_name)
+          output["Students joining groups"] += details[:joins]
+          output["Students changing groups"] += details[:changes]
         end
         users_seen << u
       end
 
       (self.students - users_seen).each do |failed_student|
+        output["Students removed"] += 1
         failed_student.drop_course!(self)
       end
     end
+    return output
   end
 
   def add_staff_by_csv(csv_string)
+    original_staff = self.staff.to_a
     ActiveRecord::Base.transaction do
       lines = csv_string.split("\n")
       unless "name,uni id"
-        raise "invalid csv"
+        raise "The first line of the staff csv was wrong. It should be 'name,uni id'."
       end
+
       StaffEnrollment.delete_all(:course_id => self.id)
+
       lines.drop(1).each do |line|
         row = line.chomp.split(",")
+
         u = User.touch(row[0], row[1])
         u.enroll_staff_in_course!(self)
       end
     end
+    output = {}
+
+    new_staff = Course.find_by_id(self.id).staff
+    output["Staff added"] = (new_staff - original_staff).length
+    output["Staff removed"] = (original_staff - new_staff).length
+    output
   end
 
   def admin_or_convener?(user)
