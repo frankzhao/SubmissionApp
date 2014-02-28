@@ -36,13 +36,16 @@ class GroupType < ActiveRecord::Base
     if current_group.nil?
       unless group_name == "" || group_name.nil?
         user.join_group!(Group.touch(group_name, self))
+        return {:joins => 1, :changes => 0}
       end
     else
       unless group_name == current_group.name
         user.drop_group!(current_group)
         user.join_group!(Group.touch(group_name, self))
+        return {:changes => 1, :joins => 0}
       end
     end
+    Hash.new(0)
   end
 
   def update_staff_membership(user, group_name)

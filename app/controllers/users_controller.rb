@@ -12,17 +12,25 @@ class UsersController < ApplicationController
   end
 
   def create
+    flash[:notifications] = []
     @course = Course.find(params[:course_id])
     if current_user.is_admin or current_user == @course.convener
-      # begin
+      begin
 
-        @course.add_students_by_csv(params[:user_details])
-        @course.add_staff_by_csv(params[:staff_details])
-        redirect_to course_url(@course)
-      # rescue => e
-      #   flash[:errors] = [e.to_s]
-      #   redirect_to :back
-      # end
+        students_hash = @course.add_students_by_csv(params[:user_details])
+
+        staff_hash = @course.add_staff_by_csv(params[:staff_details])
+
+        students_hash.merge(staff_hash).each do |k, v|
+          next if v == 0
+          flash[:notifications] << "#{k}: #{v}"
+        end
+
+        redirect_to :back
+      rescue => e
+        flash[:errors] = [e.to_s]
+        redirect_to :back
+      end
     else
       flash[:errors] = ["You have to be an admin or the convener of this course to create users"]
       redirect_to course_url(@course)
