@@ -35,5 +35,27 @@
         <% end %>
       </ul>
     <% end %>
+
+    <% if @user.student_groups.length > 0 %>
+      <p>Student in the following groups: </p>
+      <ul>
+        <% @user.student_groups.each do |group| %>
+          <li>
+            <%= link_to(group.name, group_url(course)) %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+
+    <% if @user.staffed_groups.length > 0 %>
+      <p>Staff in the following groups: </p>
+      <ul>
+        <% @user.staffed_groups.each do |group| %>
+          <li>
+            <%= link_to(group.name, group_url(group)) %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
   </div>
 </div>
