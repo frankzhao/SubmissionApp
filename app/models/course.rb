@@ -67,7 +67,7 @@ class Course < ActiveRecord::Base
     original_staff = self.staff.to_a
     ActiveRecord::Base.transaction do
       lines = csv_string.split("\n")
-      unless "name,uni id"
+      unless lines.first == "name,uni id"
         raise "The first line of the staff csv was wrong. It should be 'name,uni id'."
       end
 
