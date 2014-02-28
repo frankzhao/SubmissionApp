@@ -20,6 +20,14 @@ development:
   username: vagrant
   password:
 
+production:
+  adapter: sqlite3
+  encoding: LATIN1
+  database: SubmissionApp_development
+  pool: 5
+  username: vagrant
+  password:
+
 test:
   adapter: sqlite3
   encoding: LATIN1
