@@ -8,6 +8,7 @@ class GroupType < ActiveRecord::Base
   has_many :assignments
 
   has_many :students, :through => :groups, :source => :students
+  has_many :staff, :through => :groups, :source => :staff
   has_many :conveners, :through => :courses, :source => :convener
 
   validates :name, uniqueness: true

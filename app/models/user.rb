@@ -25,6 +25,9 @@ class User < ActiveRecord::Base
 
   has_many :assignment_submissions
 
+  has_many :group_types, :through => :student_groups, :source => :group_type
+  has_many :assignments, :through => :group_types, :source => :assignments
+
   has_many :submission_permissions
   has_many :permitted_submissions, :through => :submission_permissions,
                                    :source => :assignment_submission
