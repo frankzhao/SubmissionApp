@@ -46,12 +46,29 @@
             </ul>
           </li>
         <% end %>
+
+        <% uncommented_submissions = current_user.uncommented_submissions %>
+        <% if uncommented_submissions.length > 0 %>
+          <li>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              You have peer submissions which need comments!<b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <% uncommented_submissions.each do |s| %>
+                <li><%= link_to(s.id,
+                    assignment_assignment_submission_url(s.assignment_id, s)) %>
+                </li>
+              <% end %>
+            </ul>
+          </li>
+        <% end %>
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
         <% if current_user.is_admin %>
           <li><a>You're an admin.</a></li>
         <% end %>
+
         <li>
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%=current_user.name%><b class="caret"></b></a>
           <ul class="dropdown-menu">

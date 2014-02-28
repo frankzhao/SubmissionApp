@@ -12,6 +12,17 @@ class Group < ActiveRecord::Base
 
   has_many :assignments, :through => :group_type, :source => :assignment
 
+  def self.by_group_type(type)
+    where(group_type_id: type.id)
+  end
+
+  # do
+  #   def find_by_group_type(group_type)
+  #     where(:group_type_id => group_type.id)
+  #   end
+  # end
+
+
   def self.touch(name, group_type)
     g = Group.find_by_name_and_group_type_id(name, group_type.id)
     return g if g

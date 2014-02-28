@@ -95,3 +95,11 @@ def mark_submission(uni_id, mark)
   end
   sign_out
 end
+
+def assignment_hash(name)
+  {:name => name,
+    :info => "this is very hard",
+    :group_type_id => 1,
+    :due_date => "2014-05-03 23:04:26",
+    :behavior_on_submission => '{}'}
+end
