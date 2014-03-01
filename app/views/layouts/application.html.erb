@@ -85,6 +85,14 @@
 
 <div class="row">
   <div class="col-sm-6 col-sm-offset-3">
+    <% current_issues = `cat #{Rails.root.to_s}/current_issues` %>
+    <% if current_issues.length > 1 %>
+      <div class="alert alert-danger">
+        <h3>Website status alert</h3>
+        <p><%= current_issues %></p>
+      </div>
+    <% end %>
+
     <% flash[:errors] && flash[:errors].each do |error| %>
       <div class="alert alert-danger">
         <%= error.to_s %>
