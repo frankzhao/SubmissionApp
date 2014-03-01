@@ -1,8 +1,8 @@
 <h5 data-toggle="collapse" data-target="#comment-<%= parent_id %>">
 <% if parent_id.nil? %>
-  New comment
+  <a>New comment</a>
 <% else %>
-  Reply
+  <a>Reply</a>
 <% end %>
 </h5>
 
@@ -24,7 +24,7 @@
     <% if relationship == :staff || submission.which_peer_review_cycle(
                                       current_user).try(:maximum_mark) %>
       <p data-toggle="collapse" data-target="#marks-<%= parent_id %>">
-        Add mark
+        <a>Add mark</a>
       </p>
 
       <div id="marks-<%= parent_id %>" class="collapse">
