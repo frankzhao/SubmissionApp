@@ -24,6 +24,9 @@ class User < ActiveRecord::Base
   has_many :group_types, :through => :student_groups, :source => :group_type
   has_many :assignments, :through => :group_types, :source => :assignments
 
+  has_many :staffed_group_types, :through => :staffed_groups, :source => :group_type
+  has_many :staffed_assignments, :through => :staffed_group_types, :source => :assignments
+
   has_many :submission_permissions
   has_many :permitted_submissions, :through => :submission_permissions,
                                    :source => :assignment_submission
@@ -179,5 +182,9 @@ class User < ActiveRecord::Base
   # this is the submissions which you need to comment on
   def uncommented_submissions
     self.permitted_submissions.uncommented(self)
+  end
+
+  def staffed_and_convened_assignments
+    self.staffed_assignments + self.convened_assignments
   end
 end
