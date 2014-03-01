@@ -20,6 +20,8 @@ class AssignmentSubmission < ActiveRecord::Base
                              :source => :user
 
   has_one :group_type, :through => :assignment, :source => :group_type
+  has_many :courses, :through => :group_type, :source => :courses
+  has_many :conveners, :through => :courses, :source => :convener
 
   validates :assignment_id, :user_id, :presence => true
 
@@ -30,6 +32,10 @@ class AssignmentSubmission < ActiveRecord::Base
       WHERE comments.assignment_submission_id = assignment_submissions.id
       AND comments.user_id = ?) = 0
     SQL
+  end
+
+  def self.where_user_is(user)
+    where(:user_id => user.id)
   end
 
   def group
@@ -120,7 +126,7 @@ class AssignmentSubmission < ActiveRecord::Base
       if self.permitted_users.include?(user_to_be_named)
         return "Anonymous Reviewer"
       end
-    elsif self.permitted_users.include?(current_user)
+    elsif (self.permitted_users - self.conveners).include?(current_user)
       if self.user == user_to_be_named
         return "Anonymous Submitter"
       end

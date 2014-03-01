@@ -58,6 +58,25 @@
       </ul>
     <% end %>
 
+    <% if @assignments.length > 0 %>
+      <% @assignments.each do |assignment| %>
+        <% subs = assignment.submissions.where_user_is(@user).all %>
+        <% next if subs.empty? %>
+        <p><%= assignment.name %> submissions:</p>
+        <ul>
+        <% subs.each do |sub| %>
+          <li>
+          <%= link_to sub.id,
+                    assignment_assignment_submission_url(assignment, sub) %>
+          <% unless sub.submission_permissions.empty? %>
+            (visible to <%= sub.permitted_users.pluck(:name).join(", ") %>)
+          <% end %>
+
+          </li>
+        <% end %>
+        </ul>
+      <% end %>
+    <% end %>
 
   </div>
 </div>

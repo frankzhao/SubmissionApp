@@ -20,3 +20,4 @@ SubmissionApp_development
 secret_token
 
 SubmissionApp_development
+/public/assets/*

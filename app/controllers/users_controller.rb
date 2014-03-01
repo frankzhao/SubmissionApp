@@ -42,6 +42,8 @@ class UsersController < ApplicationController
     @student_courses = @user.student_courses
     @staffed_courses = @user.staffed_courses
     @convened_courses = @user.convened_courses
+
+    @assignments = @user.assignments.to_a & current_user.staffed_and_convened_assignments.to_a
     render :show
   end
 

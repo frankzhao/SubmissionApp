@@ -52,7 +52,7 @@
             <span class="label label-default">(unmarked)</span>
           <%# end %> -->
           <% unless submission.submission_permissions.empty? %>
-            (visible to <%= submission.permitted_users.map(&:name).join(", ") %>)
+            (visible to <%= submission.permitted_users.pluck(:name).join(", ") %>)
           <% end %>
         </li>
       <% end %>
