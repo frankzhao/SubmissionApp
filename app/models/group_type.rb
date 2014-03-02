@@ -31,7 +31,7 @@ class GroupType < ActiveRecord::Base
 
   def update_student_membership(user, group_name)
     current_group = user.student_groups
-                        .find_by_group_type(self)
+                        .where(:group_type_id => self.id)
                         .first
 
     if current_group.nil?
@@ -51,7 +51,7 @@ class GroupType < ActiveRecord::Base
 
   def update_staff_membership(user, group_name)
     current_group = user.staffed_groups
-                        .find_by_group_type(self)
+                        .where(:group_type_id => self.id)
                         .first
 
     if current_group.nil?

@@ -175,7 +175,7 @@ class User < ActiveRecord::Base
   end
 
   def all_assignments
-    (self.student_assignments + self.staffed_assignments +
+    @all_assignments ||= (self.student_assignments + self.staffed_assignments +
         self.convened_assignments).uniq
   end
 

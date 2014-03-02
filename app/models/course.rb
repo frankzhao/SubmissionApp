@@ -67,8 +67,8 @@ class Course < ActiveRecord::Base
     original_staff = self.staff.to_a
     ActiveRecord::Base.transaction do
       lines = csv_string.split("\n")
-      unless lines.first == "name,uni id"
-        raise "The first line of the staff csv was wrong. It should be 'name,uni id'."
+      unless lines.first.chomp == "name,uni id"
+        raise "The first line of the staff csv was wrong. It was '#{lines.first}'. It should be 'name,uni id'."
       end
 
       StaffEnrollment.delete_all(:course_id => self.id)
@@ -99,7 +99,8 @@ class Course < ActiveRecord::Base
     self.students.each do |student|
       row = [student.name, student.uni_id.to_s]
       self.group_types.each do |group_type|
-        row << student.student_groups.find_by_group_type(group_type).first.try(:name)
+        row << student.student_groups.where(:group_type_id => group_type.id)
+                                     .first.try(:name)
       end
       out << row.join(",")
     end

@@ -22,10 +22,11 @@
                             :assignment => @assignment
                             } %>
   <% end %>
-
-  <%= render :partial => "new_comment",
+  <% if comment.user %>
+    <%= render :partial => "new_comment",
              :locals => { :relationship => @relationship,
                           :submission => @submission,
                           :assignment => @assignment,
                           :parent_id => comment.id } %>
+  <% end %>
 </div>

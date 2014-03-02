@@ -33,6 +33,14 @@ module CheckingRules
     Dir.mkdir("#{root}/temp") unless Dir.exists? "#{root}/temp"
     File.open("#{root}/temp/temp.hs","w") { |f| f.write(text) }
     comments = `ghc -XSafe #{root}/temp/temp.hs 2>&1`
+
+    if comments.include?("The function `main' is not defined in module `Main'")
+      File.open("#{root}/temp/temp.hs","w") do |f|
+        f.write(text+"\n\nmain = undefined")
+      end
+      comments = `ghc -XSafe #{root}/temp/temp.hs 2>&1`
+    end
+
     ans = File.exist?("#{root}/temp/temp")
     system("rm #{root}/temp/temp*")
     [ans, comments]
