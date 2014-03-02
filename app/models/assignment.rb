@@ -8,7 +8,9 @@ class Assignment < ActiveRecord::Base
 
   has_many :submissions, :class_name => "AssignmentSubmission"
   has_many :students_who_have_submitted, :through => :submissions, :source => :user
-  has_many :submission_permissions, :through => :submissions, :source => :submission_permissions
+  has_many :submission_permissions, :through => :submissions,
+                                    :source => :submission_permissions,
+                                    :dependent => :destroy
 
   has_many :courses, :through => :group_type, :source => :courses
   has_many :conveners, :through => :courses, :source => :convener
@@ -22,9 +24,9 @@ class Assignment < ActiveRecord::Base
   validate :name_is_acceptable
   validate :behavior_on_submission_is_json
 
-  has_many :marking_categories
+  has_many :marking_categories, :dependent => :destroy
 
-  has_many :peer_review_cycles
+  has_many :peer_review_cycles, :dependent => :destroy
 
   after_create :make_directory
 
