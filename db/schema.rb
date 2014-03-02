@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140226012821) do
+ActiveRecord::Schema.define(:version => 20140302202404) do
 
   create_table "assignment_submissions", :force => true do |t|
     t.integer  "user_id",       :null => false
@@ -21,6 +21,9 @@ ActiveRecord::Schema.define(:version => 20140226012821) do
     t.datetime "updated_at",    :null => false
     t.binary   "zip_file"
   end
+
+  add_index "assignment_submissions", ["assignment_id"], :name => "index_assignment_submissions_on_assignment_id"
+  add_index "assignment_submissions", ["user_id"], :name => "index_assignment_submissions_on_user_id"
 
   create_table "assignments", :force => true do |t|
     t.string   "name",                                            :null => false
@@ -37,6 +40,7 @@ ActiveRecord::Schema.define(:version => 20140226012821) do
     t.string   "filetypes_to_show"
   end
 
+  add_index "assignments", ["group_type_id"], :name => "index_assignments_on_group_type_id"
   add_index "assignments", ["slug"], :name => "index_assignments_on_slug", :unique => true
 
   create_table "comments", :force => true do |t|
@@ -51,6 +55,11 @@ ActiveRecord::Schema.define(:version => 20140226012821) do
     t.integer  "parent_id"
     t.string   "file_name"
   end
+
+  add_index "comments", ["assignment_submission_id"], :name => "index_comments_on_assignment_submission_id"
+  add_index "comments", ["parent_id"], :name => "index_comments_on_parent_id"
+  add_index "comments", ["peer_review_cycle_id"], :name => "index_comments_on_peer_review_cycle_id"
+  add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
 
   create_table "courses", :force => true do |t|
     t.string   "name",        :null => false
@@ -80,6 +89,9 @@ ActiveRecord::Schema.define(:version => 20140226012821) do
     t.datetime "updated_at",    :null => false
   end
 
+  add_index "group_course_memberships", ["course_id"], :name => "index_group_course_memberships_on_course_id"
+  add_index "group_course_memberships", ["group_type_id"], :name => "index_group_course_memberships_on_group_type_id"
+
   create_table "group_staff_memberships", :force => true do |t|
     t.integer  "user_id",    :null => false
     t.integer  "group_id",   :null => false
@@ -87,12 +99,18 @@ ActiveRecord::Schema.define(:version => 20140226012821) do
     t.datetime "updated_at", :null => false
   end
 
+  add_index "group_staff_memberships", ["group_id"], :name => "index_group_staff_memberships_on_group_id"
+  add_index "group_staff_memberships", ["user_id"], :name => "index_group_staff_memberships_on_user_id"
+
   create_table "group_student_memberships", :force => true do |t|
     t.integer  "user_id",    :null => false
     t.integer  "group_id",   :null => false
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  add_index "group_student_memberships", ["group_id"], :name => "index_group_student_memberships_on_group_id"
+  add_index "group_student_memberships", ["user_id"], :name => "index_group_student_memberships_on_user_id"
 
   create_table "group_types", :force => true do |t|
     t.string   "name",       :null => false
@@ -109,6 +127,8 @@ ActiveRecord::Schema.define(:version => 20140226012821) do
     t.datetime "updated_at",    :null => false
   end
 
+  add_index "groups", ["group_type_id"], :name => "index_groups_on_group_type_id"
+
   create_table "marking_categories", :force => true do |t|
     t.integer  "assignment_id", :null => false
     t.string   "name",          :null => false
@@ -118,6 +138,8 @@ ActiveRecord::Schema.define(:version => 20140226012821) do
     t.datetime "updated_at",    :null => false
   end
 
+  add_index "marking_categories", ["assignment_id"], :name => "index_marking_categories_on_assignment_id"
+
   create_table "marks", :force => true do |t|
     t.integer  "value",               :null => false
     t.integer  "comment_id",          :null => false
@@ -126,12 +148,16 @@ ActiveRecord::Schema.define(:version => 20140226012821) do
     t.integer  "marking_category_id"
   end
 
+  add_index "marks", ["comment_id"], :name => "index_marks_on_comment_id"
+
   create_table "peer_marks", :force => true do |t|
     t.integer  "comment_id", :null => false
     t.integer  "value",      :null => false
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  add_index "peer_marks", ["comment_id"], :name => "index_peer_marks_on_comment_id"
 
   create_table "peer_review_cycles", :force => true do |t|
     t.integer  "assignment_id",                          :null => false
@@ -146,12 +172,17 @@ ActiveRecord::Schema.define(:version => 20140226012821) do
     t.integer  "number_of_swaps"
   end
 
+  add_index "peer_review_cycles", ["assignment_id"], :name => "index_peer_review_cycles_on_assignment_id"
+
   create_table "staff_enrollments", :force => true do |t|
     t.integer  "user_id",    :null => false
     t.integer  "course_id",  :null => false
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  add_index "staff_enrollments", ["course_id"], :name => "index_staff_enrollments_on_course_id"
+  add_index "staff_enrollments", ["user_id"], :name => "index_staff_enrollments_on_user_id"
 
   create_table "student_enrollments", :force => true do |t|
     t.integer  "user_id",    :null => false
@@ -160,6 +191,9 @@ ActiveRecord::Schema.define(:version => 20140226012821) do
     t.datetime "updated_at", :null => false
   end
 
+  add_index "student_enrollments", ["course_id"], :name => "index_student_enrollments_on_course_id"
+  add_index "student_enrollments", ["user_id"], :name => "index_student_enrollments_on_user_id"
+
   create_table "submission_permissions", :force => true do |t|
     t.integer  "assignment_submission_id", :null => false
     t.integer  "user_id",                  :null => false
@@ -167,6 +201,10 @@ ActiveRecord::Schema.define(:version => 20140226012821) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "submission_permissions", ["assignment_submission_id"], :name => "index_submission_permissions_on_assignment_submission_id"
+  add_index "submission_permissions", ["peer_review_cycle_id"], :name => "index_submission_permissions_on_peer_review_cycle_id"
+  add_index "submission_permissions", ["user_id"], :name => "index_submission_permissions_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "name",                             :null => false
@@ -177,5 +215,7 @@ ActiveRecord::Schema.define(:version => 20140226012821) do
     t.boolean  "is_admin",      :default => false, :null => false
     t.boolean  "is_fake",       :default => false
   end
+
+  add_index "users", ["uni_id"], :name => "index_users_on_uni_id"
 
 end
