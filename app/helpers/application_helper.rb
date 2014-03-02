@@ -7,7 +7,15 @@ module ApplicationHelper
   end
 
   def current_user
-    @current_user ||= User.find_by_session_token(session[:session_token])
+    @current_user ||= begin
+      user = User.find_by_session_token(session[:session_token])
+      if user
+        logger.info "Current user is #{user.name}, #{user.uni_id}"
+      else
+        logger.info "The user isn't logged in"
+      end
+      user
+    end
   end
 
   def login!(user)

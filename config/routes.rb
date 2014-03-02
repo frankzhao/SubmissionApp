@@ -57,4 +57,5 @@ SubmissionApp::Application.routes.draw do
   root :to => 'courses#index'
 
   get 'admin/log', :to => 'admin#log'
+  get 'admin/summary_log', :to => 'admin#summary_log'
 end
