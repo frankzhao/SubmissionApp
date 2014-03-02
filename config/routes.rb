@@ -55,4 +55,6 @@ SubmissionApp::Application.routes.draw do
                            :as => 'comment_file'
 
   root :to => 'courses#index'
+
+  get 'admin/log', :to => 'admin#log'
 end
