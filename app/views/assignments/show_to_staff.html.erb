@@ -3,7 +3,7 @@
     <h2><%= @assignment.name %></h2>
   </div>
 
-  <% if @relation == :convener %>
+  <% if @relation == :convener || current_user.is_admin %>
     <div class="col-sm-3">
       <div class="btn-group pull-right pull-down extra_space_button">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
