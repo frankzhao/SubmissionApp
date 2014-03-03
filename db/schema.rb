@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140302202404) do
+ActiveRecord::Schema.define(:version => 20140302204520) do
 
   create_table "assignment_submissions", :force => true do |t|
     t.integer  "user_id",       :null => false
@@ -149,6 +149,16 @@ ActiveRecord::Schema.define(:version => 20140302202404) do
   end
 
   add_index "marks", ["comment_id"], :name => "index_marks_on_comment_id"
+
+  create_table "notifications", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "notable_type"
+    t.integer  "notable_id"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  add_index "notifications", ["user_id"], :name => "index_notifications_on_user_id"
 
   create_table "peer_marks", :force => true do |t|
     t.integer  "comment_id", :null => false

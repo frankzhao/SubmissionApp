@@ -27,4 +27,8 @@ class AdminController < ApplicationController
 
     render :log
   end
+
+  def database
+    send_file(Rails.root.to_s+"/SubmissionApp_development")
+  end
 end

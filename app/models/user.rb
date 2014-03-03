@@ -24,12 +24,14 @@ class User < ActiveRecord::Base
   has_many :group_types, :through => :student_groups, :source => :group_type
   has_many :assignments, :through => :group_types, :source => :assignments
 
-  has_many :staffed_group_types, :through => :staffed_groups, :source => :group_type
+  has_many :staffed_group_types, :through => :staffed_courses, :source => :group_types
   has_many :staffed_assignments, :through => :staffed_group_types, :source => :assignments
 
   has_many :submission_permissions
   has_many :permitted_submissions, :through => :submission_permissions,
                                    :source => :assignment_submission
+
+  has_many :notifications
 
   before_validation :reset_session_token, :on => :create
 
