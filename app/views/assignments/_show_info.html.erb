@@ -28,7 +28,7 @@
 <% end %>
 </h3>
 <% if assignment.marking_categories.empty? %>
-  <p>This assignment has no marking categories.</p>
+  <p>This assignment is not marked.</p>
 <% else %>
   <% assignment.marking_categories.each do |category| %>
     <h4><%= category.name %>

@@ -5,7 +5,7 @@
     <h2>Submission for <%=  link_to @assignment.name, assignment_url(@assignment) %></h2>
     <small>Submitted at <%= @submission.created_at %></small>
     <% if current_user.is_admin_or_convener? %>
-      <%= button_to("Delete assignment",
+      <%= button_to("Delete submission",
             assignment_assignment_submission_url(@assignment, @submission),
             :method => :delete,
             :class => "btn btn-danger btn-sm") %>

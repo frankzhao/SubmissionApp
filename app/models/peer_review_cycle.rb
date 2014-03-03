@@ -5,9 +5,9 @@ class PeerReviewCycle < ActiveRecord::Base
 
   belongs_to :assignment
 
-  has_many :submission_permissions
+  has_many :submission_permissions, :dependent => :destroy
 
-  has_many :comments
+  has_many :comments, :dependent => :destroy
   has_many :peer_marks, :through => :comments, :source => :peer_mark
 
   validates :assignment_id, :distribution_scheme, :presence => true

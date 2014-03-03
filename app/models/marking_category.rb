@@ -7,7 +7,7 @@ class MarkingCategory < ActiveRecord::Base
   validates :maximum_mark, :numericality => true
 
   belongs_to :assignment
-  has_many :marks
+  has_many :marks, :dependent => :destroy
 
   def relevant_to_user(submission, user)
     submission.staff.include? user
