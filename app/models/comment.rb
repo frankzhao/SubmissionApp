@@ -22,6 +22,10 @@ class Comment < ActiveRecord::Base
 
   validates :assignment_submission_id, :body, :presence => true
 
+  def self.where_not_automated
+    where("comments.user_id IS NOT NULL")
+  end
+
   def file_path
     "#{Rails.root.to_s}/upload/comment_related_files/#{self.id}_#{self.file_name}"
   end
