@@ -53,7 +53,8 @@ class AssignmentSubmission < ActiveRecord::Base
     if user == self.user
       return :creator
     elsif (assignment.courses.map(&:staff).flatten +
-                        assignment.courses.map(&:convener)).include?(user)
+                        assignment.courses.map(&:convener)).include?(user) ||
+                            user.is_admin
       return :staff
     elsif self.which_peer_review_cycle(user)
       return :peer
