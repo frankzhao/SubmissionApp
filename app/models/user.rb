@@ -33,6 +33,8 @@ class User < ActiveRecord::Base
 
   has_many :notifications, :dependent => :destroy
 
+  has_many :comments, :dependent => :destroy
+
   before_validation :reset_session_token, :on => :create
 
   validates :name, :session_token, :uni_id, :presence => true

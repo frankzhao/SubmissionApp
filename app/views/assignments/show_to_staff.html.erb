@@ -53,6 +53,9 @@
           <%# end %> -->
           <% unless submission.submission_permissions.empty? %>
             (visible to <%= submission.permitted_users.pluck(:name).join(", ") %>)
+            <% if submission.comments.where_not_automated.count == 0 %>
+              <span class="label label-default">Uncommented</span>
+            <% end %>
           <% end %>
         </li>
       <% end %>
