@@ -1,11 +1,11 @@
 class GroupType < ActiveRecord::Base
   attr_accessible :name, :courses, :groups
 
-  has_many :group_course_memberships
+  has_many :group_course_memberships, :dependent => :destroy
   has_many :courses, :through => :group_course_memberships, :source => :course
 
-  has_many :groups
-  has_many :assignments
+  has_many :groups, :dependent => :destroy
+  has_many :assignments, :dependent => :destroy
 
   has_many :students, :through => :groups, :source => :students
   has_many :staff, :through => :groups, :source => :staff

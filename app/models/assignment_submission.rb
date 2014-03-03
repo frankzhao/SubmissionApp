@@ -10,11 +10,11 @@ class AssignmentSubmission < ActiveRecord::Base
 
   after_save :save_locally, :do_custom_things
 
-  has_many :comments
+  has_many :comments, :dependent => :destroy
   has_many :marks, :through => :comments, :source => :marks
   has_many :peer_marks, :through => :comments, :source => :peer_marks
 
-  has_many :submission_permissions
+  has_many :submission_permissions, :dependent => :destroy
 
   has_many :permitted_users, :through => :submission_permissions,
                              :source => :user
