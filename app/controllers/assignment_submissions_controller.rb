@@ -81,6 +81,23 @@ class AssignmentSubmissionsController < ApplicationController
     end
   end
 
+  def destroy
+    if current_user.is_admin_or_convener?
+      @submission = AssignmentSubmission.find_by_id(params[:id])
+      if @submission
+        @submission.delete
+        flash[:notifications] = ["Assignment submission #{@submission.id} for #{@submission.assignment.name} by #{@submission.user.name} was deleted"]
+        redirect_to @submission.assignment
+      else
+        flash[:errors] = ["That assignment submission could not be found."]
+        redirect_to "/"
+      end
+    else
+      flash[:errors] = "You aren't allowed to do that."
+      redirect_to @submission.assignment
+    end
+  end
+
 
   def get_zip
     @submission = AssignmentSubmission.find(params[:id])
