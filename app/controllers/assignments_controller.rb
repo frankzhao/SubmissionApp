@@ -69,6 +69,10 @@ class AssignmentsController < ApplicationController
     when :convener
       @submissions = @assignment.relevant_submissions(current_user)
       render :show_to_staff
+    else
+      return unless current_user.is_admin
+      @submissions = @assignment.submissions
+      render :show_to_staff
     end
   end
 
