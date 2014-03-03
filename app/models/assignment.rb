@@ -73,7 +73,7 @@ class Assignment < ActiveRecord::Base
   end
 
   def path_without_upload
-    "#{self.id}_#{self.name}"
+    "#{self.id}"
   end
 
   def update_zip
