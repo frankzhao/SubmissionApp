@@ -183,7 +183,7 @@ class User < ActiveRecord::Base
       if self.is_admin
         Assignment.all
       else
-        self.student_assignments + self.staffed_assignments +
+        (self.student_assignments + self.staffed_assignments +
           self.convened_assignments).uniq
       end
     end
