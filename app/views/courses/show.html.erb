@@ -10,6 +10,16 @@
       <p><%= link_to("Enroll students and staff", new_course_user_url(@course)) %></p>
     <% end %>
 
+    <h3>Assignments</h3>
+      <ul>
+        <% @assignments.each do |assignment| %>
+          <li>
+            <%= link_to assignment.name, assignment_url(assignment) %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+
     <% if @group_types %>
       <% @group_types.each do |group_type| %>
 
@@ -29,16 +39,6 @@
             <% end %>
           </ul>
       <% end %>
-
-      <h3>Assignments</h3>
-      <ul>
-        <% @assignments.each do |assignment| %>
-          <li>
-            <%= link_to assignment.name, assignment_url(assignment) %>
-          </li>
-        <% end %>
-      </ul>
-    <% end %>
 
     <h3>Staff</h3>
     <ul>
