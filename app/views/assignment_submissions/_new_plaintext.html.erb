@@ -2,7 +2,7 @@
   action="<%= assignment_assignment_submissions_url(assignment) %>"
     role="form">
   <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
-  <textarea name="submission[body]" class="form-control"><%= submission.body if submission %></textarea>
+  <textarea name="submission[body]" class="form-control" style="font-family: monospace;"><%= submission.body if submission %></textarea>
   <br>
   <input class="btn btn-primary" type="submit" value="Submit!">
 </form>
