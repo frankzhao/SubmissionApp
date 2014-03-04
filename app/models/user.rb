@@ -179,8 +179,14 @@ class User < ActiveRecord::Base
   end
 
   def all_assignments
-    @all_assignments ||= (self.student_assignments + self.staffed_assignments +
-        self.convened_assignments).uniq
+    @all_assignments ||= begin
+      if self.is_admin
+        Assignment.all
+      else
+        self.student_assignments + self.staffed_assignments +
+          self.convened_assignments).uniq
+      end
+    end
   end
 
   # this is the submissions which you need to comment on
