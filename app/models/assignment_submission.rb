@@ -8,8 +8,6 @@ class AssignmentSubmission < ActiveRecord::Base
   belongs_to :assignment
   belongs_to :user
 
-  after_save :save_locally, :do_custom_things
-
   has_many :comments, :dependent => :destroy
   has_many :marks, :through => :comments, :source => :marks
   has_many :peer_marks, :through => :comments, :source => :peer_marks
@@ -162,9 +160,26 @@ class AssignmentSubmission < ActiveRecord::Base
     str1[-str2.length..-1] == str2
   end
 
-  def do_custom_things
-    puts "doing custom things...."
-    self.assignment.receive_submission(self)
+  def receive_submission
+    self.save_locally
+
+    unless self.assignment.behavior_on_submission.empty?
+      behavior_on_submission = JSON.parse(self.assignment.behavior_on_submission)
+
+      behavior_on_submission.each do |command, args|
+        self.interpret(command, args)
+      end
+    end
+  end
+
+  def finalize!
+    puts "finalizing"
+    return if self.is_finalized
+    self.assignment.peer_review_cycles.each do |cycle|
+      cycle.receive_submission(self)
+    end
+    self.is_finalized = true
+    self.save!
   end
 
   def add_anonymous_comment(body)

@@ -54,6 +54,7 @@ class AssignmentSubmissionsController < ApplicationController
       @submission.assignment = Assignment.find(params[:assignment_id])
       @submission.user_id = current_user.id
       if @submission.save
+        @submission.receive_submission
         if @assignment.submission_format == "zipfile"
           if (params[:upload] and params[:upload]["datafile"])
             @submission.save_data(params[:upload]["datafile"].read)
@@ -110,4 +111,17 @@ class AssignmentSubmissionsController < ApplicationController
     end
   end
 
+  def finalize
+    @submission = AssignmentSubmission.find(params[:assignment_submission_id])
+    @relationship = @submission.relationship_to_user(current_user)
+    if @relationship
+      @submission.finalize!
+      flash[:notifications] = ["Assignment submission finalized."]
+      redirect_to :back
+    else
+      flash[:errors] = ["Permission denied"]
+      logger.warn("Security warning: someone tried to finalize someone else's submission")
+      redirect_to "/"
+    end
+  end
 end

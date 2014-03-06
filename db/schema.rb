@@ -11,15 +11,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140302204520) do
+ActiveRecord::Schema.define(:version => 20140306003827) do
 
   create_table "assignment_submissions", :force => true do |t|
-    t.integer  "user_id",       :null => false
-    t.integer  "assignment_id", :null => false
+    t.integer  "user_id",                          :null => false
+    t.integer  "assignment_id",                    :null => false
     t.string   "body"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
     t.binary   "zip_file"
+    t.boolean  "is_finalized",  :default => false
   end
 
   add_index "assignment_submissions", ["assignment_id"], :name => "index_assignment_submissions_on_assignment_id"
