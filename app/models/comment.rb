@@ -45,6 +45,4 @@ class Comment < ActiveRecord::Base
       f.write(data)
     end
   end
-
-
 end
