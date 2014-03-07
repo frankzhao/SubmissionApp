@@ -9,9 +9,18 @@
   <p>
     <%= sanitize comment.body, tags: %w(li ul ol code strong em b a) %>
   </p>
+
   <% if comment.has_file %>
     <strong>Attached file:</strong>
     <%= link_to comment.file_name, comment_file_url(comment) %>
+  <% end %>
+
+  <% if current_user.is_admin_or_convener? %>
+   <!--  <div style="margin-bottom: 25px;"> -->
+      <%= button_to("Delete",assignment_assignment_submission_comment_url(
+            @assignment, @submission, comment), :method => :delete,
+                  :class => "btn btn-danger pull-right btn-sm") %>
+<!--     </div> -->
   <% end %>
 
   <% comment.children.each do |child| %>

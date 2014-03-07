@@ -1,8 +1,8 @@
 <h5 data-toggle="collapse" data-target="#comment-<%= parent_id %>">
 <% if parent_id.nil? %>
-  <a>New comment</a>
+  <button class="btn btn-primary btn-sm">New comment</button>
 <% else %>
-  <a>Reply</a>
+  <button class="btn btn-primary btn-sm">Reply</button>
 <% end %>
 </h5>
 
@@ -55,7 +55,7 @@
       Attach file: <%= file_field 'upload', 'datafile' %>
     </div>
     <div class="form-group">
-      <input class="btn btn-primary extra_space_button" type="submit" value="Post comment">
+      <input class="btn btn-primary" type="submit" value="Post comment">
     </div>
   </form>
 </div>

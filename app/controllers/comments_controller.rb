@@ -65,6 +65,19 @@ class CommentsController < ApplicationController
     end
   end
 
+  def destroy
+    @comment = Comment.find(params[:id])
+    if @comment.user == current_user || current_user.is_admin_or_convener?
+      @comment.destroy
+      flash[:notifications] = ["Comment successfully deleted."]
+      redirect_to :back
+    else
+      redirect_to "/"
+      flash[:errors] = ["Permission denied"]
+      logger.warn("Security warning")
+    end
+  end
+
   def get_file
     comment = Comment.find(params[:id])
     submission = comment.assignment_submission
