@@ -5,14 +5,13 @@ class AdminController < ApplicationController
   def log
     request_text = `cat #{Rails.root.to_s}/log/production.log`
 
-    @requests = request_text.split("\nStarted")
+    @requests = request_text.split("\nStarted ")
 
     render :log
   end
 
   def summary_log
     request_text = `cat #{Rails.root.to_s}/log/production.log`
-
     @requests = request_text.split("\nStarted")
 
     @requests.select! do |request|
