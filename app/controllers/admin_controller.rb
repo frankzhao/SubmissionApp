@@ -34,6 +34,9 @@ class AdminController < ApplicationController
     send_file(Rails.root.to_s+"/SubmissionApp_development")
   end
 
+  def charts
+  end
+
   def spoof_login
     login! User.find_by_uni_id(params[:id])
     redirect_to "/"

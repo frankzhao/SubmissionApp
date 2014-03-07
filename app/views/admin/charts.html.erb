@@ -1,0 +1,9 @@
+<%= javascript_include_tag "//www.google.com/jsapi", "chartkick" %>
+
+<div class="row">
+  <div class="col-sm-8 col-sm-offset-2">
+    <h2>Charts</h2>
+
+    <%= line_chart AssignmentSubmission.group_by_day(:created_at).count %>
+  </div>
+</div>

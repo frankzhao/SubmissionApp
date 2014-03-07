@@ -3,6 +3,10 @@ require "zip"
 class AssignmentSubmission < ActiveRecord::Base
   include CheckingRules
 
+  def self.group_by_day(field)
+    AssignmentSubmission.group("CAST(assignment_submissions.#{field} AS DATE)")
+  end
+
   attr_accessible :assignment_id, :body, :user_id
 
   belongs_to :assignment
