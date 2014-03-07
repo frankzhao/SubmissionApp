@@ -27,7 +27,7 @@ gem 'faker'
 gem 'whenever'
 gem 'friendly_id'
 gem 'rubyzip'
-gem "chartkick"
+
 
 group :test do
   gem 'capybara'

@@ -19,6 +19,7 @@ SubmissionApp_development
 
 /vendor/*
 secret_token
+/signed_certificates/*
 
 SubmissionApp_development
 /public/assets/*
