@@ -154,17 +154,5 @@ class Assignment < ActiveRecord::Base
     self.peer_review_cycles.any? { | cycle | cycle.disable_submissions(user) }
   end
 
-  def receive_submission(submission)
-    unless self.behavior_on_submission.empty?
-      behavior_on_submission = JSON.parse(self.behavior_on_submission)
 
-      behavior_on_submission.each do |command, args|
-        submission.interpret(command, args)
-      end
-    end
-
-    self.peer_review_cycles.each do |cycle|
-      cycle.receive_submission(submission)
-    end
-  end
 end

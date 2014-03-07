@@ -14,7 +14,7 @@
 </div>
 
 <div class="row">
-  <div class="col-xs-5 col-xs-offset-2">
+  <div class="col-xs-8 col-xs-offset-2">
     <% if @submission.permitted_users.include?(current_user) %>
       <h3><%= @submission.context_name(@submission.user, current_user) %></h3>
     <% elsif current_user == @submission.user %>
@@ -26,6 +26,19 @@
       <h3> <%= link_to(@submission.user.name,user_url(@submission.user)) %>
         (u<%= @submission.user.uni_id%>)
       </h3>
+    <% end %>
+
+    <%# Only the submitter and staff should be able to click on Finalize. Luckily, they're also the only ones who can see the assignment before it's finalized. %>
+
+    <% unless @submission.is_finalized %>
+    <div class="panel panel-default" style="margin-top:10px;">
+  <div class="panel-body">
+      <h4>Not finalized</h4>
+      <p>This submission has not been finalized. It will not be submitted for tutor consideration or peer review until you finalize it.</p>
+      <%= button_to "Finalize", assignment_assignment_submission_finalize_url(
+            @assignment, @submission), :class => "btn btn-primary pull-right" %>
+    </div>
+    </div>
     <% end %>
   </div>
 </div>
@@ -39,7 +52,8 @@
       <% next unless cycle.maximum_mark %>
       <p>Peer review mark for cycle <%= cycle.id %>:
           <%= cycle.mark_for_submission(@submission) || "-"%>/<%=
-                                                        cycle.maximum_mark %></p>
+                                                        cycle.maximum_mark %>
+      </p>
     <% end %>
   </div>
 </div>

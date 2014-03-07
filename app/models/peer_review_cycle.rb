@@ -112,6 +112,7 @@ class PeerReviewCycle < ActiveRecord::Base
   end
 
   def receive_submission(submission)
+    puts "Peer review cycle id #{self.id} is receiving a submission"
     if self.distribution_scheme == "send_to_previous"
       send_to_previous(submission)
     end

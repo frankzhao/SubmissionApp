@@ -23,6 +23,8 @@ SubmissionApp::Application.routes.draw do
   resources :assignments, :only => [:show, :create, :destroy, :edit, :update] do
     resources :assignment_submissions, :except => [:update, :edit] do
       resources :comments, :only => [:create, :destroy]
+      post 'finalize', :to => 'assignment_submissions#finalize',
+                       :as => "finalize"
     end
 
     get 'cycles', :to => 'peer_review_cycles#index', :as => "cycles"
