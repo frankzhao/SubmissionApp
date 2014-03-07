@@ -7,7 +7,7 @@
     <% end %>
   </h4>
   <p>
-    <%= sanitize @comment.body, tags: %w(li ul ol code strong em b a) %>
+    <%= sanitize comment.body, tags: %w(li ul ol code strong em b a) %>
   </p>
   <% if comment.has_file %>
     <strong>Attached file:</strong>
