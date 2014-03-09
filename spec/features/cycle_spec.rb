@@ -5,7 +5,7 @@ feature "peer review cycles" do
     set_up_example_course
   end
 
-  ["swap_simultaneously", "send_to_previous"].each do |scheme|
+  ["swap_simultaneously", "send_to_previous", "send_to_next"].each do |scheme|
     feature "making peer review cycles" do
       it "lets you see the #{scheme} cycle creation page" do
         sign_in "u2222222"
@@ -92,5 +92,7 @@ feature "peer review cycles" do
 
   end
 
+  feature "using send_to_next" do
 
+  end
 end

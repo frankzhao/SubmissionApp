@@ -44,9 +44,10 @@ class AssignmentSubmissionsController < ApplicationController
   def create
     @assignment = Assignment.find(params[:assignment_id])
 
-    if current_user.relationship_to_assignment(@assignment)
+    unless current_user.relationship_to_assignment(@assignment)
       flash[:errors] = ["You aren't enrolled in a course with that assignment."]
       redirect_to "/"
+      return
     end
 
     unless @assignment.already_due

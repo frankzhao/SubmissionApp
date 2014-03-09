@@ -15,7 +15,7 @@ class PeerReviewCycle < ActiveRecord::Base
 
   before_destroy :delete_children
 
-  DISTRIBUTION_SCHEMES = %w(swap_simultaneously send_to_previous)
+  DISTRIBUTION_SCHEMES = %w(swap_simultaneously send_to_previous send_to_next)
 
   validates :distribution_scheme, :inclusion => { :in => DISTRIBUTION_SCHEMES }
 
@@ -25,10 +25,12 @@ class PeerReviewCycle < ActiveRecord::Base
     elsif self.submission_permissions.empty?
       case self.distribution_scheme
       when "swap_simultaneously"
-        p "swapping swap_simultaneously"
+        logger.log "swapping swap_simultaneously"
         self.swap_simultaneously_n_times(self.number_of_swaps || 1)
-        p "finished swap"
+        logger.log "finished swap"
       when "send_to_previous"
+        # do nothing.
+      when "send_to_next"
         # do nothing.
       end
     end
@@ -63,7 +65,7 @@ class PeerReviewCycle < ActiveRecord::Base
 
     mapping = []
     1000.times do |time|
-      puts "looping, loop #{time} of 1000"
+      logger.log "looping, loop #{time} of 1000"
       mapping = submittors.zip(submittors.shuffle)
       return mapping if self.is_legit(mapping)
     end
