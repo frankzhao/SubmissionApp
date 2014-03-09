@@ -20,6 +20,7 @@ module Rails
                 :SSLVerifyClient => OpenSSL::SSL::VERIFY_NONE,
                 :SSLPrivateKey => OpenSSL::PKey::RSA.new(
                        File.open("server.key").read),
+                        # $private_key),
                 :SSLCertificate => OpenSSL::X509::Certificate.new(
                        File.open("server.crt").read),
                 :SSLCertName => [["CN", WEBrick::Utils::getservername]]

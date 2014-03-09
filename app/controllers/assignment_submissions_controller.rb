@@ -1,4 +1,3 @@
-
 class AssignmentSubmissionsController < ApplicationController
   before_filter :require_logged_in
 
@@ -41,10 +40,11 @@ class AssignmentSubmissionsController < ApplicationController
     end
   end
 
+  # Staff members are allowed to create assignments.
   def create
     @assignment = Assignment.find(params[:assignment_id])
 
-    if current_user.relationship_to_assignment(@assignment) != :student
+    if current_user.relationship_to_assignment(@assignment)
       flash[:errors] = ["You aren't enrolled in a course with that assignment."]
       redirect_to "/"
     end

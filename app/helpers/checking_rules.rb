@@ -47,30 +47,37 @@ module CheckingRules
   end
 
   def check_compiling_haskell_module
+    raise "not implemented"
     Dir.mkdir('temp') unless Dir.exists? 'temp'
     todo
   end
 
   def test_haskell(tests)
     throw "not implemented for zips" if self.assignment.submission_format == "zipfile"
+
     text = self.body
-    results = []
 
-    score = 0
+    if check_compiling_haskell_string(text)[0]
+      results = []
 
-    tests.each do |test|
-      root = Rails.root.to_s
-      File.open("#{root}/temp/temp.hs","w") { |f| f.write(text) }
-      result = `timeout 3 ghc -XSafe #{root}/temp/temp.hs 2>&1 -e "#{test}"`.strip
-      if result == "True"
-        score += 1
+      score = 0
+
+      tests.each do |test|
+        root = Rails.root.to_s
+        File.open("#{root}/temp/temp.hs","w") { |f| f.write(text) }
+        result = `timeout 3 ghc -XSafe #{root}/temp/temp.hs 2>&1 -e "#{test}"`.strip
+        if result == "True"
+          score += 1
+        end
+        results << test + ": "+ result
       end
-      results << test + ": "+ result
-    end
 
-    add_anonymous_comment(
-          "You got #{score} out of #{tests.length} test cases correct. " +
-          "Here's the results of each of the test cases:" +
-          "<ol>#{results.map{|x| "<li>#{x}</li>" }.join()}</ol>")
+      add_anonymous_comment(
+            "You got #{score} out of #{tests.length} test cases correct. " +
+            "Here's the results of each of the test cases:" +
+            "<ol>#{results.map{|x| "<li>#{x}</li>" }.join()}</ol>")
+    else
+      add_anonymous_comment("Tests were not run because the code didn't compile.")
+    end
   end
 end
