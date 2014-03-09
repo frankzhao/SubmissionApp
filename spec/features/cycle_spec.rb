@@ -17,6 +17,7 @@ feature "peer review cycles" do
 
     feature "using swap_simultaneously" do
       before(:each) do
+        PeerReviewCycle.destroy_all
         PeerReviewCycle.create(:assignment_id => 1,
                                :distribution_scheme => scheme,
                                :shut_off_submission => false,
@@ -40,7 +41,9 @@ feature "peer review cycles" do
         sign_in "u2222222"
         visit "/assignments/wireworld"
         click_on "Peer review cycles"
+        save_and_open_page
         click_on "Activate"
+
         expect(page).to have_content("Activated")
       end
     end
@@ -69,7 +72,7 @@ feature "peer review cycles" do
       end
 
       it "lets peers see their assignments" do
-        pending "me doing shit" do
+        pending "me doing stuff" do
           sign_in "u5555551"
           visit "/assignments/wireworld/assignment_submissions/2"
           fail
