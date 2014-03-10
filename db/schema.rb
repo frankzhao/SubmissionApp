@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140306003827) do
+ActiveRecord::Schema.define(:version => 20140310222900) do
 
   create_table "assignment_submissions", :force => true do |t|
     t.integer  "user_id",                          :null => false
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(:version => 20140306003827) do
     t.boolean  "is_due_date_compulsary", :default => false
     t.string   "slug"
     t.string   "filetypes_to_show"
+    t.boolean  "is_visible",             :default => true
   end
 
   add_index "assignments", ["group_type_id"], :name => "index_assignments_on_group_type_id"

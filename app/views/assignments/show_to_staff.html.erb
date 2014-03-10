@@ -3,6 +3,8 @@
     <h2><%= @assignment.name %></h2>
   </div>
 
+
+
   <% if @relation == :convener || current_user.is_admin %>
     <div class="col-sm-3">
       <div class="btn-group pull-right pull-down extra_space_button">
@@ -27,7 +29,6 @@
 </div>
 <div class="row">
   <div class="col-sm-8 col-sm-offset-2">
-
     <%= render :partial => "show_info",
                             :locals => { :assignment => @assignment,
                                         :courses => @courses} %>

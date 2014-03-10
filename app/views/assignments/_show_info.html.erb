@@ -1,6 +1,9 @@
 <p><em>Assignment for
   <%= link_to(assignment.group_type.name, assignment.group_type) %></em>
 </p>
+<% unless @assignment.is_visible %>
+  <p><strong>This assignment has not been released yet. Students cannot see it.</strong></p>
+<% end %>
 
 <p>This is an assignment for the following courses:</p>
 
