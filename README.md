@@ -12,6 +12,8 @@ If you want to run the server so that it doesn't check passwords, run `DONT_CHEC
 
 The server only responds to HTTPS requests.
 
+Protip: if you want to watch the server log as the server writes to it, run `tail -f log/production.log`. This is better than restarting the rails server without detaching it, because if you get bored and wander away, the server doesn't stop because your SSH gets logged out. (This problem happens to me often.)
+
 ## Installation
 
 This project uses Rails 3.2.15, as it says in the Gemfile.
