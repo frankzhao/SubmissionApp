@@ -6,6 +6,10 @@ class PeerReviewCycle < ActiveRecord::Base
   belongs_to :assignment
 
   has_many :submission_permissions, :dependent => :destroy
+  has_many :permitted_users, :through => :submission_permissions,
+                             :source => :user
+  has_many :permitted_submissions, :through => :submission_permissions,
+                                   :source => :assignment_submission
 
   has_many :comments, :dependent => :destroy
   has_many :peer_marks, :through => :comments, :source => :peer_mark
@@ -15,9 +19,11 @@ class PeerReviewCycle < ActiveRecord::Base
 
   before_destroy :delete_children
 
-  DISTRIBUTION_SCHEMES = %w(swap_simultaneously send_to_previous send_to_next)
+  def self.DISTRIBUTION_SCHEMES
+    %w(swap_simultaneously send_to_previous send_to_next)
+  end
 
-  validates :distribution_scheme, :inclusion => { :in => DISTRIBUTION_SCHEMES }
+  validates :distribution_scheme, :inclusion => { :in => self.DISTRIBUTION_SCHEMES }
 
   def activate!
     if self.activated
@@ -25,9 +31,9 @@ class PeerReviewCycle < ActiveRecord::Base
     elsif self.submission_permissions.empty?
       case self.distribution_scheme
       when "swap_simultaneously"
-        logger.log "swapping swap_simultaneously"
+        logger.info "swapping swap_simultaneously"
         self.swap_simultaneously_n_times(self.number_of_swaps || 1)
-        logger.log "finished swap"
+        logger.info "finished swap"
       when "send_to_previous"
         # do nothing.
       when "send_to_next"
@@ -65,7 +71,7 @@ class PeerReviewCycle < ActiveRecord::Base
 
     mapping = []
     1000.times do |time|
-      logger.log "looping, loop #{time} of 1000"
+      logger.info "looping, loop #{time} of 1000"
       mapping = submittors.zip(submittors.shuffle)
       return mapping if self.is_legit(mapping)
     end
@@ -114,21 +120,27 @@ class PeerReviewCycle < ActiveRecord::Base
   end
 
   def receive_submission(submission)
-    puts "Peer review cycle id #{self.id} is receiving a submission"
+    logger.info "Peer review cycle id #{self.id} is receiving a submission"
     if self.distribution_scheme == "send_to_previous"
       send_to_previous(submission)
+    end
+
+    if self.distribution_scheme == "send_to_next"
+      receive_previous(submission)
     end
   end
 
   def send_to_previous(submission)
-    puts "Sending to previous...."
-    user_submissions =  self.assignment
-                                 .submissions
-                                 .where("created_at > ?", self.activation_time)
-                                 .where(:user_id => submission.user)
+    logger.info(p "Sending to previous....")
 
-    unless user_submissions.length == 1
-      puts "The user has #{user_submissions.length} submissions, so we're returning."
+    user_submissions =  self.assignment
+                            .submissions
+                            .where("created_at > ?", self.activation_time)
+                            .where(:is_finalized => true)
+                            .where(:user_id => submission.user)
+
+    unless user_submissions.length <= 1
+      logger.info(p "The user has #{user_submissions.length} submissions, so we're returning.")
       return
     end
 
@@ -136,19 +148,57 @@ class PeerReviewCycle < ActiveRecord::Base
                          .submissions
                          .where("created_at > ?", self.activation_time)
                          .order('created_at DESC')
+                         .includes(:user)
                          .map { |s| s.user }
 
     previous_users.each do |previous_user|
       next if submission.user == previous_user
       if self.permitted_submissions_for_user(previous_user).empty?
         submission.add_permission(previous_user, self.id)
-        puts "Permission added for #{previous_user.name}"
+        logger.info(p "Permission added for #{previous_user.name}")
         return
       end
     end
 
-    puts "Permission added for #{assignment.conveners.first.name}"
+    logger.info "Permission added for #{assignment.conveners.first.name}"
     submission.add_permission(assignment.conveners.first, self.id)
+  end
+
+  def receive_previous(submission)
+    logger.info "Looking at receive_previous..."
+
+    raise "this really shouldn't happen" unless submission.is_finalized
+
+    # If you've already got access to a file from this peer review cycle, return
+    if self.permitted_users.include? submission.user
+      logger.info "This user already has access to a submission."
+      return
+    end
+
+    # Otherwise, get a list of finalized submissions, and give this user access
+    # to the first submission which doesn't have permission and whose user hasn't
+    # gotten a peer review so far.
+
+    # I'm currently ignoring activiation time of the peer review cycle.
+    users_with_finalized_submission = self.assignment.submissions.finalized
+                                                    .includes(:user).map(&:user)
+    reviewed_users = self.permitted_submissions.includes(:user).map(&:user).uniq
+
+    user_to_review = (users_with_finalized_submission - reviewed_users).first
+
+    # If there's no-one to submit it to, go home
+    if user_to_review.nil?
+      logger.info "There are no previous submissions."
+      return
+    end
+
+    submission_to_review = self.assignment.submissions.where_user_is(user_to_review)
+                                            .finalized
+                                            .first
+
+    submission_to_review.add_permission(submission.user, self.id)
+    logger.info "Permission added for the submission #{submission_to_review.id} "+
+                  "by #{submission_to_review.user.name}"
   end
 
   def permitted_submissions_for_user(user)

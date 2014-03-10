@@ -41,7 +41,6 @@ feature "peer review cycles" do
         sign_in "u2222222"
         visit "/assignments/wireworld"
         click_on "Peer review cycles"
-        save_and_open_page
         click_on "Activate"
 
         expect(page).to have_content("Activated")
@@ -89,10 +88,6 @@ feature "peer review cycles" do
                        :shut_off_submission => false,
                        :anonymise => false)
     end
-
-  end
-
-  feature "using send_to_next" do
 
   end
 end

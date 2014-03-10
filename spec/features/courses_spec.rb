@@ -60,7 +60,8 @@ feature "viewing courses which you aren't in" do
   end
 
   it "says you aren't enrolled" do
-    expect(page).to have_content "Note that you aren't enrolled in this course--you'd see more if you were."
+    expect(page).to have_content(
+      "Note that you aren't enrolled in this course--you'd see more if you were.")
   end
 
   it "has a show page" do

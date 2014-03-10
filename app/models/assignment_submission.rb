@@ -40,6 +40,10 @@ class AssignmentSubmission < ActiveRecord::Base
     where(:user_id => user.id)
   end
 
+  def self.finalized
+    where(:is_finalized => true)
+  end
+
   def group
     #TODO: this is probably inefficient. Rewrite it properly.
     self.user.student_groups.each do |group|
@@ -177,12 +181,12 @@ class AssignmentSubmission < ActiveRecord::Base
   end
 
   def finalize!
-    puts "finalizing"
+    logger.info "finalizing assignment submission #{id}"
     return if self.is_finalized
+    self.is_finalized = true
     self.assignment.peer_review_cycles.each do |cycle|
       cycle.receive_submission(self)
     end
-    self.is_finalized = true
     self.save!
   end
 
@@ -202,8 +206,9 @@ class AssignmentSubmission < ActiveRecord::Base
     permission = self.submission_permissions.where(:user_id => user.id)
                                .order('created_at DESC')
                                .first
+
     if permission.try(:peer_review_cycle).try(:activated)
-      permission.try(:peer_review_cycle)
+      permission.peer_review_cycle
     end
   end
 
