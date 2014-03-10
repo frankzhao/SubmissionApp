@@ -131,7 +131,7 @@ class PeerReviewCycle < ActiveRecord::Base
   end
 
   def send_to_previous(submission)
-    logger.info(p "Sending to previous....")
+    logger.info("Sending to previous....")
 
     user_submissions =  self.assignment
                             .submissions
@@ -140,7 +140,7 @@ class PeerReviewCycle < ActiveRecord::Base
                             .where(:user_id => submission.user)
 
     unless user_submissions.length <= 1
-      logger.info(p "The user has #{user_submissions.length} submissions, so we're returning.")
+      logger.info("The user has #{user_submissions.length} submissions, so we're returning.")
       return
     end
 
@@ -155,7 +155,7 @@ class PeerReviewCycle < ActiveRecord::Base
       next if submission.user == previous_user
       if self.permitted_submissions_for_user(previous_user).empty?
         submission.add_permission(previous_user, self.id)
-        logger.info(p "Permission added for #{previous_user.name}")
+        logger.info("Permission added for #{previous_user.name}")
         return
       end
     end
