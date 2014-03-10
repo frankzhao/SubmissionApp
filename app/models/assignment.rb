@@ -34,6 +34,10 @@ class Assignment < ActiveRecord::Base
 
   friendly_id :name, :use => :slugged
 
+  def self.visible
+    self.where(:is_visible => true)
+  end
+
   def name_is_acceptable
     unless self.name.match /\A[a-zA-Z:_0-9 ]+\Z/
       self.errors[:name] << "The name must match this regex: /\A[a-zA-Z:0-9 ]+\Z/. " +
@@ -153,6 +157,4 @@ class Assignment < ActiveRecord::Base
   def disable_submitting_until_comment(user)
     self.peer_review_cycles.any? { | cycle | cycle.disable_submissions(user) }
   end
-
-
 end
