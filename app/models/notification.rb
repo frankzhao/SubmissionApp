@@ -1,5 +1,5 @@
 class Notification < ActiveRecord::Base
-  attr_accessible :notable_id, :notable_type, :user_id
+  attr_accessible :notable_id, :notable_type, :user_id, :message
 
   belongs_to :user
 
@@ -7,7 +7,7 @@ class Notification < ActiveRecord::Base
   belongs_to :notable, :polymorphic => true
 
   def text
-    self.text ||= begin
+    @text ||= self.message || begin
       case self.notable_type
       when "comment"
         "You have a new comment on your assignment submission for #{self.notable.assignment.name}"
