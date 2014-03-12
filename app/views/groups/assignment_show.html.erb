@@ -6,12 +6,15 @@
       <tr>
         <th></th>
         <th>Submission status</th>
+        <th>Specs passing</th>
         <th>Peer review status</th>
       </tr>
 
       <% @students.each do |student| %>
         <tr>
           <td><%= link_to(student.name, student) %></td>
+
+          <!-- Submission status -->
 
           <% if student.has_submitted_for_assignment(@assignment) %>
             <% if student.has_finalized_for_assignment(@assignment) %>
@@ -22,6 +25,16 @@
           <% else %>
             <td class="warning"><strong>No submission</strong></td>
           <% end %>
+
+          <!-- Specs passing -->
+
+          <td>
+            <%= (student.most_recent_submission(@assignment)
+                       .specs_passing) || "N/A" %>
+          </td>
+
+
+          <!-- Peer review status -->
 
           <% if (student.uncommented_submissions_for_assignment(@assignment)
                       .count) > 0 %>

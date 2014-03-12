@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140311035851) do
+ActiveRecord::Schema.define(:version => 20140312174834) do
 
   create_table "assignment_submissions", :force => true do |t|
     t.integer  "user_id",                          :null => false
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(:version => 20140311035851) do
     t.datetime "updated_at",                       :null => false
     t.binary   "zip_file"
     t.boolean  "is_finalized",  :default => false
+    t.integer  "specs_passing"
   end
 
   add_index "assignment_submissions", ["assignment_id"], :name => "index_assignment_submissions_on_assignment_id"

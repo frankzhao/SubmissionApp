@@ -52,7 +52,7 @@ module CheckingRules
     todo
   end
 
-  def test_haskell(tests)
+  def test_haskell(tests, add_anonymous_comment=true)
     throw "not implemented for zips" if self.assignment.submission_format == "zipfile"
 
     text = self.body
@@ -72,12 +72,20 @@ module CheckingRules
         results << test + ": "+ result
       end
 
-      add_anonymous_comment(
+      if add_anonymous_comment
+        add_anonymous_comment(
             "You got #{score} out of #{tests.length} test cases correct. " +
             "Here's the results of each of the test cases:" +
             "<ol>#{results.map{|x| "<li>#{x}</li>" }.join()}</ol>")
+      end
+
+      self.specs_passing = score
     else
-      add_anonymous_comment("Tests were not run because the code didn't compile.")
+      if add_anonymous_comment
+        add_anonymous_comment("Tests were not run because the code didn't compile.")
+      end
+      self.specs_passing = 0
     end
+    self.save!
   end
 end
