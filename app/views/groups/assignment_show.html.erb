@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col-sm-8 col-sm-offset-2">
+    <h2>Submissions for <%= @assignment.name %> from <%= @group.name %></h2>
+
+    <table class="table">
+      <tr>
+        <th></th>
+        <th>Submission status</th>
+        <th>Peer review status</th>
+      </tr>
+
+      <% @students.each do |student| %>
+        <tr>
+          <td><%= link_to(student.name, student) %></td>
+
+          <% if student.has_submitted_for_assignment(@assignment) %>
+            <% if student.has_finalized_for_assignment(@assignment) %>
+              <td class="success">Finalized</td>
+            <% else %>
+              <td>Submitted</td>
+            <% end %>
+          <% else %>
+            <td class="warning">No submission</td>
+          <% end %>
+
+          <% if (student.uncommented_submissions_for_assignment(@assignment)
+                      .count) > 0 %>
+              <td class="warning">No comment made</td>
+          <% else %>
+            <% if (student.permitted_submissions_for_assignment(@assignment)
+                      .count) > 0 %>
+              <td>Commented</td>
+            <% else %>
+              <td>No submission recieved</td>
+            <% end %>
+          <% end %>
+        </tr>
+      <% end %>
+    </table>
+
+  </div>
+</div>

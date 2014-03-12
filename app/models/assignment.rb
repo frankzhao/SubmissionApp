@@ -158,4 +158,8 @@ class Assignment < ActiveRecord::Base
   def disable_submitting_until_comment(user)
     self.peer_review_cycles.any? { | cycle | cycle.disable_submissions(user) }
   end
+
+  def conveners_and_staff
+    self.conveners + self.staff
+  end
 end

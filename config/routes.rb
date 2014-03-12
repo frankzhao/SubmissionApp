@@ -27,6 +27,8 @@ SubmissionApp::Application.routes.draw do
                        :as => "finalize"
     end
 
+    get 'groups/:id', :to => 'groups#assignment_show', :as => 'group_show'
+
     get 'cycles', :to => 'peer_review_cycles#index', :as => "cycles"
     post 'cycles', :to => 'peer_review_cycles#create'
     put 'cycles/:id/edit', :to => 'peer_review_cycles#update'
@@ -39,6 +41,9 @@ SubmissionApp::Application.routes.draw do
 
     resources :marking_categories, :only => [:create, :destroy, :update, :index]
   end
+
+
+  resources :notifications, :only => :destroy
 
   get 'assignments/:id/marks.csv', :to => 'assignments#get_csv',
                                    :as => 'assignment_marks'

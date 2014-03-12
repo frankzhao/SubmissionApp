@@ -74,7 +74,7 @@
           <li><a>You're an admin.</a></li>
         <% end %>
 
-        <% if current_user.notifications %>
+        <% if current_user.notifications.count > 0 %>
           <li>
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <span class="glyphicon glyphicon-exclamation-sign"></span>
@@ -83,8 +83,14 @@
             </a>
             <ul class="dropdown-menu">
               <% current_user.notifications.each do |n| %>
-                <li><a><%= n.text %></a>
-                </li>
+                <% if n.notable_id.nil? %>
+                  <li><%= link_to n.text, notification_url(n),
+                                          :method => :delete %>
+                  </li>
+                <% else %>
+                  <li><%= link_to n.text, n.link %>
+                  </li>
+                <% end %>
               <% end %>
             </ul>
           </li>

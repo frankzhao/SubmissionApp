@@ -27,6 +27,7 @@
     </div>
   <% end %>
 </div>
+
 <div class="row">
   <div class="col-sm-8 col-sm-offset-2">
     <%= render :partial => "show_info",
@@ -35,9 +36,8 @@
 
     <h3>Submissions</h3>
         <% if @relation == :staff %>
-          As a tutor, you can't currently download all of your students' submissions as a
-          zip. Sorry about that. You can, however, view and download them
-          individually.
+          As a tutor, you can't currently download all of your students'
+        submissions as a zip. Sorry about that. You can, however, view and download them individually.
         <% elsif @relation == :convener %>
         <p><%= link_to "Download all submissions as zip",
                 "/assignments/#{@assignment.id}/submissions.zip" %></p>
@@ -47,6 +47,17 @@
      <p> <%= link_to("Submit test assignment",
                 new_assignment_assignment_submission_url(@assignment)) %></p>
 
+
+    <h4>Submissions by group</h4>
+    <ul>
+    <% (current_user.staffed_groups & @assignment.groups).each do |group| %>
+      <li>
+        <%= link_to group.name, assignment_group_show_url(@assignment, group) %>
+      </li>
+    <% end %>
+    </ul>
+
+    <h4>All submissions</h4>
 
 <!-- <p>TODO: currently when you download all submissions as a zip, none of them are labelled, and some of them are old submissions. How should I label them? Which ones should be downloaded?</p> -->
     <ul>

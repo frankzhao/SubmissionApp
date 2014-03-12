@@ -40,6 +40,10 @@ class AssignmentSubmission < ActiveRecord::Base
     where(:user_id => user.id)
   end
 
+  def self.where_assignment_is(assignment)
+    where(:assignment_id => assignment.id)
+  end
+
   def self.finalized
     where(:is_finalized => true)
   end

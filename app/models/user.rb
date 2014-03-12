@@ -62,48 +62,9 @@ class User < ActiveRecord::Base
     User.create!(:name => name, :uni_id => uni_id)
   end
 
-  def is_convener?
-    ! self.convened_courses.empty?
-  end
+  include EnrollmentsStuff
 
-  def is_admin_or_convener?
-    self.is_admin || self.is_convener?
-  end
-
-  def courses
-    self.student_courses + self.staffed_courses + self.convened_courses
-  end
-
-  def taught_courses
-    self.staffed_courses + self.convened_courses
-  end
-
-  def relationship_to_course(course)
-    if self.student_courses.include?(course)
-      :student
-    elsif self.taught_courses.include?(course)
-      :staff
-    else
-      nil
-    end
-  end
-
-  def relationship_to_assignment(assignment)
-    if self.staffed_courses & assignment.courses != []
-      :staff
-    elsif self.student_courses & assignment.courses != []
-      :student
-    elsif self.convened_courses & assignment.courses != []
-      :convener
-    end
-  end
-
-  def most_recent_submission(assignment)
-    self.assignment_submissions
-        .where(:assignment_id => assignment.id)
-        .order('created_at DESC')
-        .first
-  end
+  include UserAssignmentRelationshipStuff
 
   def reset_session_token
     self.session_token = SecureRandom.urlsafe_base64
@@ -112,89 +73,5 @@ class User < ActiveRecord::Base
   def reset_session_token!
     reset_session_token
     self.save!
-  end
-
-  def enroll_in_course!(course)
-    if self.student_courses.include? course
-      false
-    else
-      StudentEnrollment.create!(:course_id => course.id, :user_id => self.id)
-      true
-    end
-  end
-
-  def drop_course!(course)
-    course.group_types.each do |group_type|
-      self.drop_group_type!(group_type)
-    end
-
-    StudentEnrollment.find_by_user_id_and_course_id(self.id, course.id)
-                     .try(:destroy)
-  end
-
-  def enroll_staff_in_course!(course)
-    unless self.staffed_courses.include? course
-      StaffEnrollment.create!(:course_id => course.id, :user_id => self.id)
-    end
-  end
-
-  def join_group!(group)
-    unless self.student_groups.include?(group)
-      GroupStudentMembership.create!(:group_id => group.id, :user_id => self.id)
-    end
-  end
-
-  def drop_group!(group)
-    GroupStudentMembership.find_by_user_id_and_group_id(self.id, group.id)
-                     .try(:destroy)
-  end
-
-  def drop_group_type!(group_type)
-    self.student_groups.each do |group|
-      self.drop_group!(group) if group.group_type == group_type
-      return 1
-    end
-    return 0
-  end
-
-  def join_group_as_staff!(group)
-    unless self.student_groups.include?(group)
-      GroupStaffMembership.create!(:group_id => group.id, :user_id => self.id)
-    end
-  end
-
-  def drop_group_as_staff!(group)
-    GroupStaffMembership.find_by_user_id_and_group_id(self.id, group.id)
-                          .try(:destroy)
-  end
-
-
-  #TODO: SQL
-  def permitted_submissions_for_assignment(assignment)
-    self.submission_permissions.includes(:assignment)
-                               .includes(:peer_review_cycle)
-                               .select { |s| s.assignment == assignment }
-                               .select { |s| s.peer_review_cycle.activated }
-                               .map(&:assignment_submission)
-  end
-
-  def all_assignments
-    @all_assignments ||= begin
-      if self.is_admin
-        Assignment.all
-      else
-        (self.student_assignments.visible + self.staffed_assignments +
-          self.convened_assignments).uniq
-      end
-    end
-  end
-
-  # this is the submissions which you need to comment on
-  def uncommented_submissions
-    self.permitted_submissions.uncommented(self)
-  end
-
-  def staffed_and_convened_assignments
-    self.staffed_assignments + self.convened_assignments
   end
 end
