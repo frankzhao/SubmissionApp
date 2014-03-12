@@ -20,12 +20,12 @@
               <td>Submitted</td>
             <% end %>
           <% else %>
-            <td class="warning">No submission</td>
+            <td class="warning"><strong>No submission</strong></td>
           <% end %>
 
           <% if (student.uncommented_submissions_for_assignment(@assignment)
                       .count) > 0 %>
-              <td class="warning">No comment made</td>
+              <td class="warning"><strong>No comment made</strong></td>
           <% else %>
             <% if (student.permitted_submissions_for_assignment(@assignment)
                       .count) > 0 %>
