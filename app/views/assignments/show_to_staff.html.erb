@@ -50,7 +50,8 @@
 
     <h4>Submissions by group</h4>
     <ul>
-    <% (current_user.staffed_groups & @assignment.groups).each do |group| %>
+    <% user_groups = current_user.is_admin_or_convener? ? @assignment.groups : current_user.staffed_groups & @assignment.groups %>
+    <% user_groups.each do |group| %>
       <li>
         <%= link_to group.name, assignment_group_show_url(@assignment, group) %>
       </li>
