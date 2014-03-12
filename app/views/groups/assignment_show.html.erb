@@ -30,7 +30,7 @@
 
           <td>
             <%= (student.most_recent_submission(@assignment)
-                       .specs_passing) || "N/A" %>
+                       .try(:specs_passing)) || "N/A" %>
           </td>
 
 
