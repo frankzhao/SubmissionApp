@@ -4,7 +4,7 @@
 <% unless @assignment.is_visible %>
   <p><strong>This assignment has not been released yet. Students cannot see it.</strong></p>
 <% end %>
-
+<!--
 <p>This is an assignment for the following courses:</p>
 
 <ul>
@@ -14,29 +14,31 @@
     </li>
   <% end %>
 </ul>
-
+ -->
 <% if assignment.due_date %>
   <p>Due at <%= assignment.due_date %> </p>
 <% end %>
 
-<h3>Description</h3>
+<!-- <h3>Description</h3> -->
 <p>
-  <%= assignment.info.html_safe %>
+  <%= sanitize assignment.info, tags: %w(li ul ol code strong em b a) %>
 </p>
 
-<h3>Marking scheme
-<% if assignment.conveners.include?(current_user) %>
-<span class="small"><%= link_to "edit", assignment_marking_categories_url(assignment) %>
-</span>
-<% end %>
-</h3>
-<% if assignment.marking_categories.empty? %>
-  <p>This assignment is not marked.</p>
-<% else %>
-  <% assignment.marking_categories.each do |category| %>
-    <h4><%= category.name %>
-      <small>(<%= category.maximum_mark %> marks)</small>
-    </h4>
-    <p><%= category.description %></p>
+<% if assignment.marking_categories.length > 0 || assignment.conveners.include?(current_user) %>
+  <h3>Marking scheme
+  <% if assignment.conveners.include?(current_user) %>
+  <span class="small"><%= link_to "edit", assignment_marking_categories_url(assignment) %>
+  </span>
+  <% end %>
+  </h3>
+  <% if assignment.marking_categories.empty? %>
+    <p>This assignment is not marked.</p>
+  <% else %>
+    <% assignment.marking_categories.each do |category| %>
+      <h4><%= category.name %>
+        <small>(<%= category.maximum_mark %> marks)</small>
+      </h4>
+      <p><%= category.description %></p>
+    <% end %>
   <% end %>
 <% end %>

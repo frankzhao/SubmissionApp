@@ -44,13 +44,41 @@
         <% end %>
 
 
-     <p> <%= link_to("Submit test assignment",
+     <p> <%= link_to("Submit test submission",
                 new_assignment_assignment_submission_url(@assignment)) %></p>
 
-    <p>Students who have submitted: <%= @number_submitted %></p>
-    <p>Students who have finalized: <%= @number_finalized %></p>
-    <p>Total number of students: <%= @number_students %></p>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h4>Progress</h4>
 
+        <div class="progress progress-striped active">
+          <div class="progress-bar progress-bar-success" style="width: <%=
+                  @number_finalized * 100.0 / @number_students %>%">
+          </div>
+          <div class="progress-bar progress-bar-warning" style="width: <%=
+                  (@number_submitted- @number_finalized) * 100.0 / @number_students %>%">
+          </div>
+          <div class="progress-bar progress-bar-danger" style="width: <%=
+                  (@number_students- @number_submitted) * 100.0 / @number_students %>%">
+          </div>
+        </div>
+
+        <table class="table table-bordered table-striped">
+          <tr>
+            <td>Students who have submitted</td>
+            <td><%= @number_submitted %></td>
+          </tr>
+          <tr>
+            <td>Students who have finalized</td>
+            <td><%= @number_finalized %></td>
+          </tr>
+          <tr>
+            <td>Total number of students</td>
+            <td><%= @number_students %></td>
+          </tr>
+        </table>
+      </div>
+    </div>
     <h4>Submissions by group</h4>
     <ul>
     <% user_groups = current_user.is_admin_or_convener? ? @assignment.groups : current_user.staffed_groups & @assignment.groups %>
@@ -61,7 +89,7 @@
     <% end %>
     </ul>
 
-    <h4>Raw list of all submissions</h4>
+    <h4>Raw list of all submissions (all <%= @submissions.count %> of them)</h4>
     <a data-toggle="collapse" data-target="#raw-submissions">Expand/collapse view</a>
 <!-- <p>TODO: currently when you download all submissions as a zip, none of them are labelled, and some of them are old submissions. How should I label them? Which ones should be downloaded?</p> -->
     <ul id="raw-submissions" class="collapse">

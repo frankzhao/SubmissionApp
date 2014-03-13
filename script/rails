@@ -22,7 +22,7 @@ module Rails
                        File.open("server.key").read),
                         # $private_key),
                 :SSLCertificate => OpenSSL::X509::Certificate.new(
-                       File.open("server.crt").read),
+                       File.open("signed_certificates/varese_anu_edu_au_cert.cer").read),
                 :SSLCertName => [["CN", WEBrick::Utils::getservername]]
             })
         end
