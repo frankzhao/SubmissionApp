@@ -84,8 +84,10 @@
             <ul class="dropdown-menu">
               <% current_user.notifications.each do |n| %>
                 <% if n.notable_id.nil? %>
-                  <li><%= link_to n.text, notification_url(n),
-                                          :method => :delete %>
+                  <li class="notification"><a
+                      data-target-url="<%= n.link %>"
+                      data-id="<%= n.id %>">
+                    <%= n.text %>
                   </li>
                 <% else %>
                   <li><%= link_to n.text, n.link %>
@@ -95,6 +97,10 @@
             </ul>
           </li>
         <% end %>
+
+        <script>
+          debugger
+        </script>
 
         <li>
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%=current_user.name%><b class="caret"></b></a>
@@ -138,4 +144,8 @@
   <%= yield %>
 </div>
 </body>
+
+<script>
+
+</script>
 </html>

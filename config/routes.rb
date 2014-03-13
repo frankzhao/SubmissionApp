@@ -43,7 +43,7 @@ SubmissionApp::Application.routes.draw do
   end
 
 
-  resources :notifications, :only => :destroy
+  resources :notifications, :only => [:destroy, :index]
 
   get 'assignments/:id/marks.csv', :to => 'assignments#get_csv',
                                    :as => 'assignment_marks'

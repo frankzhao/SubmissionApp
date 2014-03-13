@@ -36,8 +36,8 @@
 
     <h3>Submissions</h3>
         <% if @relation == :staff %>
-          As a tutor, you can't currently download all of your students'
-        submissions as a zip. Sorry about that. You can, however, view and download them individually.
+<!--           As a tutor, you can't currently download all of your students'
+        submissions as a zip. Sorry about that. You can, however, view and download them individually. -->
         <% elsif @relation == :convener %>
         <p><%= link_to "Download all submissions as zip",
                 "/assignments/#{@assignment.id}/submissions.zip" %></p>
@@ -47,6 +47,9 @@
      <p> <%= link_to("Submit test assignment",
                 new_assignment_assignment_submission_url(@assignment)) %></p>
 
+    <p>Students who have submitted: <%= @number_submitted %></p>
+    <p>Students who have finalized: <%= @number_finalized %></p>
+    <p>Total number of students: <%= @number_students %></p>
 
     <h4>Submissions by group</h4>
     <ul>
@@ -58,10 +61,10 @@
     <% end %>
     </ul>
 
-    <h4>All submissions</h4>
-
+    <h4>Raw list of all submissions</h4>
+    <a data-toggle="collapse" data-target="#raw-submissions">Expand/collapse view</a>
 <!-- <p>TODO: currently when you download all submissions as a zip, none of them are labelled, and some of them are old submissions. How should I label them? Which ones should be downloaded?</p> -->
-    <ul>
+    <ul id="raw-submissions" class="collapse">
       <% @submissions.each do |submission| %>
         <li>
           <%= link_to("#{submission.user.name} (u#{submission.user.uni_id})",

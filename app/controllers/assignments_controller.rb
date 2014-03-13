@@ -54,6 +54,15 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.find(params[:id])
     @relation = current_user.relationship_to_assignment(@assignment)
 
+    unless @relation == :student
+      @number_submitted = Assignment.first.submissions
+                                            .group(:user_id).count.count
+      @number_finalized = Assignment.first.submissions
+                                            .where(:is_finalized => true)
+                                            .group(:user_id).count.count
+      @number_students = @assignment.students.count
+    end
+
     case @relation
     when :student
       @user_submissions = @assignment.submissions

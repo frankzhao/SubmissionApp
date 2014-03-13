@@ -60,6 +60,7 @@ class CoursesController < ApplicationController
       @group_types = @course.group_types
       @assignments = @course.assignments.order("due_date ASC")
     end
+
     render :show
   end
 end

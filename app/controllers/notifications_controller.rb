@@ -10,4 +10,8 @@ class NotificationsController < ApplicationController
     end
     redirect_to :back
   end
+
+  def index
+    render :json => current_user.notifications
+  end
 end
