@@ -55,9 +55,9 @@ class AssignmentsController < ApplicationController
     @relation = current_user.relationship_to_assignment(@assignment)
 
     unless @relation == :student
-      @number_submitted = Assignment.first.submissions
+      @number_submitted = @assignment.submissions
                                             .group(:user_id).count.count
-      @number_finalized = Assignment.first.submissions
+      @number_finalized = @assignment.submissions
                                             .where(:is_finalized => true)
                                             .group(:user_id).count.count
       @number_students = @assignment.students.count
