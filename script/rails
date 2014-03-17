@@ -5,6 +5,9 @@ require 'rails/commands/server'
 require 'rack'
 require 'webrick'
 require 'webrick/https'
+require 'date'
+
+
 
 module Rails
     class Server < ::Rack::Server
@@ -19,10 +22,10 @@ module Rails
                 :SSLEnable => true,
                 :SSLVerifyClient => OpenSSL::SSL::VERIFY_NONE,
                 :SSLPrivateKey => OpenSSL::PKey::RSA.new(
-                       File.open("server.key").read),
+                       File.open("signed_certificates/varese.key").read),
                         # $private_key),
                 :SSLCertificate => OpenSSL::X509::Certificate.new(
-                       File.open("server.crt").read),
+                       File.open("signed_certificates/varese.crt").read),
                 :SSLCertName => [["CN", WEBrick::Utils::getservername]]
             })
         end

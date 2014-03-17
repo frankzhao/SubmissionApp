@@ -1,8 +1,9 @@
 require 'date'
 
 module AdminHelper
-  def parse_logs()
-    @requests = request_text.split("\nStarted ")
+  def parse_logs
+    request_text = `cat #{Rails.root.to_s}/log/production.log`
+    requests = request_text.split("\nStarted ")
 
   end
 
