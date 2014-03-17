@@ -17,12 +17,14 @@ class Notification < ActiveRecord::Base
   def text
     @text ||= self.message || begin
       case self.notable_type
-      when "comment"
+      when "Comment"
         "You have a new comment on your assignment submission for #{self.notable.assignment.name}"
-      when "assignment"
+      when "Assignment"
         "You have a new assignment, #{self.notable.name}, for #{self.notable.group_type.name}"
-      when "submission_permission"
+      when "SubmissionPermission"
         "You've been given a new submission to peer review."
+      else
+        fail
       end
     end
   end
@@ -30,15 +32,17 @@ class Notification < ActiveRecord::Base
   def link
     case self.notable_type
     when nil
-      notification_url(self)
-    when "comment"
-      url_for([self.notable.assignment_submission.assignment,
-          self.notable.assignment_submission])
-    when "assignment"
-      url_for(self.notable)
-    when "submission_permission"
-      url_for([self.notable.assignment_submission.assignment,
-          self.notable.assignment_submission])
+      "#"
+    when "Comment"
+      assignment_assignment_submission_path(self.notable.assignment_submission.assignment,
+          self.notable.assignment_submission)
+    when "Assignment"
+      assignment_path(self.notable.id)
+    when "SubmissionPermission"
+      assignment_assignment_submission_path(self.notable.assignment_submission.assignment,
+          self.notable.assignment_submission)
+    else
+      fail
     end
   end
 end

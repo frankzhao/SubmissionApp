@@ -77,30 +77,22 @@
         <% if current_user.notifications.count > 0 %>
           <li>
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            <!-- <span class="glyphicon glyphicon-exclamation-sign"></span> -->
             Notifications
             <span class="badge"><%= current_user.notifications.length %></span>
+            <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
               <% current_user.notifications.each do |n| %>
-                <% if n.notable_id.nil? %>
-                  <li class="notification"><a
-                      data-target-url="<%= n.link %>"
-                      data-id="<%= n.id %>">
-                    <%= n.text %>
-                  </li>
-                <% else %>
-                  <li><%= link_to n.text, n.link %>
-                  </li>
-                <% end %>
+                <li class="notification"
+                    data-target-url="<%= n.link %>"
+                    data-id="<%= n.id %>"><a><%= n.text %></a>
+                </li>
               <% end %>
             </ul>
           </li>
         <% end %>
 
-        <script>
-          debugger
-        </script>
 
         <li>
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%=current_user.name%><b class="caret"></b></a>
@@ -144,8 +136,4 @@
   <%= yield %>
 </div>
 </body>
-
-<script>
-
-</script>
 </html>
