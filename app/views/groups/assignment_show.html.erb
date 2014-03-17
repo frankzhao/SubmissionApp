@@ -6,6 +6,7 @@
       <tr>
         <th></th>
         <th>Submission status</th>
+        <th>Submissions</th>
         <th>Specs passing</th>
         <th>Peer review status</th>
       </tr>
@@ -25,6 +26,14 @@
           <% else %>
             <td class="warning"><strong>No submission</strong></td>
           <% end %>
+
+          <td>
+            <% student.submissions_for_assignment(@assignment).each do |s| %>
+              <% if s.is_finalized %> <strong> <% end %>
+              <%= link_to s.id, assignment_assignment_submission_url(s.assignment, s) %>
+              <% if s.is_finalized %> </strong> <% end %>
+            <% end %>
+          </td>
 
           <!-- Specs passing -->
 

@@ -57,6 +57,11 @@ module UserAssignmentRelationshipStuff
     self.staffed_assignments + self.convened_assignments
   end
 
+  def submissions_for_assignment(assignment)
+    self.assignment_submissions
+        .where(:assignment_id => assignment.id)
+  end
+
   def has_submitted_for_assignment(assignment)
     (self.assignment_submissions
         .where(:assignment_id => assignment.id)
