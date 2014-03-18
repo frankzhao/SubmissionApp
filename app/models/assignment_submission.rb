@@ -220,4 +220,10 @@ class AssignmentSubmission < ActiveRecord::Base
     ! self.comments.select { |c| c.user == user }
                    .empty?
   end
+
+  def pretty_filename(user)
+    user_name = self.context_name(self.user, user).gsub(" ","_")
+    assignment_name = self.assignment.name.gsub(/ |-|:/, "_")
+    user_name + "_" + assignment_name
+  end
 end

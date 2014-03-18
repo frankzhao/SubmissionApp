@@ -112,7 +112,10 @@ class AssignmentSubmissionsController < ApplicationController
   def get_zip
     @submission = AssignmentSubmission.find(params[:id])
 
+    filename = @submission.pretty_file_name(current_user) + '.zip"'
+
     if @submission.permits?(current_user)
+      response.headers['Content-Disposition'] = "attachment; filename=\"#{filename}\""
       send_file(@submission.zip_path)
     else
       flash[:errors] = ["You don't have permission to access that page"]
