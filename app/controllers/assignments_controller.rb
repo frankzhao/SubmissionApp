@@ -54,6 +54,9 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.find(params[:id])
     @relation = current_user.relationship_to_assignment(@assignment)
 
+    current_user.notifications.where(:notable_type => "Assignment",
+                                     :notable_id => @assignment.id).delete_all
+
     unless @relation == :student
       @number_submitted = @assignment.submissions
                                             .group(:user_id).count.count

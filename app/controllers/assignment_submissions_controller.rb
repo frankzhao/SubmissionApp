@@ -7,6 +7,14 @@ class AssignmentSubmissionsController < ApplicationController
     @comments = @submission.comments
     @relationship = @submission.relationship_to_user(current_user)
 
+    current_user.notifications.where(:notable_type => "AssignmentSubmission",
+                                     :notable_id => @submission.id).delete_all
+
+    current_user.notifications.where(:notable_type => "Comment")
+                              .includes(:notable)
+                              .select { |s| s.notable.assignment_submission_id == @submission.id }
+                              .map(&:delete)
+
     if @relationship
       render :show
     else

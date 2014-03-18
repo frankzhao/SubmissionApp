@@ -10,6 +10,9 @@ class Comment < ActiveRecord::Base
   belongs_to :user
   belongs_to :peer_review_cycle
 
+  belongs_to :parent, :class_name => "Comment",
+                      :foreign_key => :parent_id
+
   has_many :marks
 
   has_one :peer_mark
@@ -18,7 +21,7 @@ class Comment < ActiveRecord::Base
                       :foreign_key => :parent_id,
                       :primary_key => :id
 
-  before_save :friendlify_filename
+  after_save :friendlify_filename, :send_notifications
 
   validates :assignment_submission_id, :body, :presence => true
 
@@ -43,6 +46,18 @@ class Comment < ActiveRecord::Base
   def save_data(data)
     File.open(self.file_path, 'wb') do |f|
       f.write(data)
+    end
+  end
+
+  def send_notifications
+    Notification.create!(:user_id => self.assignment_submission.user_id,
+                         :notable_id => self.id,
+                         :notable_type => "Comment")
+
+    if self.parent
+      Notification.create!(:user_id => self.parent.user_id,
+                           :notable_id => self.id,
+                           :notable_type => "Comment")
     end
   end
 end

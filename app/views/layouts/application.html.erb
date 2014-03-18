@@ -84,9 +84,9 @@
             </a>
             <ul class="dropdown-menu">
               <% current_user.notifications.each do |n| %>
-                <li class="notification"
-                    data-target-url="<%= n.link %>"
-                    data-id="<%= n.id %>"><a><%= n.text %></a>
+                <li class="notification">
+                  <%= link_to(n.text, n.link,
+                            :method => (n.notable_id.nil? ? :delete : :get)) %>
                 </li>
               <% end %>
             </ul>

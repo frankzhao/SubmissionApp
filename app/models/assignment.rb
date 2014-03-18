@@ -29,7 +29,7 @@ class Assignment < ActiveRecord::Base
 
   has_many :peer_review_cycles, :dependent => :destroy
 
-  after_create :make_directory
+  after_create :make_directory, :send_notifications
 
   extend FriendlyId
 
@@ -161,5 +161,11 @@ class Assignment < ActiveRecord::Base
 
   def conveners_and_staff
     self.conveners + self.staff
+  end
+
+  def send_notifications
+    Notification.create!((self.students + self.staff).map do |u|
+      {:user_id => u.id, :notable_id => self.id, :notable_type => "Assignment"}
+    end)
   end
 end
