@@ -7,6 +7,10 @@
 </h5>
 
 <div id="comment-<%= parent_id %>" class="collapse comment">
+<% if relationship == :peer && submission.which_peer_review_cycle(
+                                      current_user).anonymise %>
+  <p>This comment is anonymous: the submitter won't know who you are.</p>
+<% end %>
   <form method="POST"
         action="<%= assignment_assignment_submission_comments_url(
                   assignment, submission)%>"
