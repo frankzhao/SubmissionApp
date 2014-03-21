@@ -15,7 +15,7 @@ class GroupsController < ApplicationController
   def show
     @group = Group.find(params[:id])
     @group_type = @group.group_type
-    @users = @group.students
+    @users = @group.students.sort_by!{|x| x.name.split(" ").last}
     @staff = @group.staff
     render :show
   end
@@ -23,7 +23,7 @@ class GroupsController < ApplicationController
   def assignment_show
     @assignment = Assignment.find(params[:assignment_id])
     @group = Group.find(params[:id])
-    @students = @group.students
+    @students = @group.students.sort_by!{|x| x.name.split(" ").last}
     render :assignment_show
   end
 end

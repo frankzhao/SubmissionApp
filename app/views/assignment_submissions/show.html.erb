@@ -28,16 +28,19 @@
       </h3>
     <% end %>
 
+    <% if @relationship == :staff %>
+      <p>This submission is visible to: <%=@submission.permitted_users.map {|u|
+             link_to(u.name, u)}.join(", ").html_safe %></p>
+    <% end %>
+
     <%# Only the submitter and staff should be able to click on Finalize. Luckily, they're also the only ones who can see the assignment before it's finalized. %>
 
     <% unless @submission.is_finalized %>
-    <div class="panel panel-default" style="margin-top:10px;">
-  <div class="panel-body">
-      <h4>Not finalized</h4>
+    <div class="alert alert-warning" style="margin-top:10px; padding-bottom:60px">
+      <h4>  <span class="glyphicon glyphicon-warning-sign"></span> Not finalized</h4>
       <p>This submission has not been finalized. It will not be submitted for tutor consideration or peer review until you finalize it.</p>
       <%= button_to "Finalize", assignment_assignment_submission_finalize_url(
             @assignment, @submission), :class => "btn btn-primary pull-right" %>
-    </div>
     </div>
     <% end %>
   </div>
