@@ -35,3 +35,5 @@ This uses the `zip` shell command. It uses `ghc` to check if Haskell assignments
 I've used American English throughout in spelling of variable names etc.
 
 I log suspicious activity with "Security warning" in the server log. At some point in the future, I'll give the admin notifications whenever that occurs.
+
+Also, I specifically refer to the server that this is running on in one place: grep 'varese' to see where.
