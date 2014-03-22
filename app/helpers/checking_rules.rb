@@ -65,7 +65,9 @@ module CheckingRules
       tests.each do |test|
         root = Rails.root.to_s
         File.open("#{root}/temp/temp.hs","w") { |f| f.write(text) }
-        result = `timeout 3 ghc -i.:/dept/dcs/comp1100/supr/SubmissionApp/Library -XSafe #{root}/temp/temp.hs 2>&1 -e "#{test}"`.strip
+        command_to_run = "timeout 3 ghc -i.:/dept/dcs/comp1100/supr/SubmissionApp/Library -XSafe #{root}/temp/temp.hs 2>&1 -e \"#{test}\""
+        logger.info("Running:\n#{command_to_run}")
+        result = `#{command_to_run}`.strip
         if result == "True"
           score += 1
         end
@@ -76,7 +78,7 @@ module CheckingRules
         add_anonymous_comment(
             "You got #{score} out of #{tests.length} test cases correct. " +
             "Here's the results of each of the test cases:" +
-            "<ol>#{results.map{|x| "<li>#{x}</li>" }.join()}</ol>")
+            "<ol>#{results.map{|x| "<li>#{x.replace("\n","\n<br>")}</li>" }.join()}</ol>")
       end
 
       self.specs_passing = score
