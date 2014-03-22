@@ -27,7 +27,7 @@ class AssignmentSubmissionsController < ApplicationController
     @assignment = Assignment.find(params[:assignment_id])
 
     #NOTE: this allows the user to be a staff member.
-    unless current_user.relationship_to_assignment(@assignment)
+    unless current_user.relationship_to_assignment(@assignment) || current_user.is_admin
       flash[:errors] = ["You're not allowed to submit that assignment..."]
       redirect_to courses_url
       return
@@ -52,7 +52,7 @@ class AssignmentSubmissionsController < ApplicationController
   def create
     @assignment = Assignment.find(params[:assignment_id])
 
-    unless current_user.relationship_to_assignment(@assignment)
+    unless current_user.relationship_to_assignment(@assignment) || current_user.is_admin
       flash[:errors] = ["You aren't enrolled in a course with that assignment."]
       redirect_to "/"
       return

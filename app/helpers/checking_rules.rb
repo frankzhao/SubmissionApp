@@ -78,7 +78,7 @@ module CheckingRules
         add_anonymous_comment(
             "You got #{score} out of #{tests.length} test cases correct. " +
             "Here's the results of each of the test cases:" +
-            "<ol>#{results.map{|x| "<li>#{x.replace("\n","\n<br>")}</li>" }.join()}</ol>")
+            "<ol>#{results.map{|x| "<li>#{x.gsub("\n","\n<br>")}</li>" }.join()}</ol>")
       end
 
       self.specs_passing = score
