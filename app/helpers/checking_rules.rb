@@ -32,7 +32,9 @@ module CheckingRules
 
     Dir.mkdir("#{root}/temp") unless Dir.exists? "#{root}/temp"
     File.open("#{root}/temp/temp.hs","w") { |f| f.write(text) }
-    comments = `ghc -XSafe #{root}/temp/temp.hs -i.:/dept/dcs/comp1100/supr/SubmissionApp/Library 2>&1`
+    command_to_run = "ghc -XSafe #{root}/temp/temp.hs -i.:/dept/dcs/comp1100/supr/SubmissionApp/Library 2>&1"
+    comments = `#{command_to_run}`
+    logger.info("Running:\n#{command_to_run}")
 
     if comments.include?("The function `main' is not defined in module `Main'")
       File.open("#{root}/temp/temp.hs","w") do |f|
