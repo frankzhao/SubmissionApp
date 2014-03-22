@@ -27,7 +27,7 @@ class AdminController < ApplicationController
       request[0...match.length] != match
     end
 
-    @requests = @requests[-100..-1]
+    @requests = @requests[-50..-1]
 
     render :log
   end
