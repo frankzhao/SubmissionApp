@@ -70,7 +70,7 @@ module CheckingRules
             "\"#{test.gsub('"','\"')}\"")
         logger.info("Running:\n#{command_to_run}")
         result = `#{command_to_run}`.strip
-        fail
+
         if result == "True"
           score += 1
         end
