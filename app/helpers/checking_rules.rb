@@ -35,6 +35,7 @@ module CheckingRules
     command_to_run = "ghc -XSafe #{root}/temp/temp.hs -i.:/dept/dcs/comp1100/supr/SubmissionApp/Library 2>&1"
     comments = `#{command_to_run}`
     logger.info("Running:\n#{command_to_run}")
+    logger.info("Result:\n#{comments}")
 
     if comments.include?("The function `main' is not defined in module `Main'")
       File.open("#{root}/temp/temp.hs","w") do |f|
