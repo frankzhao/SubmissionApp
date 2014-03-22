@@ -67,9 +67,10 @@ module CheckingRules
         File.open("#{root}/temp/temp.hs","w") { |f| f.write(text) }
         command_to_run = ("timeout 3 ghc -i.:/dept/dcs/comp1100/supr/SubmissionApp/Library"+
             " -XSafe #{root}/temp/temp.hs 2>&1 -e " +
-            "#{test.gsub('"','\"')}\"")
+            "\"#{test.gsub('"','\"')}\"")
         logger.info("Running:\n#{command_to_run}")
         result = `#{command_to_run}`.strip
+        fail
         if result == "True"
           score += 1
         end
