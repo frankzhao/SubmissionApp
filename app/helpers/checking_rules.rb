@@ -65,7 +65,7 @@ module CheckingRules
       tests.each do |test|
         root = Rails.root.to_s
         File.open("#{root}/temp/temp.hs","w") { |f| f.write(text) }
-        result = `timeout 3 ghc -XSafe #{root}/temp/temp.hs 2>&1 -e "#{test}"`.strip
+        result = `timeout 3 ghc -i.:/dept/dcs/comp1100/supr/SubmissionApp/Library -XSafe #{root}/temp/temp.hs 2>&1 -e "#{test}"`.strip
         if result == "True"
           score += 1
         end
