@@ -41,7 +41,10 @@ module CheckingRules
       File.open("#{root}/temp/temp.hs","w") do |f|
         f.write(text+"\n\nmain = undefined")
       end
-      comments = `ghc -XSafe #{root}/temp/temp.hs 2>&1`
+      command_to_run = "ghc -XSafe #{root}/temp/temp.hs -i.:/dept/dcs/comp1100/supr/SubmissionApp/Library 2>&1"
+      comments = `#{command_to_run}`
+      logger.info("Running:\n#{command_to_run}")
+      logger.info("Result:\n#{comments}")
     end
 
     ans = File.exist?("#{root}/temp/temp")
