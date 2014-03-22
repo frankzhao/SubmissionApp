@@ -18,8 +18,8 @@ module CheckingRules
         add_anonymous_comment("This code compiles!")
       else
         add_anonymous_comment(
-          "<strong>This code doesn't compile</strong>, with the following error:<br>
-            <pre>#{errors}</pre>")
+          "<strong>This code doesn't compile</strong>, with the following error:<br><code>
+            <pre>#{errors}</pre></code>")
       end
     else
       check_compiling_haskell_module(self.zip_path)
@@ -32,7 +32,7 @@ module CheckingRules
 
     Dir.mkdir("#{root}/temp") unless Dir.exists? "#{root}/temp"
     File.open("#{root}/temp/temp.hs","w") { |f| f.write(text) }
-    comments = `ghc -XSafe #{root}/temp/temp.hs 2>&1`
+    comments = `ghc -XSafe #{root}/temp/temp.hs -i.:/dept/dcs/comp1100/supr/SubmissionApp/Library 2>&1`
 
     if comments.include?("The function `main' is not defined in module `Main'")
       File.open("#{root}/temp/temp.hs","w") do |f|
