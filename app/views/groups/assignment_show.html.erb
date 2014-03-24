@@ -8,7 +8,9 @@
         <th>Submission status</th>
         <th>Submissions</th>
         <th>Specs passing</th>
-        <th>Peer review status</th>
+        <% if @assignment.peer_review_cycles.count > 0 %>
+          <th>Peer review status</th>
+        <% end %>
       </tr>
 
       <% @students.each do |student| %>
@@ -44,16 +46,17 @@
 
 
           <!-- Peer review status -->
-
-          <% if (student.uncommented_submissions_for_assignment(@assignment)
-                      .count) > 0 %>
-              <td class="warning"><strong>No comment made</strong></td>
-          <% else %>
-            <% if (student.permitted_submissions_for_assignment(@assignment)
-                      .count) > 0 %>
-              <td>Commented</td>
+          <% if @assignment.peer_review_cycles.count > 0 %>
+            <% if (student.uncommented_submissions_for_assignment(@assignment)
+                        .count) > 0 %>
+                <td class="warning"><strong>No comment made</strong></td>
             <% else %>
-              <td>No submission received</td>
+              <% if (student.permitted_submissions_for_assignment(@assignment)
+                        .count) > 0 %>
+                <td>Commented</td>
+              <% else %>
+                <td>No submission received</td>
+              <% end %>
             <% end %>
           <% end %>
         </tr>

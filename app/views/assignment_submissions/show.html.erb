@@ -28,7 +28,7 @@
       </h3>
     <% end %>
 
-    <% if @relationship == :staff %>
+    <% if @relationship == :staff && @submission.permitted_users.count > 0%>
       <p>This submission is visible to: <%=@submission.permitted_users.map {|u|
              link_to(u.name, u)}.join(", ").html_safe %></p>
     <% end %>
