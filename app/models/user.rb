@@ -35,6 +35,8 @@ class User < ActiveRecord::Base
 
   has_many :comments, :dependent => :destroy
 
+  has_many :extensions
+
   before_validation :reset_session_token, :on => :create
 
   validates :name, :session_token, :uni_id, :presence => true

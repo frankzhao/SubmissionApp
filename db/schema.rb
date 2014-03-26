@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140312174834) do
+ActiveRecord::Schema.define(:version => 20140325222252) do
 
   create_table "assignment_submissions", :force => true do |t|
     t.integer  "user_id",                          :null => false
@@ -73,6 +73,14 @@ ActiveRecord::Schema.define(:version => 20140312174834) do
   end
 
   add_index "courses", ["slug"], :name => "index_courses_on_slug", :unique => true
+
+  create_table "extensions", :force => true do |t|
+    t.integer  "user_id",       :null => false
+    t.integer  "assignment_id", :null => false
+    t.datetime "due_date",      :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
 
   create_table "friendly_id_slugs", :force => true do |t|
     t.string   "slug",                         :null => false

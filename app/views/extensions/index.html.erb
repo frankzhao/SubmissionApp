@@ -1,0 +1,55 @@
+<div class="row">
+  <div class="col-sm-8 col-sm-offset-2">
+    <h2>Extensions for <%= link_to @assignment.name, @assignment %></h2>
+
+
+    <% if @extensions.empty? %>
+      <p>Currently, no extensions exist. Why not be nice to some students and create some!</p>
+    <% else %>
+      <table class="table table-condensed table-striped table-bordered">
+        <tr>
+          <th>Uni id</th>
+          <th>Name</th>
+          <th>Date of extension</th>
+          <th></th>
+        </tr>
+        <% @extensions.each do |extension| %>
+          <% user = extension.user %>
+          <tr id="extension-<%= extension.id %>">
+            <td>
+              u<%= user.uni_id %>
+            </td>
+            <td>
+              <%= user.name %>
+            </td>
+            <td>
+              <%= extension.due_date %>
+            </td>
+            <td>
+              <%= link_to extension_url(extension), :class => "btn btn-xs btn-danger",
+                    :method => :delete do %>
+                Delete
+                <span class="glyphicon glyphicon-trash"></span>
+              <% end %>
+            </td>
+          <tr>
+        <% end %>
+      </table>
+    <% end %>
+
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h4>New extension</h4>
+        <%= form_for @extension, url: {action: "create"} do |f| %>
+          <label for="student_uni_id">Uni id</label>
+          <input id="student_uni_id" name="student_uni_id">
+
+          <p><%= label_tag(:due_date, "New due date") %>
+          <%= f.datetime_select(:due_date) %></p>
+
+          <%= f.submit("Create extension", :class => "btn btn-default btn-primary btn-sm") %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

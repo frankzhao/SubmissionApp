@@ -28,6 +28,7 @@ module CheckingRules
 
   # TODO: this stuff should be more resilient against files named "temp"
   def check_compiling_haskell_string(text)
+    logger.info("checking compiling haskell")
     root = Rails.root.to_s
 
     Dir.mkdir("#{root}/temp") unless Dir.exists? "#{root}/temp"

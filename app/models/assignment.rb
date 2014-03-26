@@ -29,6 +29,8 @@ class Assignment < ActiveRecord::Base
 
   has_many :peer_review_cycles, :dependent => :destroy
 
+  has_many :extensions
+
   after_create :make_directory, :send_notifications
 
   extend FriendlyId
