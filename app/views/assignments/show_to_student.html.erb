@@ -22,7 +22,7 @@
     <% if @assignment.disable_submitting_until_comment(current_user) %>
       <p>You can't submit again until you've commented on your peer review
         submissions.</p>
-    <% elsif @assignment.already_due %>
+    <% elsif @assignment.already_due(current_user) %>
       <p>Submissions have closed.</p>
     <% else %>
       <%= link_to("Submit assignment",

@@ -34,7 +34,7 @@ class AssignmentSubmissionsController < ApplicationController
     end
 
 
-    unless @assignment.already_due
+    unless @assignment.already_due(current_user)
       if @assignment.submission_format == "plaintext"
         @submission = @assignment.submissions
                    .where(:user_id => current_user.id)
@@ -58,7 +58,7 @@ class AssignmentSubmissionsController < ApplicationController
       return
     end
 
-    unless @assignment.already_due
+    unless @assignment.already_due(current_user)
       @submission = AssignmentSubmission.new(params[:submission])
       @submission.assignment = Assignment.find(params[:assignment_id])
       @submission.user_id = current_user.id

@@ -30,6 +30,7 @@ class Group < ActiveRecord::Base
   end
 
   def submissions(assignment)
+    self.
     # TODO: rewrite this as SQL
     assignment.submissions.select do |submission|
       self.students.include?(submission.user)
@@ -40,4 +41,20 @@ class Group < ActiveRecord::Base
     GroupStaffMembership.delete_all(:group_id => self.id)
   end
 
+  def progress_bar_hash(assignment)
+    {}.tap do |out|
+      number_students = self.students.count
+      number_submitted = assignment.submissions
+                                     .where("user_id IN (#{self.student_ids.join(",")})")
+                                     .group(:user_id).count.count
+      number_finalized = assignment.submissions
+                                      .where("user_id IN (#{self.student_ids.join(",")})")
+                                      .where(:is_finalized => true)
+                                      .group(:user_id).count.count
+      out[:percent_submitted] = (number_submitted - number_finalized) * 100 / number_students
+      out[:percent_finalized] = number_finalized * 100 / number_students
+      out[:percent_not_submitted] = ((number_students - number_submitted) * 100 /
+                                          number_students)
+    end
+  end
 end

@@ -18,7 +18,7 @@
     <% if @submission.permitted_users.include?(current_user) %>
       <h3><%= @submission.context_name(@submission.user, current_user) %></h3>
     <% elsif current_user == @submission.user %>
-      <% unless @assignment.already_due %>
+      <% unless @assignment.already_due(current_user) %>
         <%= link_to "Submit new version", new_assignment_assignment_submission_url(
                             @assignment), :class => "btn btn-default btn-sm"%>
       <% end %>

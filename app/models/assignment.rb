@@ -130,8 +130,14 @@ class Assignment < ActiveRecord::Base
   # Does the assignment have a due date in the past?
   # If it doesn't have a due date, it's never overdue.
   # If the due date isn't compulsary, it's never overdue
-  def already_due
-    self.due_date && self.is_due_date_compulsary && self.due_date < Time.now
+  # If the user has an extension, we use that date instead.
+  def already_due(user)
+    extension = Extension.find_by_user_id_and_assignment_id(user.id, self.id)
+    if extension
+      return extension.due_date < Time.zone.now
+    end
+
+    self.due_date && self.is_due_date_compulsary && self.due_date < Time.zone.now
   end
 
   def add_marking_category!(hash)

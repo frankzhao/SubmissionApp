@@ -77,17 +77,34 @@
             <td><%= @number_students %></td>
           </tr>
         </table>
+
+        <h4>By group</h4>
+        <ul>
+        <% user_groups = current_user.is_admin_or_convener? ? @assignment.groups : current_user.staffed_groups & @assignment.groups %>
+        <table class="table table-condensed table-bordered table-striped">
+        <% user_groups.each do |group| %>
+          <tr>
+            <td>
+              <lead><%= link_to group.name, assignment_group_show_url(@assignment, group) %></lead>
+            </td>
+            <td style="width:400px;">
+              <% progress_hash = group.progress_bar_hash(@assignment) %>
+              <a href="<%= assignment_group_show_url(@assignment, group) %>">
+                <div class="progress progress-striped active">
+                  <div class="progress-bar progress-bar-success" style="width: <%= progress_hash[:percent_finalized] %>%">
+                  </div>
+                  <div class="progress-bar progress-bar-warning" style="width: <%= progress_hash[:percent_submitted] %>%">
+                  </div>
+                  <div class="progress-bar progress-bar-danger" style="width: <%= progress_hash[:percent_not_submitted] %>%">
+                  </div>
+                </div>
+              </a>
+            </td>
+          </tr>
+        <% end %>
+        </table>
       </div>
     </div>
-    <h4>Submissions by group</h4>
-    <ul>
-    <% user_groups = current_user.is_admin_or_convener? ? @assignment.groups : current_user.staffed_groups & @assignment.groups %>
-    <% user_groups.each do |group| %>
-      <li>
-        <%= link_to group.name, assignment_group_show_url(@assignment, group) %>
-      </li>
-    <% end %>
-    </ul>
 
     <h4>Raw list of all submissions (all <%= @submissions.count %> of them)</h4>
     <a data-toggle="collapse" data-target="#raw-submissions">Expand/collapse view</a>

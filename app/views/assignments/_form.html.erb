@@ -20,7 +20,7 @@
   <%= label_tag(:due_date, "Due date", :class => "col-sm-2 col-sm-offset-2") %>
   <div class="col-sm-5">
     <%= f.datetime_select(:due_date, :class => "form-control") %>
-    For timezone inference, when you loaded this page the time was <%= Time.now %>
+    For timezone inference, when you loaded this page the time was <%= Time.zone.now %>
   </div>
 </div>
 
