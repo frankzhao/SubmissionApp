@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140325222252) do
+ActiveRecord::Schema.define(:version => 20140327064431) do
 
   create_table "assignment_submissions", :force => true do |t|
     t.integer  "user_id",                          :null => false
@@ -215,6 +215,14 @@ ActiveRecord::Schema.define(:version => 20140325222252) do
 
   add_index "student_enrollments", ["course_id"], :name => "index_student_enrollments_on_course_id"
   add_index "student_enrollments", ["user_id"], :name => "index_student_enrollments_on_user_id"
+
+  create_table "submission_files", :force => true do |t|
+    t.integer  "assignment_submission_id"
+    t.string   "name"
+    t.string   "body"
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+  end
 
   create_table "submission_permissions", :force => true do |t|
     t.integer  "assignment_submission_id", :null => false

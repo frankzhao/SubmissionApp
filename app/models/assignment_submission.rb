@@ -21,6 +21,8 @@ class AssignmentSubmission < ActiveRecord::Base
   has_many :permitted_users, :through => :submission_permissions,
                              :source => :user
 
+  has_many :submission_files
+
   has_one :group_type, :through => :assignment, :source => :group_type
   has_many :courses, :through => :group_type, :source => :courses
   has_many :conveners, :through => :courses, :source => :convener
@@ -92,7 +94,6 @@ class AssignmentSubmission < ActiveRecord::Base
     end
   end
 
-
   def save_data(data)
     File.open(self.zip_path, 'wb') do |f|
       f.write(data)
@@ -159,7 +160,9 @@ class AssignmentSubmission < ActiveRecord::Base
 
       names.each do |name|
         begin
-          zip_contents[name] = zipfile.read(name) if zipfile.read(name)
+          if zipfile.read(name)
+            zip_contents[name] = zipfile.read(name).encode("iso-8859-1").force_encoding("utf-8")
+          end
         rescue NoMethodError
         end
       end
@@ -170,6 +173,18 @@ class AssignmentSubmission < ActiveRecord::Base
 
   def tail_match?(str1, str2)
     str1[-str2.length..-1] == str2
+  end
+
+  def make_files_from_zip_contents
+    self.zip_contents.each do |name, value|
+      SubmissionFile.create!(:name => name, :body => value,
+                              :assignment_submission_id => self.id)
+    end
+  end
+
+  def make_file_from_body
+    SubmissionFile.create!(:name => "main", :body => self.body,
+                            :assignment_submission_id => self.id)
   end
 
   def receive_submission

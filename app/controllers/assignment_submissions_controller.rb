@@ -49,6 +49,8 @@ class AssignmentSubmissionsController < ApplicationController
   end
 
   # Staff members are allowed to create assignments.
+
+  # This method is very ugly, and I really should rewrite it. Sorry :(
   def create
     @assignment = Assignment.find(params[:assignment_id])
 
@@ -58,36 +60,42 @@ class AssignmentSubmissionsController < ApplicationController
       return
     end
 
-    unless @assignment.already_due(current_user)
-      @submission = AssignmentSubmission.new(params[:submission])
-      @submission.assignment = Assignment.find(params[:assignment_id])
-      @submission.user_id = current_user.id
-      if @submission.save
-        @submission.receive_submission
-        if @assignment.submission_format == "zipfile"
-          if (params[:upload] and params[:upload]["datafile"])
-            @submission.save_data(params[:upload]["datafile"].read)
-            valid = @submission.zip_contents rescue false
-            unless valid
-              flash[:errors] = ["That file couldn't be read as a zip file."]
-              render :new
-              return
-            end
+    if @assignment.already_due(current_user)
+      flash[:errors] = ["Assignment is already due."]
+      redirect_to assignment_url(@assignment)
+      return
+    end
 
+    @submission = AssignmentSubmission.new(params[:submission])
+    @submission.assignment = Assignment.find(params[:assignment_id])
+    @submission.user_id = current_user.id
+    if @submission.save
+      @submission.receive_submission
+      if @assignment.submission_format == "zipfile"
+        if (params[:upload] and params[:upload]["datafile"])
+          @submission.save_data(params[:upload]["datafile"].read)
+          valid = @submission.zip_contents rescue false
+          if valid
+            @submission.make_files_from_zip_contents
           else
-            flash[:errors] = ["Please select a file to upload."]
+            flash[:errors] = ["That file couldn't be read as a zip file."]
             render :new
             return
           end
+
+        else
+          flash[:errors] = ["Please select a file to upload."]
+          render :new
+          return
         end
-        redirect_to(assignment_assignment_submission_url(params[:assignment_id],@submission))
-      else
-        flash[:errors] = ["Assignment was not successfully saved"] + @submission.errors.full_messages
-        render :new
+      elsif @assignment.submission_format == "plaintext"
+        @submission.make_file_from_body
       end
+
+      redirect_to(assignment_assignment_submission_url(params[:assignment_id],@submission))
     else
-      flash[:errors] = ["Assignment is already due."]
-      redirect_to assignment_url(@assignment)
+      flash[:errors] = ["Assignment was not successfully saved"] + @submission.errors.full_messages
+      render :new
     end
   end
 

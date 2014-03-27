@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  assignment_submission_id: 1
+  name: MyString
+  body: MyString
+
+two:
+  assignment_submission_id: 1
+  name: MyString
+  body: MyString
