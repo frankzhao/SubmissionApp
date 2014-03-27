@@ -2,7 +2,7 @@ class AssignmentSubmissionsController < ApplicationController
   before_filter :require_logged_in
 
   def show
-    @submission = AssignmentSubmission.find(params[:id])
+    @submission = AssignmentSubmission.find(params[:id], include: :submission_files)
     @assignment = @submission.assignment
     @comments = @submission.comments
     @relationship = @submission.relationship_to_user(current_user)
@@ -74,13 +74,16 @@ class AssignmentSubmissionsController < ApplicationController
       if @assignment.submission_format == "zipfile"
         if (params[:upload] and params[:upload]["datafile"])
           @submission.save_data(params[:upload]["datafile"].read)
-          valid = @submission.zip_contents rescue false
-          if valid
-            @submission.make_files_from_zip_contents
-          else
-            flash[:errors] = ["That file couldn't be read as a zip file."]
+          begin
+            @submission.zip_contents
+          rescue => e
+            valid = false
+            flash[:errors] = ["That file couldn't be read as a zip file, with
+              the following error:", e.to_s]
             render :new
             return
+          else
+            @submission.make_files_from_zip_contents
           end
 
         else

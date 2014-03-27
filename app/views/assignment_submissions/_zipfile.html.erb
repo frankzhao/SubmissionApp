@@ -9,19 +9,17 @@
 <div class="row">
   <div class="col-xs-9 col-xs-offset-2">
     <div class="panel-group" id="accordion">
-    <% submission.zip_contents.each do |filename, file| %>
+    <% submission.submission_files.each do |file| %>
       <div class="panel panel-default">
         <div class="panel-heading">
           <p class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#<%= filename.hash %>">
-                <%= filename %> (<%= file.length %> bytes)
+            <a data-toggle="collapse" data-parent="#accordion" href="#<%= file.name.hash %>">
+                <%= file.name %> (<%= file.body.length %> bytes)
             </a>
           </p>
         </div>
-
-        <div id="<%= filename.hash %>" class="panel-collapse collapse">
-          <pre><code class="prettyprint"><% file.split("\n").each_with_index do |line, index| %><small><a href="#<%= filename.hash %>-line-<%= index %>" ><%=index%></a></small>  <span class="line-of-code" id="<%= filename.hash %>-line-<%= index %>"> <%=line.ljust(80)%></span>
-<% end %></code></pre>
+        <div id="<%= file.name.hash %>" class="panel-collapse panel-body collapse" style="overflow:auto;">
+          <%= render :partial => "file", :locals => { :file => file } %>
         </div>
       </div>
 
@@ -29,12 +27,3 @@
     </div>
   </div>
 </div>
-
-<script>
-$(document).ready( function () {
-  console.log(window.location.hash.split("-line-")[0]);
-  $('html, body').animate({
-        scrollTop: $(window.location.hash).offset().top - 100
-    }, 200)
-})
-</script>

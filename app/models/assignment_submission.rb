@@ -148,20 +148,22 @@ class AssignmentSubmission < ActiveRecord::Base
 
   def zip_contents
     zip_contents = {}
-    Zip::File.open(self.zip_path) do |zipfile|
+    Zip::File.open(self.zip_path, "b") do |zipfile|
       names = zipfile.map{|e| e.name}
              .select{|x| x[0..5]!= "__MACO" }
 
-      filetypes_to_show = self.assignment.filetypes_to_show.try(:split," ")
+      filetypes_to_show = (self.assignment.filetypes_to_show.try(:split," ") ||
+                 [".hs",".py",".rb",".txt",".js"])
 
-      if filetypes_to_show && filetypes_to_show.length > 0
-        names.select! { |x| filetypes_to_show.any? {|y| tail_match?(x,y)}}
-      end
+      names.select! { |x| filetypes_to_show.any? {|y| tail_match?(x,y)}}
 
       names.each do |name|
         begin
           if zipfile.read(name)
-            zip_contents[name] = zipfile.read(name).encode("iso-8859-1").force_encoding("utf-8")
+            result = zipfile.read(name).encode('utf-8', :invalid => :replace,
+                                                         :undef => :replace,
+                                                         :replace => '_')
+            zip_contents[name] = result if result.length < 10000
           end
         rescue NoMethodError
         end
@@ -175,7 +177,18 @@ class AssignmentSubmission < ActiveRecord::Base
     str1[-str2.length..-1] == str2
   end
 
+  def make_files
+    if self.assignment.submission_format == "plaintext"
+      self.make_file_from_body
+    elsif self.assignment.submission_format == "zipfile"
+      self.make_files_from_zip_contents
+    else
+      fail
+    end
+  end
+
   def make_files_from_zip_contents
+    self.submission_files.destroy_all
     self.zip_contents.each do |name, value|
       SubmissionFile.create!(:name => name, :body => value,
                               :assignment_submission_id => self.id)
@@ -183,6 +196,7 @@ class AssignmentSubmission < ActiveRecord::Base
   end
 
   def make_file_from_body
+    self.submission_files.destroy_all
     SubmissionFile.create!(:name => "main", :body => self.body,
                             :assignment_submission_id => self.id)
   end
