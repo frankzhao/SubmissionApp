@@ -178,6 +178,7 @@ class AssignmentSubmission < ActiveRecord::Base
   end
 
   def make_files
+    return unless self.assignment
     if self.assignment.submission_format == "plaintext"
       self.make_file_from_body
     elsif self.assignment.submission_format == "zipfile"
