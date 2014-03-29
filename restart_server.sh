@@ -1,4 +1,4 @@
-#!./sh
+#!/bin/bash
 
 git pull
 bundle exec rake db:migrate
