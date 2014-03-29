@@ -15,4 +15,3 @@
 //= require_tree .
 //= require bootstrap.min
 //= require underscore
-//= require annotator-full.min.js
