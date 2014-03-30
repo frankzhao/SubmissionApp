@@ -21,6 +21,9 @@ SubmissionApp_development
 /vendor/*
 secret_token
 /signed_certificates/*
+*.crt
+*.cer
+*.key
 
 SubmissionApp_development
 /public/assets/*

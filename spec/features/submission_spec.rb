@@ -47,6 +47,19 @@ feature "submitting assignments" do
     expect(page).to have_content("New assignment submission for Wireworld")
   end
 
+  it "doesn't let you submit if the assignment isn't visible" do
+    wireworld = Assignment.first
+    wireworld.due_date = "2010-04-05"
+    wireworld.is_visible = false
+    wireworld.save!
+    p wireworld.already_due(User.find_by_uni_id(5555551))
+
+    sign_in "u5555551"
+    visit "/assignments/wireworld/assignment_submissions/new"
+    expect(page).to_not have_content("New assignment submission for Wireworld")
+    expect(page).to have_content("That assignment isn't visible yet")
+  end
+
   feature "access from other users" do
     before(:each) do
       submit_wireworld_as_user("u5555551")

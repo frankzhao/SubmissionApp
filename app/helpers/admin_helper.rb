@@ -27,7 +27,7 @@ module AdminHelper
         out[:response_code] = data[1].to_i
         out[:time_taken] = data[2].to_f
       rescue => e
-        p [e, request]
+        # p [e, request]
       end
     end
   end
