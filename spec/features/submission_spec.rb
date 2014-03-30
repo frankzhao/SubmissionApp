@@ -15,6 +15,38 @@ feature "submitting assignments" do
     expect(page).to have_content("main = undefined")
   end
 
+  it "doesn't let randoms submit assignments" do
+    Course.first.student_enrollments.delete_all
+    sign_in "u5555551"
+    visit "/assignments/wireworld/assignment_submissions/new"
+    expect(page).to have_content("You're not allowed to submit that assignment...")
+    expect(page).to have_content("Your courses") # This is a proxy for "redirected to index page"
+  end
+
+  it "doesn't let you submit after the due date if it isn't supposed to" do
+    wireworld = Assignment.first
+    wireworld.due_date = "2010-04-05"
+    wireworld.is_due_date_compulsary = true
+    wireworld.save!
+    p wireworld.already_due(User.find_by_uni_id(5555551))
+
+    sign_in "u5555551"
+    visit "/assignments/wireworld/assignment_submissions/new"
+    expect(page).to have_content("Assignment is already due.")
+  end
+
+  it "does let you submit after the due date if it is supposed to" do
+    wireworld = Assignment.first
+    wireworld.due_date = "2010-04-05"
+    wireworld.is_due_date_compulsary = false
+    wireworld.save!
+    p wireworld.already_due(User.find_by_uni_id(5555551))
+
+    sign_in "u5555551"
+    visit "/assignments/wireworld/assignment_submissions/new"
+    expect(page).to have_content("New assignment submission for Wireworld")
+  end
+
   feature "access from other users" do
     before(:each) do
       submit_wireworld_as_user("u5555551")

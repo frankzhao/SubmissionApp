@@ -66,6 +66,14 @@ class AssignmentSubmissionsController < ApplicationController
       return
     end
 
+    unless (@assignment.is_visible ||
+          current_user.relationship_to_assignment(@assignment) == :staff ||
+              current_user.is_convener_or_admin)
+      flash[:errors] = ["Assignment is not visible yet."]
+      redirect_to "/"
+      return
+    end
+
     @submission = AssignmentSubmission.new(params[:submission])
     @submission.assignment = Assignment.find(params[:assignment_id])
     @submission.user_id = current_user.id
