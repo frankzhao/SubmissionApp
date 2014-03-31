@@ -21,7 +21,13 @@ SubmissionApp_development
 /vendor/*
 secret_token
 /signed_certificates/*
+*.crt
+*.cer
+*.key
 
 SubmissionApp_development
 /public/assets/*
 current_issues
+
+"/Lab scripts 2014"
+/Library

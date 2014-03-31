@@ -58,7 +58,7 @@ class CoursesController < ApplicationController
     if current_user.courses.include?(@course) || current_user.is_admin
       @students = @course.students
       @group_types = @course.group_types
-      @assignments = @course.assignments.order("due_date ASC")
+      @assignments = @course.assignments.visible.order("due_date ASC")
     end
 
     render :show

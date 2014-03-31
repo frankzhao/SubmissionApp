@@ -59,7 +59,7 @@ class AssignmentsController < ApplicationController
 
     unless @relation == :student
       @number_submitted = @assignment.submissions
-                                            .group(:user_id).count.count
+                                     .group(:user_id).count.count
       @number_finalized = @assignment.submissions
                                             .where(:is_finalized => true)
                                             .group(:user_id).count.count
@@ -68,6 +68,10 @@ class AssignmentsController < ApplicationController
 
     case @relation
     when :student
+      unless @assignment.is_visible
+        flash[:errors] = ["That assignment isn't visible yet"]
+        redirect_to :back
+      end
       @user_submissions = @assignment.submissions
                                      .where(:user_id => current_user.id)
                                      .order('created_at DESC')

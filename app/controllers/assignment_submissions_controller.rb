@@ -26,13 +26,19 @@ class AssignmentSubmissionsController < ApplicationController
   def new
     @assignment = Assignment.find(params[:assignment_id])
 
+    relationship = current_user.relationship_to_assignment(@assignment)
     #NOTE: this allows the user to be a staff member.
-    unless current_user.relationship_to_assignment(@assignment) || current_user.is_admin
+    unless relationship || current_user.is_admin
       flash[:errors] = ["You're not allowed to submit that assignment..."]
       redirect_to courses_url
       return
     end
 
+    if relationship == :student && !@assignment.is_visible
+      flash[:errors] = ["That assignment isn't visible yet."]
+      redirect_to "/"
+      return
+    end
 
     unless @assignment.already_due(current_user)
       if @assignment.submission_format == "plaintext"
@@ -63,6 +69,14 @@ class AssignmentSubmissionsController < ApplicationController
     if @assignment.already_due(current_user)
       flash[:errors] = ["Assignment is already due."]
       redirect_to assignment_url(@assignment)
+      return
+    end
+
+    unless (@assignment.is_visible ||
+          current_user.relationship_to_assignment(@assignment) == :staff ||
+              current_user.is_convener_or_admin)
+      flash[:errors] = ["Assignment is not visible yet."]
+      redirect_to "/"
       return
     end
 
