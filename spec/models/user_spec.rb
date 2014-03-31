@@ -85,7 +85,6 @@ describe User do
             u = User.create!(:name => "Buck", :uni_id => 12345)
             u.is_admin = true if $is_admin
             c = Course.create(:name => "comp1100", :convener_id => u.id) if $is_convener
-            p u.is_admin_or_convener?, $is_admin || $is_convener
             expect(u.is_admin_or_convener?).to eq($is_admim || $is_convener)
           end
         end

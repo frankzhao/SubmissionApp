@@ -2,10 +2,8 @@ require "zip"
 
 class AssignmentSubmission < ActiveRecord::Base
   include CheckingRules
-
-  def self.group_by_day(field)
-    AssignmentSubmission.group("CAST(assignment_submissions.#{field} AS DATE)")
-  end
+  include SubmissionFileStuffHelper
+  include PeerReviewHelper
 
   attr_accessible :assignment_id, :body, :user_id
 
@@ -28,6 +26,10 @@ class AssignmentSubmission < ActiveRecord::Base
   has_many :conveners, :through => :courses, :source => :convener
 
   validates :assignment_id, :user_id, :presence => true
+
+  def self.group_by_day(field)
+    AssignmentSubmission.group("CAST(assignment_submissions.#{field} AS DATE)")
+  end
 
   def self.uncommented(user)
     where(<<-SQL, user.id)
@@ -60,7 +62,7 @@ class AssignmentSubmission < ActiveRecord::Base
     return nil
   end
 
-  # TODO: remove the n+1 shit
+  # TODO: remove the n+1 query
   def relationship_to_user(user)
     if user == self.user
       return :creator
@@ -75,144 +77,16 @@ class AssignmentSubmission < ActiveRecord::Base
 
   # This is all the people who are permitted to see the assignment.
   # TODO: make it so that the assignment has a setting to let all
-  # staff for the course see all the assignments.
+  # staff for the course see all the submissions.
   # Also, faster, obviously
   def staff
     group.staff + group.group_type.courses.map(&:convener)
-  end
-
-  def url
-    assignment_assignment_submission_url(
-                        self.assignment_id, self.id)
-  end
-
-  def save_locally
-    if self.assignment.submission_format == "plaintext"
-      File.open(self.file_path+".txt", 'w') do |f|
-        f.write(self.body)
-      end
-    end
-  end
-
-  def save_data(data)
-    File.open(self.zip_path, 'wb') do |f|
-      f.write(data)
-    end
-  end
-
-  def file_path
-    name = self.user.name.gsub(" ","_")
-    datetime = self.created_at.to_s.gsub(" ","_")
-    self.assignment.path + "/#{self.id}_#{datetime}"
-  end
-
-  def zip_path
-    self.file_path+".zip"
-  end
-
-  def upload=(whatever)
-    @upload = whatever
-  end
-
-  def add_permission(user, cycle_id)
-    SubmissionPermission.create!(:user_id => user.id,
-                                 :assignment_submission_id => self.id,
-                                 :peer_review_cycle_id => cycle_id)
   end
 
   def permits?(user)
     !! self.relationship_to_user(user)
   end
 
-  def context_name(user_to_be_named, current_user)
-    peer_review_cycle = which_peer_review_cycle(user_to_be_named)
-    unless peer_review_cycle
-      peer_review_cycle = which_peer_review_cycle(current_user)
-    end
-
-    unless peer_review_cycle.try(:anonymise)
-      return user_to_be_named.name
-    end
-
-    if current_user == self.user # as in, you're the user who created the assignment
-      if self.permitted_users.include?(user_to_be_named)
-        return "Anonymous Reviewer"
-      end
-    elsif (self.permitted_users - self.conveners).include?(current_user)
-      if self.user == user_to_be_named
-        return "Anonymous Submitter"
-      end
-    end
-    return "#{user_to_be_named.name} (u#{user_to_be_named.uni_id})"
-  end
-
-  def zip_contents
-    zip_contents = {}
-    Zip::File.open(self.zip_path, "b") do |zipfile|
-      names = zipfile.map{|e| e.name}
-             .select{|x| x[0..5]!= "__MACO" }
-
-      filetypes_to_show = (self.assignment.filetypes_to_show.try(:split," ") ||
-                 [".hs",".py",".rb",".txt",".js"])
-
-      names.select! { |x| filetypes_to_show.any? {|y| tail_match?(x,y)}}
-
-      names.each do |name|
-        begin
-          if zipfile.read(name)
-            result = zipfile.read(name).encode('utf-8', :invalid => :replace,
-                                                         :undef => :replace,
-                                                         :replace => '_')
-            zip_contents[name] = result if result.length < 10000
-          end
-        rescue NoMethodError
-        end
-      end
-    end
-
-    zip_contents
-  end
-
-  def tail_match?(str1, str2)
-    str1[-str2.length..-1] == str2
-  end
-
-  def make_files
-    return unless self.assignment
-    if self.assignment.submission_format == "plaintext"
-      self.make_file_from_body
-    elsif self.assignment.submission_format == "zipfile"
-      self.make_files_from_zip_contents
-    else
-      fail
-    end
-  end
-
-  def make_files_from_zip_contents
-    self.submission_files.destroy_all
-    self.zip_contents.each do |name, value|
-      SubmissionFile.create!(:name => name, :body => value,
-                              :assignment_submission_id => self.id)
-    end
-  end
-
-  def make_file_from_body
-    self.submission_files.destroy_all
-    SubmissionFile.create!(:name => "main", :body => self.body,
-                            :assignment_submission_id => self.id)
-  end
-
-  def receive_submission
-    self.save_locally
-
-    unless self.assignment.behavior_on_submission.empty?
-      behavior_on_submission = JSON.parse(self.assignment.behavior_on_submission)
-
-      behavior_on_submission.each do |command, args|
-        self.interpret(command, args)
-      end
-    end
-  end
 
   def finalize!
     logger.info "finalizing assignment submission #{id}"
@@ -249,11 +123,5 @@ class AssignmentSubmission < ActiveRecord::Base
   def commented_on_by_user?(user)
     ! self.comments.select { |c| c.user == user }
                    .empty?
-  end
-
-  def pretty_filename(user)
-    user_name = self.context_name(self.user, user).gsub(" ","_")
-    assignment_name = self.assignment.name.gsub(/ |-|:/, "_")
-    user_name + "_" + assignment_name
   end
 end

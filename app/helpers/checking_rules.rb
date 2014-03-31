@@ -1,7 +1,17 @@
 module CheckingRules
+  def receive_submission
+    self.save_locally
+
+    unless self.assignment.behavior_on_submission.empty?
+      behavior_on_submission = JSON.parse(self.assignment.behavior_on_submission)
+
+      behavior_on_submission.each do |command, args|
+        self.interpret(command, args)
+      end
+    end
+  end
 
   def interpret(command, args)
-    case command
     when "check compiling haskell"
       self.check_compiling_haskell
     when "test haskell"
