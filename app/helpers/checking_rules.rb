@@ -12,6 +12,7 @@ module CheckingRules
   end
 
   def interpret(command, args)
+    case command
     when "check compiling haskell"
       self.check_compiling_haskell
     when "test haskell"
