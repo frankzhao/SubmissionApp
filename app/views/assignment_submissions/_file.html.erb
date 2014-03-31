@@ -1,1 +1,2 @@
-<pre><code class="prettyprint"><% file.body.split("\n").each_with_index do |line, index| %><small><%= (index + 1).to_s.ljust(3) %></small> <span class="line-of-code"> <%=line.rstrip.ljust(80)%></span><% end %></code></pre>
+<pre><code class="prettyprint"><% file.body.split("\n").each_with_index do |line, index| %><small><%= (index + 1).to_s.ljust(3) %></small> <span class="line-of-code"><%=line.rstrip%></span>
+<% end %></code></pre>
