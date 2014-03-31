@@ -3,14 +3,14 @@
 -- Australia 2014
 --
 
-module Integer_Subtypes (
+module Data.Integer_Subtypes (
    
    Natural,  -- Integer subtype range 0 .. ; providing (Num, Real, Enum, Integral, Show, Read) deriving (Eq, Ord)
    Positive, -- Integer subtype range 1 .. ; providing (Num, Real, Enum, Integral, Show, Read) deriving (Eq, Ord)
    
-   Int_Range, -- Int subtype range minBound .. maxBound; providing (Num, Real, Enum, Integral, Show, Read) deriving (Eq, Ord)
-   Nat,       -- Int subtype range 0        .. maxBound; providing (Num, Real, Enum, Integral, Show, Read) deriving (Eq, Ord)
-   Pos,       -- Int subtype range 1        .. maxBound; providing (Num, Real, Enum, Integral, Show, Read) deriving (Eq, Ord)
+   Int_Range, -- Int subtype range minBound .. maxBound; providing (Bounded, Num, Real, Enum, Integral, Show, Read) deriving (Eq, Ord)
+   Nat,       -- Int subtype range 0        .. maxBound; providing (Bounded, Num, Real, Enum, Integral, Show, Read) deriving (Eq, Ord)
+   Pos,       -- Int subtype range 1        .. maxBound; providing (Bounded, Num, Real, Enum, Integral, Show, Read) deriving (Eq, Ord)
 
    -- Conversions from and to Integer are implicit, yet 
    -- conversions between Natural and Positive directly are explicit:
@@ -279,6 +279,10 @@ instance Read Positive where
 
 -- Instances for Int_Range
 
+instance Bounded Int_Range where
+   minBound = Int_Range minBound
+   maxBound = Int_Range maxBound
+
 instance Num Int_Range where
    (Int_Range x) + (Int_Range y) 
       | y <= maxBound - x = Int_Range sum 
@@ -333,6 +337,10 @@ instance Read Int_Range where
          [(result, rest)] = readsPrec i str
          
 -- Instances for Nat
+
+instance Bounded Nat where
+   minBound = Nat 0
+   maxBound = Nat maxBound
 
 instance Num Nat where
    (Nat x) + (Nat y) 
@@ -412,6 +420,10 @@ instance Read Nat where
          [(result, rest)] = readsPrec i str
          
 -- Instances for Pos
+
+instance Bounded Pos where
+   minBound = Pos 1
+   maxBound = Pos maxBound
 
 instance Num Pos where
    (Pos x) + (Pos y) 
