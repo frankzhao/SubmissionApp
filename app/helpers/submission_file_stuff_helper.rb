@@ -33,10 +33,9 @@ module SubmissionFileStuffHelper
       names = zipfile.map{|e| e.name}
              .select{|x| x[0..5]!= "__MACO" }
 
-      filetypes_to_show = (self.assignment.filetypes_to_show.try(:split," ") ||
-                 [".hs",".py",".rb",".txt",".js"])
+      regexp = Regexp.new(self.assignment.filepath_regex)
 
-      names.select! { |x| filetypes_to_show.any? {|y| tail_match?(x,y)}}
+      names.select! { |x| regexp =~ x }
 
       names.each do |name|
         begin

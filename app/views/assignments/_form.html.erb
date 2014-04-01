@@ -53,11 +53,11 @@
 </div>
 
 <div class="form-group">
-  <%= label_tag(:filetypes_to_show, "File types to show", :class => "col-sm-2 col-sm-offset-2") %>
+  <%= label_tag(:filepath_regex, "Filepath regex", :class => "col-sm-2 col-sm-offset-2") %>
   <div class="col-sm-5">
-    <%= f.text_field(:filetypes_to_show, :class => "form-control",
+    <%= f.text_field(:filepath_regex, :class => "form-control",
         :html => { :placeholder => ".hs .txt", :rows => 3 }) %>
-  <span class="help-block">This determines what filetypes are displayed in the web interface. For instance, if you had <code>.hs .txt</code>, it would only display files ending with .hs and .txt.</span>
+  <span class="help-block">This determines what filetypes are displayed in the web interface. For instance, if you had <code>.*(\.hs|\.txt)</code>, it would only display files ending with .hs and .txt.</span>
   </div>
 </div>
 

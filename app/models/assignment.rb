@@ -1,7 +1,7 @@
 class Assignment < ActiveRecord::Base
   attr_accessible :info, :name, :group_type, :group_type_id, :due_date,
                    :submission_format, :behavior_on_submission,
-                   :is_due_date_compulsary, :filetypes_to_show,
+                   :is_due_date_compulsary, :filepath_regex,
                    :is_visible
 
   belongs_to :group_type
