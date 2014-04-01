@@ -137,7 +137,7 @@ class AssignmentSubmissionsController < ApplicationController
   def get_zip
     @submission = AssignmentSubmission.find(params[:id])
 
-    filename = @submission.pretty_file_name(current_user) + '.zip"'
+    filename = @submission.pretty_filename(current_user) + '.zip"'
 
     if @submission.permits?(current_user)
       response.headers['Content-Disposition'] = "attachment; filename=\"#{filename}\""
