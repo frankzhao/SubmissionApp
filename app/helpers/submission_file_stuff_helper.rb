@@ -29,6 +29,14 @@ module SubmissionFileStuffHelper
     @upload = whatever
   end
 
+  def all_zip_contents
+    Zip::File.open(self.zip_path, "b") do |zipfile|
+      names = zipfile.map{|e| e.name}
+             .select{|x| x[0..5]!= "__MACO" }
+      return names
+    end
+  end
+
   def zip_contents
     zip_contents = {}
     Zip::File.open(self.zip_path, "b") do |zipfile|

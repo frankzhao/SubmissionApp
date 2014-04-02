@@ -1,3 +1,7 @@
+#### This module is included in AssignmentSubmission
+
+# Your args are parsed as JSON.
+
 module CheckingRules
   def receive_submission
     self.save_locally
@@ -17,10 +21,54 @@ module CheckingRules
       self.check_compiling_haskell
     when "test haskell"
       self.test_haskell(args)
+    when "check files"
+      self.check_files(args)
     else
       throw "Unrecognised command: #{command}, #{args}"
     end
   end
+
+  # def check_files(args)
+  #   file_list = self.all_zip_contents
+
+  #   non_present_required_files = args[:required_files] - file_list
+  #   non_present_optional_files = args[:optional_files] - file_list
+  #   template = ERB.new(<<-TEXT)
+  #     This submission should have the following files:
+  #     <ul>
+  #       <% args[:required_files].each do |file| %>
+  #         <li>
+  #           <% file %>:
+  #             <% if file_list.include?(file) %>
+  #               present
+  #             <% else %>
+  #               <b>not present</b>
+  #             <% end %>
+  #           <% end %>
+  #         </li>
+  #       <% end %>
+  #     </ul>
+
+  #     The following files are optional: it's okay if you chose not to submit them.
+  #     But if you did submit them, they should be here.
+
+  #     <ul>
+  #       <% args[:required_files].each do |file| %>
+  #         <li>
+  #           <% file %>:
+  #             <% if file_list.include?(file) %>
+  #               present
+  #             <% else %>
+  #               not present
+  #             <% end %>
+  #           <% end %>
+  #         </li>
+  #       <% end %>
+  #     </ul>
+  #   TEXT
+
+  #   add_anonymous_comment(template)
+  # end
 
   def check_compiling_haskell
     if self.assignment.submission_format == "plaintext"
