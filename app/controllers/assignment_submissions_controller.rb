@@ -88,6 +88,7 @@ class AssignmentSubmissionsController < ApplicationController
       if @assignment.submission_format == "zipfile"
         if (params[:upload] and params[:upload]["datafile"])
           @submission.save_data(params[:upload]["datafile"].read)
+
           begin
             @submission.zip_contents
           rescue => e

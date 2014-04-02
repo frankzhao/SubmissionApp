@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140331211213) do
+ActiveRecord::Schema.define(:version => 20140401062754) do
 
   create_table "assignment_submissions", :force => true do |t|
     t.integer  "user_id",                          :null => false
@@ -222,6 +222,7 @@ ActiveRecord::Schema.define(:version => 20140331211213) do
     t.string   "body"
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
+    t.binary   "file_blob"
   end
 
   create_table "submission_permissions", :force => true do |t|

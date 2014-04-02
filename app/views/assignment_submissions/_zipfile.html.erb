@@ -14,15 +14,23 @@
         <div class="panel-heading">
           <p class="panel-title">
             <a data-toggle="collapse" data-parent="#accordion" href="#<%= file.name.hash %>">
-                <%= file.name %> (<%= file.body.length %> bytes)
+                <%= file.name %> (<%= file.body.try(:length) || file.file_blob.length %> bytes)
             </a>
           </p>
         </div>
-        <div id="<%= file.name.hash %>" class="panel-collapse panel-body collapse">
-          <%= render :partial => "file", :locals => { :file => file } %>
-        </div>
+        <% if file.body %>
+          <div id="<%= file.name.hash %>" class="panel-collapse panel-body collapse">
+
+            <%= render :partial => "file", :locals => { :file => file } %>
+          </div>
+        <% else %>
+          <div id="<%= file.name.hash %>" class="panel-collapse panel-body collapse">
+            <%= link_to "Download file", file_serve_url(file) %>
+          </div>
+        <% end %>
       </div>
     <% end %>
     </div>
   </div>
 </div>
+

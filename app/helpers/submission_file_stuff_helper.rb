@@ -1,4 +1,6 @@
 module SubmissionFileStuffHelper
+  DATA_FILE_TYPES = /.pdf|.bmp/
+
   def save_locally
     if self.assignment.submission_format == "plaintext"
       File.open(self.file_path+".txt", 'w') do |f|
@@ -35,15 +37,22 @@ module SubmissionFileStuffHelper
 
       regexp = Regexp.new(self.assignment.filepath_regex)
 
+
+
       names.select! { |x| regexp =~ x }
 
       names.each do |name|
         begin
           if zipfile.read(name)
-            result = zipfile.read(name).encode('utf-8', :invalid => :replace,
+            if name =~ DATA_FILE_TYPES
+              result = zipfile.read(name)
+            else
+              result = zipfile.read(name).encode('utf-8', :invalid => :replace,
                                                          :undef => :replace,
                                                          :replace => '_')
-            zip_contents[name] = result if result.length < 10000
+            end
+
+            zip_contents[name] = result
           end
         rescue NoMethodError
         end
@@ -71,8 +80,13 @@ module SubmissionFileStuffHelper
   def make_files_from_zip_contents
     self.submission_files.destroy_all
     self.zip_contents.each do |name, value|
-      SubmissionFile.create!(:name => name, :body => value,
+      if name =~ DATA_FILE_TYPES
+        SubmissionFile.create!(:name => name, :file_blob => value,
                               :assignment_submission_id => self.id)
+      else
+        SubmissionFile.create!(:name => name, :body => value,
+                              :assignment_submission_id => self.id)
+      end
     end
   end
 

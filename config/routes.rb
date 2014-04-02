@@ -71,4 +71,6 @@ SubmissionApp::Application.routes.draw do
   get 'admin/database', :to => 'admin#database'
   get 'admin/spoof-login/:id', :to => 'admin#spoof_login'
   get 'admin/charts', :to => 'admin#charts'
+
+  get 'files/:id', :to => 'submission_files#serve', :as => 'file_serve'
 end
