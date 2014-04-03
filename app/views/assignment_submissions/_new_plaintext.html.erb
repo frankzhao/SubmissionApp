@@ -2,6 +2,10 @@
   action="<%= assignment_assignment_submissions_url(assignment) %>"
     role="form">
   <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
+
+  <%= assignment.submission_instructions || "<p>Please put the text of your submission in here.</p>" %>
+
+
   <textarea name="submission[body]" class="form-control" style="font-family: monospace;"><%= submission.body if submission %></textarea>
   <p>You should put the text of your project into here. This is not a file upload field.</p>
   <br>

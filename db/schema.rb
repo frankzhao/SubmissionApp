@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140401062754) do
+ActiveRecord::Schema.define(:version => 20140403175446) do
 
   create_table "assignment_submissions", :force => true do |t|
     t.integer  "user_id",                          :null => false
@@ -28,19 +28,20 @@ ActiveRecord::Schema.define(:version => 20140401062754) do
   add_index "assignment_submissions", ["user_id"], :name => "index_assignment_submissions_on_user_id"
 
   create_table "assignments", :force => true do |t|
-    t.string   "name",                                            :null => false
-    t.text     "info",                                            :null => false
-    t.datetime "created_at",                                      :null => false
-    t.datetime "updated_at",                                      :null => false
-    t.integer  "group_type_id",                                   :null => false
+    t.string   "name",                                             :null => false
+    t.text     "info",                                             :null => false
+    t.datetime "created_at",                                       :null => false
+    t.datetime "updated_at",                                       :null => false
+    t.integer  "group_type_id",                                    :null => false
     t.string   "submission_policy"
     t.datetime "due_date"
-    t.string   "submission_format",      :default => "plaintext", :null => false
-    t.string   "behavior_on_submission", :default => ""
-    t.boolean  "is_due_date_compulsary", :default => false
+    t.string   "submission_format",       :default => "plaintext", :null => false
+    t.string   "behavior_on_submission",  :default => ""
+    t.boolean  "is_due_date_compulsary",  :default => false
     t.string   "slug"
     t.string   "filepath_regex"
-    t.boolean  "is_visible",             :default => true
+    t.boolean  "is_visible",              :default => true
+    t.string   "submission_instructions"
   end
 
   add_index "assignments", ["group_type_id"], :name => "index_assignments_on_group_type_id"

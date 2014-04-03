@@ -38,8 +38,17 @@
 </div>
 <div class="row">
   <div class="col-sm-7 col-sm-offset-2">
-    <textarea class="form-control" id="assignment_info" rows="10" name="assignment[info]"><%=assignment.info%></textarea>
-    <span class="help-block"> TODO: restrict allowed HTML here. Currently you can do whatever you want</span>
+    <textarea class="form-control" id="assignment_info" rows="10" name="assignment[info]"><%= assignment.info %></textarea>
+  </div>
+</div>
+
+<div class="row">
+  <label for="assignment_submission_instructions" class="col-sm-6 col-sm-offset-2">Submission instructions</label>
+</div>
+<div class="row">
+  <div class="col-sm-7 col-sm-offset-2">
+    <textarea class="form-control" id="assignment_submission_instructions" rows="10" name="assignment[submission_instructions]"><%=assignment.submission_instructions%></textarea>
+    <span class="help-block">This is displayed when students are trying to submit their assignments.</span>
   </div>
 </div>
 

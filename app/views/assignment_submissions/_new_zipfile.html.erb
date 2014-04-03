@@ -1,7 +1,7 @@
 
-<p>Please zip your assignment and upload it.</p>
+<%= assignment.submission_instructions || "<p>Please zip your assignment and upload it.</p>
 <p>If it's going to be peer reviewed, please don't write your name or uni
-id in the source code.</p>
+id in the source code.</p>" %>
 
 <form method="POST"
          action="<%= assignment_assignment_submissions_url(assignment) %>"
