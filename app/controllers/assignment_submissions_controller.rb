@@ -84,7 +84,6 @@ class AssignmentSubmissionsController < ApplicationController
     @submission.assignment = Assignment.find(params[:assignment_id])
     @submission.user_id = current_user.id
     if @submission.save
-      @submission.receive_submission
       if @assignment.submission_format == "zipfile"
         if (params[:upload] and params[:upload]["datafile"])
           @submission.save_data(params[:upload]["datafile"].read)
@@ -97,8 +96,6 @@ class AssignmentSubmissionsController < ApplicationController
               the following error:", e.to_s]
             render :new
             return
-          else
-            @submission.make_files_from_zip_contents
           end
 
         else
@@ -106,10 +103,10 @@ class AssignmentSubmissionsController < ApplicationController
           render :new
           return
         end
-      elsif @assignment.submission_format == "plaintext"
-        @submission.make_file_from_body
       end
 
+      @submission.make_files
+      @submission.receive_submission
       redirect_to(assignment_assignment_submission_url(params[:assignment_id],@submission))
     else
       flash[:errors] = ["Assignment was not successfully saved"] + @submission.errors.full_messages
