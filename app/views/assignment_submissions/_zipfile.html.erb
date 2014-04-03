@@ -3,30 +3,27 @@
     <p><%= link_to "Download submission", assignment_submission_zip_url(submission.assignment_id, submission),
                 :class=>"btn btn-default btn-sm" %> </p>
     <h3>Files</h3>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-xs-10 col-xs-offset-1">
-    <div class="panel-group" id="accordion">
-
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <p class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#list-of-all">
-                List of all files in zipfile
-            </a>
-          </p>
-        </div>
-        <div id="list-of-all" class="panel-collapse panel-body collapse">
-          <p>If this looks wrong, try resubmitting. In particular, if this is empty, something is wrong.</p>
+      <div id="list-of-all" class="panel-collapse panel-body">
+        <% contents = submission.all_zip_contents %>
+        <% if contents.empty? %>
+          <p>It looks like you didn't submit a valid zipfile, or we lost it on the server on Tuesday, April 1st. Try resubmitting?</p>
+        <% else %>
+          <p>If this looks wrong, try resubmitting.</p>
           <ul>
             <% submission.all_zip_contents.each do |filename| %>
               <li><%= filename %></li>
             <% end %>
           </ul>
-        </div>
+        <% end %>
       </div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-10 col-xs-offset-1">
+
+    <div class="panel-group" id="accordion">
 
     <% submission.submission_files.each do |file| %>
       <div class="panel panel-default">

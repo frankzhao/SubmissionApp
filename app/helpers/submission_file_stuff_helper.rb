@@ -86,22 +86,28 @@ module SubmissionFileStuffHelper
   end
 
   def make_files_from_zip_contents
-    self.submission_files.destroy_all
-    self.zip_contents.each do |name, value|
-      if name =~ DATA_FILE_TYPES
-        SubmissionFile.create!(:name => name, :file_blob => value,
-                              :assignment_submission_id => self.id)
-      else
-        SubmissionFile.create!(:name => name, :body => value,
-                              :assignment_submission_id => self.id)
+    contents = self.zip_contents
+    if contents
+      self.submission_files.destroy_all
+      contents.each do |name, value|
+        if name =~ DATA_FILE_TYPES
+          SubmissionFile.create!(:name => name, :file_blob => value,
+                                :assignment_submission_id => self.id)
+        else
+          SubmissionFile.create!(:name => name, :body => value,
+                                :assignment_submission_id => self.id)
+        end
       end
     end
   end
 
   def make_file_from_body
-    self.submission_files.destroy_all
-    SubmissionFile.create!(:name => "main", :body => self.body,
+    contents = self.zip_contents
+    if contents
+      self.submission_files.destroy_all
+      SubmissionFile.create!(:name => "main", :body => self.body,
                             :assignment_submission_id => self.id)
+    end
   end
 
   def pretty_filename(user)
