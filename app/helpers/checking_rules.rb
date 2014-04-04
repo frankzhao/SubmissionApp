@@ -46,10 +46,10 @@ module CheckingRules
         <% end %>
       </ul>
 
-      If those aren't here, maybe resubmit after rejigging your archive.
+      <p>If those aren't here, maybe resubmit after rejigging your archive.</p>
 
-      The following files are optional: it's okay if you chose not to submit them.
-      But if you did submit them, they should be here:
+      <p>The following files are optional: it's okay if you chose not to submit them.
+      But if you did submit them, they should be here:</p>
 
       <ul>
         <% args["optional_files"].each do |file| %>

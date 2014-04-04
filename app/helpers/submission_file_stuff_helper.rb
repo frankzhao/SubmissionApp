@@ -30,15 +30,16 @@ module SubmissionFileStuffHelper
   end
 
   def all_zip_contents
-    begin    
-Zip::File.open(self.zip_path, "b") do |zipfile|
-      names = zipfile.map{|e| e.name}
-             .select{|x| x[0..5]!= "__MACO" }
-      return names
+    begin
+
+      Zip::File.open(self.zip_path, "b") do |zipfile|
+        names = zipfile.map{|e| e.name}
+               .select{|x| x[0..5]!= "__MACO" }
+        return names
+      end
+    rescue
+      return []
     end
-rescue
-return []
-end
   end
 
   def zip_contents
