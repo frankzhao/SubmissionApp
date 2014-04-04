@@ -43,6 +43,7 @@ module SubmissionFileStuffHelper
   end
 
   def zip_contents
+    begin
     zip_contents = {}
     Zip::File.open(self.zip_path, "b") do |zipfile|
       names = zipfile.map{|e| e.name}
@@ -72,8 +73,10 @@ return {}
         end
       end
     end
+  rescue
 
     zip_contents
+  end
   end
 
   def tail_match?(str1, str2)
