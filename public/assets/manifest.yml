@@ -13,9 +13,9 @@ logo.psd: logo-9f7883836a98e076f7ede2b230163dff.psd
 logo/index.psd: logo-9f7883836a98e076f7ede2b230163dff.psd
 rails.png: rails-a3386665c05a2d82f711a4aaa72d247c.png
 rails/index.png: rails-a3386665c05a2d82f711a4aaa72d247c.png
-application.js: application-4f8bc837b0e91a5cf845dadc1f5f1adb.js
-application/index.js: application-4f8bc837b0e91a5cf845dadc1f5f1adb.js
-application.css: application-c0dbd3ab657fd4d93d3be6251f100642.css
-application/index.css: application-c0dbd3ab657fd4d93d3be6251f100642.css
+application.js: application-9c4b59c7edf258071a76e0333c49f278.js
+application/index.js: application-9c4b59c7edf258071a76e0333c49f278.js
+application.css: application-226f9407b4ab62dc114dd30abd4de74c.css
+application/index.css: application-226f9407b4ab62dc114dd30abd4de74c.css
 jquery.min.map: jquery.min-6336c5bca4c709e809647cdfcb484d0a.map
 jquery/index.min.map: jquery.min-6336c5bca4c709e809647cdfcb484d0a.map

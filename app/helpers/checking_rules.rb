@@ -37,7 +37,7 @@ module CheckingRules
         <% args["required_files"].each do |file| %>
           <li>
             <%= file %>:
-            <% if file_list.include?(file) %>
+            <% if file_list.any? {|f| f =~ Regexp.new(file) } %>
               present
             <% else %>
               <b>not present</b>
@@ -46,6 +46,8 @@ module CheckingRules
         <% end %>
       </ul>
 
+      If those aren't here, maybe resubmit after rejigging your archive.
+
       The following files are optional: it's okay if you chose not to submit them.
       But if you did submit them, they should be here:
 
@@ -53,7 +55,7 @@ module CheckingRules
         <% args["optional_files"].each do |file| %>
           <li>
             <%= file %>:
-            <% if file_list.include?(file) %>
+            <% if file_list.any? {|f| f =~ Regexp.new(file) } %>
               present
             <% else %>
               not present
