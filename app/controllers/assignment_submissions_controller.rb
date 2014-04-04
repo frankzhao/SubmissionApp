@@ -159,4 +159,33 @@ class AssignmentSubmissionsController < ApplicationController
       redirect_to "/"
     end
   end
+
+  def printable
+    @submission = AssignmentSubmission.find(params[:assignment_submission_id])
+    relationship = @submission.relationship_to_user(current_user)
+    if relationship
+      @assignment = @submission.assignment
+      html = render :printable, :layout => false
+    else
+      flash[:errors] = ["Permission denied"]
+      logger.warn("Security warning: someone tried to finalize someone else's submission")
+      redirect_to "/"
+    end
+  end
+
+  def printable_pdf
+    @submission = AssignmentSubmission.find(params[:assignment_submission_id])
+    relationship = @submission.relationship_to_user(current_user)
+    if relationship
+      @assignment = @submission.assignment
+
+      html = render_to_string :printable, :layout => false
+      pdf = WickedPdf.new.pdf_from_string(html)
+      send_data(pdf)
+    else
+      flash[:errors] = ["Permission denied"]
+      logger.warn("Security warning: someone tried to finalize someone else's submission")
+      redirect_to "/"
+    end
+  end
 end

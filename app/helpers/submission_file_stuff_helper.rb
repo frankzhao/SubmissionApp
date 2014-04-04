@@ -44,39 +44,39 @@ module SubmissionFileStuffHelper
 
   def zip_contents
     begin
-    zip_contents = {}
-    Zip::File.open(self.zip_path, "b") do |zipfile|
-      names = zipfile.map{|e| e.name}
-             .select{|x| x[0..5]!= "__MACO" }
+      zip_contents = {}
+      Zip::File.open(self.zip_path, "b") do |zipfile|
+        names = zipfile.map{|e| e.name}
+               .select{|x| x[0..5]!= "__MACO" }
 
-      regexp = Regexp.new(self.assignment.filepath_regex)
+        regexp = Regexp.new(self.assignment.filepath_regex)
 
 
 
-      names.select! { |x| regexp =~ x }
+        names.select! { |x| regexp =~ x }
 
-      names.each do |name|
-        begin
-          if zipfile.read(name)
-            if name =~ DATA_FILE_TYPES
-              result = zipfile.read(name)
-            else
-              result = zipfile.read(name).encode('utf-8', :invalid => :replace,
-                                                         :undef => :replace,
-                                                         :replace => '_')
+        names.each do |name|
+          begin
+            if zipfile.read(name)
+              if name =~ DATA_FILE_TYPES
+                result = zipfile.read(name)
+              else
+                result = zipfile.read(name).encode('utf-8', :invalid => :replace,
+                                                           :undef => :replace,
+                                                           :replace => '_')
+              end
+
+              zip_contents[name] = result
             end
-
-            zip_contents[name] = result
+          rescue NoMethodError
+            return {}
           end
-        rescue NoMethodError
-return {}
         end
       end
+    rescue
+      {}
     end
-  rescue
-
     zip_contents
-  end
   end
 
   def tail_match?(str1, str2)

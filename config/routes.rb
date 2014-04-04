@@ -25,6 +25,8 @@ SubmissionApp::Application.routes.draw do
       resources :comments, :only => [:create, :destroy]
       post 'finalize', :to => 'assignment_submissions#finalize',
                        :as => "finalize"
+      get 'printable', :to => 'assignment_submissions#printable',
+                        :as => "printable"
     end
 
     get 'groups/:id', :to => 'groups#assignment_show', :as => 'group_show'

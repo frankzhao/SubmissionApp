@@ -1,0 +1,13 @@
+<h1>Submission for <%= @assignment.name %> by <%= @submission.user.name %></h1>
+
+
+<% @submission.submission_files.each do |file| %>
+  <% if file.body %>
+    <h4><%= file.name %> (<%= file.body.try(:length) || file.file_blob.length %> bytes)</h4>
+    <%= render :partial => "file", :locals => { :file => file } %>
+    <hr>
+  <% end %>
+<% end %>
+
+
+<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
