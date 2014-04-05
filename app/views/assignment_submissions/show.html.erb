@@ -68,33 +68,39 @@
                       :locals => { :submission => @submission} %>
 <% end %>
 
-
-<div class="row">
-  <div class="col-xs-5 col-xs-offset-2">
-    <h3>Comments</h3>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-xs-6 col-xs-offset-3">
-
-    <div id="comments">
-      <% @submission.top_level_comments.each do |comment| %>
-        <%= render :partial => "comment", :locals =>
-                          { :comment => comment,
-                            :submission => @submission,
-                            :relationship => @relationship,
-                            :assignment => @assignment
-                            } %>
-      <% end %>
-
-      <%= render :partial => "new_comment",
-          :locals => { :relationship => @relationship,
-                       :submission => @submission,
-                       :assignment => @assignment,
-                       :parent_id => nil } %>
+<% if @assignment.visible_comments || current_user != @submission.user %>
+  <div class="row">
+    <div class="col-xs-5 col-xs-offset-2">
+      <h3>Comments</h3>
     </div>
   </div>
-</div>
 
+  <div class="row">
+    <div class="col-xs-6 col-xs-offset-3">
+
+      <div id="comments">
+        <% @submission.top_level_comments.each do |comment| %>
+          <%= render :partial => "comment", :locals =>
+                            { :comment => comment,
+                              :submission => @submission,
+                              :relationship => @relationship,
+                              :assignment => @assignment
+                              } %>
+        <% end %>
+
+        <%= render :partial => "new_comment",
+            :locals => { :relationship => @relationship,
+                         :submission => @submission,
+                         :assignment => @assignment,
+                         :parent_id => nil } %>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <div class="row">
+    <div class="col-xs-6 col-xs-offset-3">
+      <p>Comments have been disabled while the assignment is marked.</p>
+    </div>
+  </div>
+<% end %>
 <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>

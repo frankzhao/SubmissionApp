@@ -50,14 +50,16 @@ class Comment < ActiveRecord::Base
   end
 
   def send_notifications
-    Notification.create!(:user_id => self.assignment_submission.user_id,
-                         :notable_id => self.id,
-                         :notable_type => "Comment")
-
-    if self.parent
-      Notification.create!(:user_id => self.parent.user_id,
+    if self.assignment_submission.assignment.visible_comments
+      Notification.create!(:user_id => self.assignment_submission.user_id,
                            :notable_id => self.id,
                            :notable_type => "Comment")
+
+      if self.parent
+        Notification.create!(:user_id => self.parent.user_id,
+                             :notable_id => self.id,
+                             :notable_type => "Comment")
+      end
     end
   end
 end
