@@ -11,6 +11,7 @@
         <% if @assignment.peer_review_cycles.count > 0 %>
           <th>Peer review status</th>
         <% end %>
+        <th>Staff comment</th>
       </tr>
 
       <% @students.each do |student| %>
@@ -58,6 +59,19 @@
                 <td>No submission received</td>
               <% end %>
             <% end %>
+          <% end %>
+
+          <!-- Commenting -->
+          <% mra = student.most_recent_submission(@assignment) %>
+          <% if mra %>
+            <% if mra.comments.where(
+              "comments.user_id IS NOT NULL").count == 0 %>
+              <td class="warning"><strong>No comment made</strong></td>
+            <% else %>
+              <td class="success">Commented</td>
+            <% end %>
+          <% else %>
+            <td>No submission</td>
           <% end %>
         </tr>
       <% end %>

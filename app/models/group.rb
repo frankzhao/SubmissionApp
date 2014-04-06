@@ -45,6 +45,14 @@ class Group < ActiveRecord::Base
     {}.tap do |out|
       number_students = self.students.count
       return Hash.new(0) if number_students == 0
+      # number_marked = assignment.submissions
+      #                           .where("user_id IN (#{self.student_ids.join(",")})")
+      #                           .joins(:comments)
+      #                           .where("comments.user_id IS NOT NULL")
+      #                           .group(:user)
+      #                           .having("COUNT(comments.id) > 0")
+      # fail
+
       number_submitted = assignment.submissions
                                      .where("user_id IN (#{self.student_ids.join(",")})")
                                      .group(:user_id).count.count

@@ -44,21 +44,22 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col-xs-5 col-xs-offset-2">
-    <% @assignment.marking_categories.each do |category| %>
-      <p><%= category.name %>: <%= category.mark_for_submission(@submission) || "-"%>/<%= category.maximum_mark %></p>
-    <% end %>
-    <% @assignment.peer_review_cycles.each do |cycle| %>
-      <% next unless cycle.maximum_mark %>
-      <p>Peer review mark for cycle <%= cycle.id %>:
-          <%= cycle.mark_for_submission(@submission) || "-"%>/<%=
-                                                        cycle.maximum_mark %>
-      </p>
-    <% end %>
+<% if @assignment.visible_comments || current_user != @submission.user %>
+  <div class="row">
+    <div class="col-xs-5 col-xs-offset-2">
+      <% @assignment.marking_categories.each do |category| %>
+        <p><%= category.name %>: <%= category.mark_for_submission(@submission) || "-"%>/<%= category.maximum_mark %></p>
+      <% end %>
+      <% @assignment.peer_review_cycles.each do |cycle| %>
+        <% next unless cycle.maximum_mark %>
+        <p>Peer review mark for cycle <%= cycle.id %>:
+            <%= cycle.mark_for_submission(@submission) || "-"%>/<%=
+                                                          cycle.maximum_mark %>
+        </p>
+      <% end %>
+    </div>
   </div>
-</div>
-
+<% end %>
 
 <% if @assignment.submission_format == "plaintext" %>
   <%= render :partial => "plaintext",
