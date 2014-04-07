@@ -10,7 +10,7 @@ module UserAssignmentRelationshipStuff
   end
 
   def most_recent_submission(assignment)
-    self.assignment_submissions
+    @most_recent_submission ||= self.assignment_submissions
         .where(:assignment_id => assignment.id)
         .order('created_at DESC')
         .first

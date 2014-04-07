@@ -45,25 +45,30 @@ class Group < ActiveRecord::Base
     {}.tap do |out|
       number_students = self.students.count
       return Hash.new(0) if number_students == 0
-      # number_marked = assignment.submissions
-      #                           .where("user_id IN (#{self.student_ids.join(",")})")
-      #                           .joins(:comments)
-      #                           .where("comments.user_id IS NOT NULL")
-      #                           .group(:user)
-      #                           .having("COUNT(comments.id) > 0")
-      # fail
+      number_marked = assignment.submissions
+                                .where("user_id IN (#{self.student_ids.join(",")})")
+                                .select { |s| s.marks.count > 0  }
+                                .length
 
       number_submitted = assignment.submissions
                                      .where("user_id IN (#{self.student_ids.join(",")})")
                                      .group(:user_id).count.count
+
       number_finalized = assignment.submissions
                                       .where("user_id IN (#{self.student_ids.join(",")})")
                                       .where(:is_finalized => true)
                                       .group(:user_id).count.count
-      out[:percent_submitted] = (number_submitted - number_finalized) * 100 / number_students
-      out[:percent_finalized] = number_finalized * 100 / number_students
-      out[:percent_not_submitted] = ((number_students - number_submitted) * 100 /
-                                          number_students)
+
+      if number_marked > number_finalized
+        out[:percent_finalized] = 0
+        out[:percent_submitted] = [0, (number_submitted - number_marked)].max * 100 / number_students
+      else
+        out[:percent_finalized] = (number_finalized - number_marked) * 100 / number_students
+        out[:percent_submitted] = (number_submitted * 100 / number_students)
+      end
+
+      out[:percent_marked] = ([number_marked, number_submitted].min * 100 / number_students)
+      out[:percent_not_submitted] = (100 - [out[:percent_submitted], out[:percent_marked]].max)
     end
   end
 end

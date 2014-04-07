@@ -12,6 +12,9 @@
           <th>Peer review status</th>
         <% end %>
         <th>Staff comment</th>
+        <% if @assignment.marking_categories.length > 0 %>
+          <th>Marks</th>
+        <% end %>
       </tr>
 
       <% @students.each do |student| %>
@@ -65,13 +68,18 @@
           <% mra = student.most_recent_submission(@assignment) %>
           <% if mra %>
             <% if mra.comments.where(
-              "comments.user_id IS NOT NULL").count == 0 %>
+              "comments.user_id IS NOT NULL AND comments.user_id != #{student.id}").count == 0 %>
               <td class="warning"><strong>No comment made</strong></td>
             <% else %>
               <td class="success">Commented</td>
             <% end %>
           <% else %>
             <td>No submission</td>
+          <% end %>
+
+          <% if @assignment.marking_categories.length > 0 %>
+            <td><%= (s = student.most_recent_submission(@assignment)) &&
+                                  s.marks.pluck(:value).join(", ") %></td>
           <% end %>
         </tr>
       <% end %>

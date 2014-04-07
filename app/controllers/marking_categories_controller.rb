@@ -3,6 +3,8 @@ class MarkingCategoriesController < ApplicationController
   before_filter :require_permission
 
   def require_permission
+    p "shitfuk", current_user.is_admin
+    return if current_user.is_admin
     @assignment = Assignment.find(params[:assignment_id])
     unless @assignment.group_type.conveners.include? current_user
       flash[:errors] = ["You don't have permission to do that with assignments."]
