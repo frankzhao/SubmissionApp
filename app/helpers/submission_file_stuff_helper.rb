@@ -119,9 +119,45 @@ module SubmissionFileStuffHelper
     end
   end
 
-  def pretty_filename(user)
-    user_name = self.context_name(self.user, user).gsub(" ","_")
+  def pretty_filename(user = nil)
+    if user.nil?
+      user_name = self.user.name.gsub(" ","_")
+    else
+      user_name = self.context_name(self.user, user).gsub(" ","_")
+    end
     assignment_name = self.assignment.name.gsub(/ |-|:/, "_")
     user_name + "_" + assignment_name
+  end
+
+  def make_pdf
+    self.submission_files.each_with_index do |file, index|
+      if file.name =~ /pdf/
+        File.open("/tmp/#{index}.pdf", "wb") do |f|
+          f.write(file.file_blob)
+        end
+      else
+        escaped_body = file.body.gsub(/(?<foo>[$%\\])/, '\\\\\k<foo>')
+        File.open("/tmp/#{index}.tex", "w") do |f|
+          f.write(<<-FILE)
+\\nonstopmode
+\\documentclass[12pt]{report}
+\\usepackage[margin=0.5in]{geometry}
+\\begin{document}
+\\textbf{#{file.name.gsub(/(?<foo>[$%_\\])/, '\\\\\k<foo>')}}\\\\
+\\textbf{#{self.user.name}}
+\\begin{verbatim}
+#{escaped_body}
+\\end{verbatim}
+\\end{document}
+          FILE
+        end
+        system("pdflatex -output-directory=/tmp /tmp/#{index}.tex")
+      end
+    end
+
+    num_files = self.submission_files.length
+    files_string = (0...num_files).map { |x| "/tmp/#{x}.pdf" }.join(" ")
+    system("pdfconcat -o /tmp/#{self.pretty_filename}.pdf #{files_string}")
+    "/tmp/#{self.pretty_filename}.pdf"
   end
 end

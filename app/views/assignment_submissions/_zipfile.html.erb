@@ -2,8 +2,10 @@
   <div class="col-xs-8 col-xs-offset-2">
     <p><%= link_to "Download submission", assignment_submission_zip_url(submission.assignment_id, submission),
                 :class=>"btn btn-default btn-sm" %> </p>
+          <p><%= link_to "View printable code", assignment_assignment_submission_printable_url(submission.assignment_id, submission), :class => "btn btn-default btn-sm" %></p>
+      <p><%= link_to "Download pdf of assignment", assignment_assignment_submission_pdf_url(submission.assignment_id, submission), :class => "btn btn-default btn-sm" %></p>
     <h3>Files</h3>
-      <%= link_to "View printable code", assignment_assignment_submission_printable_url(submission.assignment_id, submission) %>
+
       <div class="panel panel-default">
         <div class="panel-heading">
           <p class="panel-title">

@@ -173,15 +173,11 @@ class AssignmentSubmissionsController < ApplicationController
     end
   end
 
-  def printable_pdf
+  def pdf
     @submission = AssignmentSubmission.find(params[:assignment_submission_id])
     relationship = @submission.relationship_to_user(current_user)
     if relationship
-      @assignment = @submission.assignment
-
-      html = render_to_string :printable, :layout => false
-      pdf = WickedPdf.new.pdf_from_string(html)
-      send_data(pdf)
+      send_file(@submission.make_pdf)
     else
       flash[:errors] = ["Permission denied"]
       logger.warn("Security warning: someone tried to finalize someone else's submission")

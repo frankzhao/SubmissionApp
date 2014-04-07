@@ -27,6 +27,8 @@ SubmissionApp::Application.routes.draw do
                        :as => "finalize"
       get 'printable', :to => 'assignment_submissions#printable',
                         :as => "printable"
+      get 'pdf', :to => 'assignment_submissions#pdf',
+                 :as => 'pdf'
     end
 
     get 'groups/:id', :to => 'groups#assignment_show', :as => 'group_show'
