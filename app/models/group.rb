@@ -61,10 +61,11 @@ class Group < ActiveRecord::Base
 
       if number_marked > number_finalized
         out[:percent_finalized] = 0
-        out[:percent_submitted] = [0, (number_submitted - number_marked)].max * 100 / number_students
+        out[:percent_submitted] = [0, (number_submitted - number_marked
+                              - number_finalized)].max * 100 / number_students
       else
         out[:percent_finalized] = (number_finalized - number_marked) * 100 / number_students
-        out[:percent_submitted] = (number_submitted * 100 / number_students)
+        out[:percent_submitted] = ((number_submitted - number_finalized) * 100 / number_students)
       end
 
       out[:percent_marked] = ([number_marked, number_submitted].min * 100 / number_students)
