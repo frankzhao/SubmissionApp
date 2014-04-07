@@ -130,7 +130,7 @@ module SubmissionFileStuffHelper
   end
 
   def make_pdf
-    self.submission_files.each_with_index do |file, index|
+    self.submission_files.where{ |f| file.body != nil }.each_with_index do |file, index|
       if file.name =~ /pdf/
         File.open("/tmp/#{index}.pdf", "wb") do |f|
           f.write(file.file_blob)
