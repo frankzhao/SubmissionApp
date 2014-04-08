@@ -86,7 +86,7 @@ class Assignment < ActiveRecord::Base
   end
 
   def update_zip
-    system("cd upload && zip -r #{self.path_without_upload}.zip #{self.path_without_upload}")
+    system("zip -r #{self.path}.zip #{self.path}/*")
   end
 
   def zip_path
