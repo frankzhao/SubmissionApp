@@ -32,6 +32,8 @@ SubmissionApp::Application.routes.draw do
     end
 
     get 'groups/:id', :to => 'groups#assignment_show', :as => 'group_show'
+    get 'groups/:id/zip', :to => 'groups#assignment_zip', :as => 'group_zip'
+
 
     get 'cycles', :to => 'peer_review_cycles#index', :as => "cycles"
     post 'cycles', :to => 'peer_review_cycles#create'

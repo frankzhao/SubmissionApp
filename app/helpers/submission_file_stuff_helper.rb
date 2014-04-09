@@ -16,9 +16,13 @@ module SubmissionFileStuffHelper
   end
 
   def file_path
+    self.assignment.path + self.file_path_without_assignment_path
+  end
+
+  def file_path_without_assignment_path
     name = self.user.name.gsub(" ","_")
     datetime = self.created_at.to_s.gsub(" ","_")
-    self.assignment.path + "/#{self.id}_#{datetime}"
+    "/#{self.id}_#{datetime}"
   end
 
   def zip_path
@@ -130,7 +134,8 @@ module SubmissionFileStuffHelper
   end
 
   def make_pdf
-    self.submission_files.select{ |f| f.body != nil }.each_with_index do |file, index|
+    self.submission_files.each_with_index do |file, index|
+      p file.name
       if file.name =~ /pdf/
         File.open("/tmp/#{index}.pdf", "wb") do |f|
           f.write(file.file_blob)
@@ -157,7 +162,7 @@ module SubmissionFileStuffHelper
 
     num_files = self.submission_files.length
     files_string = (0...num_files).map { |x| "/tmp/#{x}.pdf" }.join(" ")
-    system("pdfconcat -o /tmp/#{self.pretty_filename}.pdf #{files_string}")
+    system("gs -q -sPAPERSIZE=letter -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=/tmp/#{self.pretty_filename}.pdf #{files_string}")
     "/tmp/#{self.pretty_filename}.pdf"
   end
 end

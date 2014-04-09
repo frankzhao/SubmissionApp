@@ -26,4 +26,11 @@ class GroupsController < ApplicationController
     @students = @group.students.sort_by!{|x| x.name.split(" ").last}
     render :assignment_show
   end
+
+  def assignment_zip
+    @assignment = Assignment.find(params[:assignment_id])
+    @group = Group.find(params[:id])
+    @students = @group.students.sort_by!{|x| x.name.split(" ").last}
+    send_file(@group.make_group_zip(@assignment))
+  end
 end
