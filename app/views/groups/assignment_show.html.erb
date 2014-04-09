@@ -2,6 +2,10 @@
   <div class="col-sm-8 col-sm-offset-2">
     <h2>Submissions for <%= @assignment.name %> from <%= @group.name %></h2>
 
+    <p><%= link_to("<span class=\"glyphicon glyphicon-download\"></span> Download all submissions as a zip".html_safe,
+               assignment_group_zip_url(@assignment, @group),
+                :class => "btn btn-primary") %></p>
+
     <table class="table">
       <tr>
         <th></th>
