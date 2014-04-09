@@ -77,7 +77,6 @@ class Group < ActiveRecord::Base
   def make_group_zip(assignment)
     folder_name = "/tmp/#{self.name.gsub(/[ '"]/,"_")}_#{assignment.name.gsub(" ","_")}"
     p "folder name is "+folder_name
-    system("rm -rf #{folder_name}")
     system("mkdir #{folder_name}")
     self.students.each do |student|
 
@@ -88,14 +87,14 @@ class Group < ActiveRecord::Base
 
       sub_name = "#{sub.user.name.gsub(" ","_")}_#{sub.id}"
       if sub
-        p "cp #{sub.zip_path} #{folder_name}"
-        system("cp #{sub.zip_path} #{folder_name}")
-        x = "mv #{folder_name}#{sub.file_path_without_assignment_path}.zip #{folder_name}/#{sub_name}"
-        p x
-        system(x)
+        system("mkdir #{folder_name}/#{sub_name}")
+        system("unzip -o #{sub.zip_path} -d #{folder_name}/#{sub_name}")
+        # x = "mv #{folder_name}#{sub.file_path_without_assignment_path}.zip #{folder_name}/#{sub_name}"
+        # p x
+        # system(x)
       end
     end
-    system("zip -r #{folder_name} . -i #{folder_name}.zip")
+    system("zip -r -o #{folder_name} #{folder_name}")
     # system("rm -rf \"#{folder_name}\"")
     folder_name+".zip"
   end
