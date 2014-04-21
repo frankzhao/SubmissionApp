@@ -74,7 +74,7 @@ class AssignmentSubmissionsController < ApplicationController
 
     unless (@assignment.is_visible ||
           current_user.relationship_to_assignment(@assignment) == :staff ||
-              current_user.is_admin_or_convener)
+              current_user.is_admin_or_convener?)
       flash[:errors] = ["Assignment is not visible yet."]
       redirect_to "/"
       return
