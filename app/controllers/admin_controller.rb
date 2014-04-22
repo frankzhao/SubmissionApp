@@ -27,7 +27,9 @@ class AdminController < ApplicationController
       request[0...match.length] != match
     end
 
-    @requests = @requests[-50..-1]
+    number_of_requests = params[:n].to_i || 50
+
+    @requests_to_show = @requests.last(number_of_requests)
 
     render :log
   end

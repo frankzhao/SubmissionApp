@@ -29,6 +29,10 @@ class Comment < ActiveRecord::Base
     where("comments.user_id IS NOT NULL")
   end
 
+  def self.create_with_file_and_submission_id(file_path, submission_id)
+      # WRITE THIS
+  end
+
   def file_path
     "#{Rails.root.to_s}/upload/comment_related_files/#{self.id}_#{self.file_name}"
   end

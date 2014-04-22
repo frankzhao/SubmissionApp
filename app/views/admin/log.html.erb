@@ -1,6 +1,8 @@
+<h1><%= @requests_to_show.length %> most recent requests</h1>
+
 <pre>
 
-  <% @requests.each do |request| %>
+  <% @requests_to_show.each do |request| %>
 <%= request %>
   <hr>
   <% end %>
