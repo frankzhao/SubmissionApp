@@ -1,5 +1,10 @@
+<div class="row">
+  <div class="alert alert-info col-sm-5 col-sm-offset-3">I've changed up how custom behaviour happens. It's now similar to how the peer review cycles work. Go
+    <%= link_to "here", assignment_custom_behaviors_url(@assignment) %>
+  to modify the custom behavior of this assignment.</div>
+</div>
 
-  <input type="hidden" name="assignment[group_type_id]" value="<%= assignment.group_type_id %>">
+<input type="hidden" name="assignment[group_type_id]" value="<%= assignment.group_type_id %>">
 
 <div class="form-group">
   <%= label_tag(:name, "Name", :class => "col-sm-2 col-sm-offset-2") %>
@@ -69,15 +74,6 @@
   <span class="help-block">This determines what filetypes are displayed in the web interface. For instance, if you had <code>.*(\.hs|\.txt)</code>, it would only display files ending with .hs and .txt.</span>
   </div>
 </div>
-
-<div class="form-group">
-  <%= label_tag(:behavior_on_submission, "Behavior on submission", :class => "col-sm-2 col-sm-offset-2") %>
-  <div class="col-sm-5">
-    <%= f.text_area(:behavior_on_submission, :class => "form-control") %>
-    <span class="help-block">This determines actions which the server takes when the assignment is submitted. Currently, the only implemented one is "check_compiling_haskell", which compiles the code with GHC, and comments on the assignment submission as to whether it succeeded.</span>
-  </div>
-</div>
-
 
 <div class="row">
   <div class="col-sm-7 col-sm-offset-2">

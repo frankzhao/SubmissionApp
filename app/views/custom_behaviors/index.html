@@ -1,0 +1,97 @@
+<div class="row">
+  <div class="col-sm-9 col-sm-offset-2">
+    <h2>Custom behaviors for <%= link_to @assignment.name, @assignment %></h2>
+
+    <div class="custom_behaviors">
+      <% @custom_behaviors.each do |behavior| %>
+        <div id="behavior-<%= behavior.id %>">
+          <h3><%= behavior.name %>
+          <span class="small"><%= behavior.maximum_mark %> marks</span>
+          </h3>
+          <div class="btn-group">
+            <%= link_to "Delete behavior",
+                    assignment_behavior_url(@assignment, behavior),
+                      :method => :delete,
+                      :class => "btn btn-danger btn-sm",
+                      :html => {:type => :button} %>
+            <button class="edit-behavior btn btn-default btn-sm"
+                    data-id="<%=behavior.id %>"
+                    type="button">
+              Edit behavior
+            </button>
+          </div>
+          <p><%= behavior.description %></p>
+        </div>
+      <% end %>
+    </div>
+
+    <button class="new-behavior btn btn-default">New behavior</button>
+  </div>
+</div>
+
+<script type="text/template" id="behavior_template">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="form-group">
+      <%% if(behavior.name) { %>
+        <h3><%%= behavior.name || "New custom behavior" %></h3>
+        <form method="POST" action=
+              "<%= assignment_custom_behaviors_url(@assignment) %>/<%%= behavior.id %>"
+              role="form">
+
+        <input type="hidden" name="_method" value="PUT">
+      <%% } else { %>
+        <form method="POST" action="<%= assignment_custom_behaviors_url(@assignment) %>">
+      <%% } %>
+        <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+        <label for="behavior_name">Name</label>
+        <input id="behavior_name" name="behavior[name]"
+        value="<%%= behavior.name %>"><br>
+
+        <label for="behavior_details">Details</label>
+        <textarea class="form-control" id="behavior_details" name="behavior[details]"><%%= behavior.details %></textarea><br>
+        <input type="Submit" class="btn brn-default" value="Update">
+      </form>
+      </div>
+    </div>
+  </div>
+</script>
+
+<script type="text/javascript">
+  var custom_behaviors = <%= @custom_behaviors.to_json.html_safe %>
+
+  behaviors_hash = {};
+
+  for(var i = 0; i < custom_behaviors.length; i++) {
+    behaviors_hash[custom_behaviors[i].id] = custom_behaviors[i]
+  }
+
+  var templateCode = $("#behavior_template").html();
+
+  var templateFn = _.template(templateCode);
+
+  $(function() {
+    $(".edit-behavior").on("click", function(event) {
+      event.preventDefault();
+      var behavior_id = $(event.currentTarget).data("id")
+
+      var behavior_place = $("#behavior-"+behavior_id)
+
+      var renderedContent = templateFn({
+        behavior: behaviors_hash[behavior_id]
+      });
+
+      behavior_place.html(renderedContent);
+    })
+
+    $(".new-behavior").on("click", function(event) {
+      event.preventDefault();
+      var renderedContent = templateFn({
+        behavior: {name:"", details:""}
+      });
+
+      $(".custom_behaviors").append(renderedContent)
+      $(".new-behavior").remove()
+    })
+  })
+</script>

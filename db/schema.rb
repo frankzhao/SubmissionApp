@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140422233233) do
+ActiveRecord::Schema.define(:version => 20140423005817) do
 
   create_table "assignment_submissions", :force => true do |t|
     t.integer  "user_id",                          :null => false
@@ -36,7 +36,6 @@ ActiveRecord::Schema.define(:version => 20140422233233) do
     t.string   "submission_policy"
     t.datetime "due_date"
     t.string   "submission_format",       :default => "plaintext", :null => false
-    t.string   "behavior_on_submission",  :default => ""
     t.boolean  "is_due_date_compulsary",  :default => false
     t.string   "slug"
     t.string   "filepath_regex"

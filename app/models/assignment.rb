@@ -1,6 +1,6 @@
 class Assignment < ActiveRecord::Base
   attr_accessible :info, :name, :group_type, :group_type_id, :due_date,
-                   :submission_format, :behavior_on_submission,
+                   :submission_format,
                    :is_due_date_compulsary, :filepath_regex,
                    :is_visible, :submission_instructions, :visible_comments
 
@@ -30,6 +30,8 @@ class Assignment < ActiveRecord::Base
   has_many :peer_review_cycles, :dependent => :destroy
 
   has_many :extensions
+
+  has_many :custom_behaviors
 
   after_create :make_directory, :send_notifications
 
