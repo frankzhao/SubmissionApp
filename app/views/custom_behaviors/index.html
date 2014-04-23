@@ -4,23 +4,24 @@
 
     <div class="custom_behaviors">
       <% @custom_behaviors.each do |behavior| %>
-        <div id="behavior-<%= behavior.id %>">
-          <h3><%= behavior.name %>
-          <span class="small"><%= behavior.maximum_mark %> marks</span>
-          </h3>
-          <div class="btn-group">
-            <%= link_to "Delete behavior",
-                    assignment_behavior_url(@assignment, behavior),
-                      :method => :delete,
-                      :class => "btn btn-danger btn-sm",
-                      :html => {:type => :button} %>
-            <button class="edit-behavior btn btn-default btn-sm"
-                    data-id="<%=behavior.id %>"
-                    type="button">
-              Edit behavior
-            </button>
+        <div id="behavior-<%= behavior.id %>" class="panel panel-default">
+          <div class="panel-body">
+            <h3><%= behavior.name %>
+            </h3>
+            <div class="btn-group">
+              <%= link_to "Delete behavior",
+                      assignment_custom_behavior_url(@assignment, behavior),
+                        :method => :delete,
+                        :class => "btn btn-danger btn-sm",
+                        :html => {:type => :button} %>
+              <button class="edit-behavior btn btn-default btn-sm"
+                      data-id="<%=behavior.id %>"
+                      type="button">
+                Edit behavior
+              </button>
+            </div>
+            <p><%= behavior.details %></p>
           </div>
-          <p><%= behavior.description %></p>
         </div>
       <% end %>
     </div>
