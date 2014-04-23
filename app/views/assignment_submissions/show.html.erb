@@ -1,3 +1,7 @@
+<% content_for :title,
+    "#{@submission.context_name(@submission.user, current_user)}: #{
+    @assignment.name}" %>
+
 <div class="row">
   <div class="col-xs-5 col-xs-offset-2">
     <h2>Submission for <%=  link_to @assignment.name, assignment_url(@assignment) %></h2>
