@@ -69,6 +69,10 @@ module CheckingRules
     logger.info("checking compiling haskell")
     root = Rails.root.to_s
 
+    unless text.include? "main"
+      test += "\n\nmain = undefined"
+    end
+
     Dir.mkdir("#{root}/temp") unless Dir.exists? "#{root}/temp"
     File.open("#{root}/temp/temp.hs","w") { |f| f.write(text) }
     command_to_run = "ghc -XSafe #{root}/temp/temp.hs -i.:/dept/dcs/comp1100/supr/SubmissionApp/Library 2>&1"

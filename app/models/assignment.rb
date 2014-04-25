@@ -13,6 +13,8 @@ class Assignment < ActiveRecord::Base
                                     :source => :submission_permissions,
                                     :dependent => :destroy
 
+  has_many :comments, :through => :submissions, :source => :comments
+
   has_many :courses, :through => :group_type, :source => :courses
   has_many :conveners, :through => :courses, :source => :convener
 

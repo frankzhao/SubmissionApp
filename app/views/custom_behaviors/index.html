@@ -52,6 +52,10 @@
 
         <label for="behavior_details">Details</label>
         <textarea class="form-control" id="behavior_details" name="behavior[details]"><%%= behavior.details %></textarea><br>
+        <div class="alert alert-warning">
+        When you press Update, the custom behavior will be re-run on all previous
+        submissions. This is a synchronous action which will take a while: eg check_compiling_haskell takes about 1 second per submission.
+        </div>
         <input type="Submit" class="btn brn-default" value="Update">
       </form>
       </div>
