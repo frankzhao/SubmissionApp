@@ -3,8 +3,6 @@ class CustomBehavior < ActiveRecord::Base
 
   validates :name, :assignment_id, :presence => true
 
-  validate :details_are_json
-
   belongs_to :assignment
 
   after_save :run_again
