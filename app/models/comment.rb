@@ -1,6 +1,7 @@
 class Comment < ActiveRecord::Base
   attr_accessible :assignment_submission_id, :body, :user_id,
-                  :peer_review_cycle_id, :has_file, :parent_id, :file_name
+                  :peer_review_cycle_id, :has_file, :parent_id, :file_name,
+                  :explicit_filepath, :custom_behavior_id
 
   belongs_to :assignment_submission
   delegate :assignment, :to => :assignment_submission
@@ -20,6 +21,8 @@ class Comment < ActiveRecord::Base
   has_many :children, :class_name => "Comment",
                       :foreign_key => :parent_id,
                       :primary_key => :id
+
+  has_many :notifications, :as => :notable, :dependent => :destroy
 
   after_save :friendlify_filename, :send_notifications
 

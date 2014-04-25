@@ -1,7 +1,5 @@
 <div class="row">
-  <div class="alert alert-info col-sm-5 col-sm-offset-3">I've changed up how custom behaviour happens. It's now similar to how the peer review cycles work. Go
-    <%= link_to "here", assignment_custom_behaviors_url(@assignment) %>
-  to modify the custom behavior of this assignment.</div>
+  <div class="alert alert-info col-sm-5 col-sm-offset-3">I've changed up how custom behaviour happens. It's now similar to how the peer review cycles work. It's in the options menu on the assignment show page.</div>
 </div>
 
 <input type="hidden" name="assignment[group_type_id]" value="<%= assignment.group_type_id %>">
@@ -32,8 +30,7 @@
 <div class="row">
   <div class="col-sm-7 col-sm-offset-2">
     <%= f.check_box(:is_due_date_compulsary) %>
-    <label> Stop accepting submissions after due date
-    </label>
+    <label> Stop accepting submissions after due date</label>
     <span class="help-block">If this isn't selected, users continue to be able to submit after the due date.</span>
   </div>
 </div>

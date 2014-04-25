@@ -124,4 +124,11 @@ class AssignmentSubmission < ActiveRecord::Base
     ! self.comments.select { |c| c.user == user }
                    .empty?
   end
+
+  def receive_submission
+    self.save_locally
+    self.assignment.custom_behaviors.each do |behavior|
+      behavior.receive_submission(self)
+    end
+  end
 end

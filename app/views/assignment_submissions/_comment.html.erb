@@ -1,11 +1,16 @@
 <div class="comment">
+
   <h4>
     <% if comment.user %>
       <%= submission.context_name(comment.user, current_user) %>
     <% else %>
       Automatic comment
     <% end %>
+    <% if current_user.is_admin %>
+      <small>id <%= comment.id %></small>
+    <% end %>
   </h4>
+
   <p>
     <%= sanitize comment.body, tags: %w(li ul ol code strong em b a) %>
   </p>

@@ -56,7 +56,8 @@ class AssignmentSubmissionsController < ApplicationController
 
   # Staff members are allowed to create assignments.
 
-  # This method is very ugly, and I really should rewrite it. Sorry :(
+  # This method is very ugly, and I really should rewrite it. Sorry, future
+  # maintainer. :(
   def create
     @assignment = Assignment.find(params[:assignment_id])
 

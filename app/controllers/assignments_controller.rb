@@ -15,7 +15,8 @@ class AssignmentsController < ApplicationController
   def new
     @group_type_id = params[:group_type_id]
     @group_type = GroupType.find(params[:group_type_id])
-    if @group_type.conveners.include? current_user
+
+    if current_user.is_admin_or_convener?
       @assignment = Assignment.new
       @assignment.group_type = @group_type
       render :new

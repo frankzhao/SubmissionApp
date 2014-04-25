@@ -6,8 +6,8 @@
       <% @custom_behaviors.each do |behavior| %>
         <div id="behavior-<%= behavior.id %>" class="panel panel-default">
           <div class="panel-body">
-            <h3><%= behavior.name %>
-            </h3>
+            <h4><%= behavior.name %>
+            </h4>
             <div class="btn-group">
               <%= link_to "Delete behavior",
                       assignment_custom_behavior_url(@assignment, behavior),
@@ -20,6 +20,7 @@
                 Edit behavior
               </button>
             </div>
+            <p><%= behavior.comments.count %> comments made</p>
             <p><%= behavior.details %></p>
           </div>
         </div>
