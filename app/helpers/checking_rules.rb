@@ -1,35 +1,10 @@
-#### This module is included in AssignmentSubmission
-
-# Your args are parsed as JSON.
+# Every checking rule is passed a submission object and the arguments to the rule.
+# For example, test_haskell might be passed a new submission and also the array
+# ["reverse [1,2,3] == [3,2,1]", "reverse [] == []"]
 
 module CheckingRules
-  def receive_submission
-    self.save_locally
-
-    unless self.assignment.behavior_on_submission.empty?
-      behavior_on_submission = JSON.parse(self.assignment.behavior_on_submission)
-
-      behavior_on_submission.each do |command, args|
-        self.interpret(command, args)
-      end
-    end
-  end
-
-  def interpret(command, args)
-    case command
-    when "check compiling haskell"
-      self.check_compiling_haskell
-    when "test haskell"
-      self.test_haskell(args)
-    when "check files"
-      self.check_files(args)
-    else
-      throw "Unrecognised command: #{command}, #{args}"
-    end
-  end
-
-  def check_files(args)
-    file_list = self.all_zip_contents
+  def check_files(submission, args)
+    file_list = submission.all_zip_contents
 
     template = ERB.new(<<-TEXT)
       This submission should have the following files:
@@ -65,21 +40,27 @@ module CheckingRules
       </ul>
     TEXT
 
-    add_anonymous_comment(template.result(binding))
+    Comment.create(:body => template.result(binding),
+                   :submission_id => submission.id,
+                   :custom_behavior_id => self.id)
   end
 
-  def check_compiling_haskell
-    if self.assignment.submission_format == "plaintext"
-      ans, errors = check_compiling_haskell_string(self.body)
+  def check_compiling_haskell(submission, args)
+    if submission.assignment.submission_format == "plaintext"
+      ans, errors = check_compiling_haskell_string(submission.body)
       if ans
-        add_anonymous_comment("This code compiles!")
+        Comment.create(:body => "This code compiles!",
+                   :assignment_submission_id => submission.id,
+                   :custom_behavior_id => self.id)
       else
-        add_anonymous_comment(
+        Comment.create(:body =>
           "<strong>This code doesn't compile</strong>, with the following error:<br><code>
-            <pre>#{errors}</pre></code>")
+            <pre>#{errors}</pre></code>",
+                  :assignment_submission_id => submission.id,
+                  :custom_behavior_id => self.id)
       end
     else
-      check_compiling_haskell_module(self.zip_path)
+      check_compiling_haskell_module(submission.zip_path)
     end
   end
 
@@ -116,10 +97,12 @@ module CheckingRules
     todo
   end
 
-  def test_haskell(tests, add_anonymous_comment=true)
-    throw "not implemented for zips" if self.assignment.submission_format == "zipfile"
+  def test_haskell(submission, tests, add_anonymous_comment=true)
+    if submission.assignment.submission_format == "zipfile"
+      throw "not implemented for zips"
+    end
 
-    text = self.body
+    text = submission.body
 
     if check_compiling_haskell_string(text)[0]
       results = []
@@ -142,19 +125,23 @@ module CheckingRules
       end
 
       if add_anonymous_comment
-        add_anonymous_comment(
+        Comment.create(:assignment_submission_id => submission.id,
+                   :custom_behavior_id => self.id,
+                   :body =>
             "You got #{score} out of #{tests.length} test cases correct. " +
             "Here's the results of each of the test cases:" +
             "<ol>#{results.map{|x| "<li>#{x.gsub("\n","\n<br>")}</li>" }.join()}</ol>")
       end
 
-      self.specs_passing = score
+      submission.specs_passing = score
     else
       if add_anonymous_comment
-        add_anonymous_comment("Tests were not run because the code didn't compile.")
+        Comment.create(:assignment_submission_id => submission.id,
+                   :custom_behavior_id => self.id,
+                   :body => "Tests were not run because the code didn't compile.")
       end
-      self.specs_passing = 0
+      submission.specs_passing = 0
     end
-    self.save!
+    submission.save!
   end
 end

@@ -1,13 +1,14 @@
 class Comment < ActiveRecord::Base
-  #TODO: nested comments
-
   attr_accessible :assignment_submission_id, :body, :user_id,
-                  :peer_review_cycle_id, :has_file, :parent_id, :file_name
+                  :peer_review_cycle_id, :has_file, :parent_id, :file_name,
+                  :explicit_filepath, :custom_behavior_id
 
   belongs_to :assignment_submission
   delegate :assignment, :to => :assignment_submission
 
   belongs_to :user
+  belongs_to :custom_behavior
+
   belongs_to :peer_review_cycle
 
   belongs_to :parent, :class_name => "Comment",
@@ -21,6 +22,8 @@ class Comment < ActiveRecord::Base
                       :foreign_key => :parent_id,
                       :primary_key => :id
 
+  has_many :notifications, :as => :notable, :dependent => :destroy
+
   after_save :friendlify_filename, :send_notifications
 
   validates :assignment_submission_id, :body, :presence => true
@@ -30,11 +33,14 @@ class Comment < ActiveRecord::Base
   end
 
   def self.create_with_file_and_submission_id(file_path, submission_id)
-      # WRITE THIS
+    Comment.create(:explicit_filepath => file_path,
+                   :assignment_submission_id => submission_id,
+                   :body => "Please find comments attached.")
   end
 
   def file_path
-    "#{Rails.root.to_s}/upload/comment_related_files/#{self.id}_#{self.file_name}"
+    self.explicit_filepath || (
+    "#{Rails.root.to_s}/upload/comment_related_files/#{self.id}_#{self.file_name}")
   end
 
   def friendlify_filename

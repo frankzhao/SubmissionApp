@@ -39,6 +39,7 @@ class AdminController < ApplicationController
   end
 
   def charts
+
   end
 
   def spoof_login

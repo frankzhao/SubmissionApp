@@ -1,6 +1,6 @@
 class Assignment < ActiveRecord::Base
   attr_accessible :info, :name, :group_type, :group_type_id, :due_date,
-                   :submission_format, :behavior_on_submission,
+                   :submission_format,
                    :is_due_date_compulsary, :filepath_regex,
                    :is_visible, :submission_instructions, :visible_comments
 
@@ -23,13 +23,14 @@ class Assignment < ActiveRecord::Base
            :presence => true
 
   validate :name_is_acceptable
-  validate :behavior_on_submission_is_json
 
   has_many :marking_categories, :dependent => :destroy
 
   has_many :peer_review_cycles, :dependent => :destroy
 
   has_many :extensions
+
+  has_many :custom_behaviors
 
   after_create :make_directory, :send_notifications
 
@@ -45,15 +46,6 @@ class Assignment < ActiveRecord::Base
     unless self.name.match /\A[a-zA-Z:_0-9 ]+\Z/
       self.errors[:name] << "The name must match this regex: /\A[a-zA-Z:0-9 ]+\Z/. " +
                        "That is to say, it may only have letters, numbers, colons and spaces."
-    end
-  end
-
-  def behavior_on_submission_is_json
-    return if self.behavior_on_submission == ""
-    begin
-      json = JSON.parse(self.behavior_on_submission)
-    rescue JSON::ParserError => e
-      self.errors[:behavior_on_submission] << "JSON parse error: #{e}"
     end
   end
 
@@ -134,6 +126,8 @@ class Assignment < ActiveRecord::Base
   # If the due date isn't compulsary, it's never overdue
   # If the user has an extension, we use that date instead.
   def already_due(user)
+    return false if user.is_admin_or_convener?
+
     extension = Extension.find_by_user_id_and_assignment_id(user.id, self.id)
     if extension
       return extension.due_date < Time.zone.now

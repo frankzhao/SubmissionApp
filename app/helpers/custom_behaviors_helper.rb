@@ -1,0 +1,2 @@
+module CustomBehaviorsHelper
+end

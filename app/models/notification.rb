@@ -30,6 +30,11 @@ class Notification < ActiveRecord::Base
   end
 
   def link
+    if self.notable.nil?
+      self.destroy
+      return "#"
+    end
+
     case self.notable_type
     when nil
       notification_path(self)

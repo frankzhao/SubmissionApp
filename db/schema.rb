@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140404221122) do
+ActiveRecord::Schema.define(:version => 20140425000150) do
 
   create_table "assignment_submissions", :force => true do |t|
     t.integer  "user_id",                          :null => false
@@ -36,7 +36,6 @@ ActiveRecord::Schema.define(:version => 20140404221122) do
     t.string   "submission_policy"
     t.datetime "due_date"
     t.string   "submission_format",       :default => "plaintext", :null => false
-    t.string   "behavior_on_submission",  :default => ""
     t.boolean  "is_due_date_compulsary",  :default => false
     t.string   "slug"
     t.string   "filepath_regex"
@@ -59,6 +58,8 @@ ActiveRecord::Schema.define(:version => 20140404221122) do
     t.boolean  "has_file",                 :default => false
     t.integer  "parent_id"
     t.string   "file_name"
+    t.string   "explicit_filepath"
+    t.integer  "custom_behavior_id"
   end
 
   add_index "comments", ["assignment_submission_id"], :name => "index_comments_on_assignment_submission_id"
@@ -75,6 +76,14 @@ ActiveRecord::Schema.define(:version => 20140404221122) do
   end
 
   add_index "courses", ["slug"], :name => "index_courses_on_slug", :unique => true
+
+  create_table "custom_behaviors", :force => true do |t|
+    t.integer  "assignment_id", :null => false
+    t.string   "name",          :null => false
+    t.string   "details"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
 
   create_table "extensions", :force => true do |t|
     t.integer  "user_id",       :null => false

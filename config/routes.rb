@@ -46,6 +46,7 @@ SubmissionApp::Application.routes.draw do
                                 :as => "cycle_deactivate"
 
     resources :marking_categories, :only => [:create, :destroy, :update, :index]
+    resources :custom_behaviors, :only => [:create, :destroy, :update, :index]
 
     resources :extensions, :only => [:index, :create]
   end

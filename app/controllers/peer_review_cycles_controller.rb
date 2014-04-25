@@ -10,6 +10,9 @@ class PeerReviewCyclesController < ApplicationController
   def create
     #TODO: check permission
     @peer_review_cycle = PeerReviewCycle.new(params[:peer_review_cycle])
+
+    # I look the assignment up by its id because it's actually a string of its
+    # name, like "assignment-1-wireworld" or whatever, not the primary key.
     @peer_review_cycle.assignment_id = Assignment.find(params[:assignment_id]).id
 
     p @peer_review_cycle
