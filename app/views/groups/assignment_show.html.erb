@@ -8,7 +8,7 @@
                assignment_group_zip_url(@assignment, @group),
                 :class => "btn btn-primary") %></p>
 
-    <table class="table">
+    <table class="table" id="accordion">
       <tr>
         <th></th>
         <th>Submission status</th>
@@ -21,6 +21,7 @@
         <% if @assignment.marking_categories.length > 0 %>
           <th>Marks</th>
         <% end %>
+        <th>Add file</th>
       </tr>
 
       <% @students.each do |student| %>
@@ -86,6 +87,33 @@
           <% if @assignment.marking_categories.length > 0 %>
             <td><%= (s = student.most_recent_submission(@assignment)) &&
                                   s.marks.pluck(:value).join(", ") %></td>
+          <% end %>
+
+          <!-- File upload -->
+          <% if mra %>
+
+            <td >
+            <a data-toggle="collapse" data-parent="#accordion" href="#comment-<%= mra.id %>">
+              Add comment
+            </a>
+              <form method="POST"
+            action="<%= assignment_assignment_submission_comments_url(
+                      @assignment, mra)%>"
+            enctype="multipart/form-data"
+            role="form"
+            class="form collapse"
+            id="comment-<%= mra.id %>"
+            >
+                <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
+
+                <input type="hidden" name="comment[body]" value="Please find comments attached.">
+                <%= file_field 'upload', 'datafile' %>
+
+                <input class="btn btn-primary btn-xs" type="submit" value="Post comment">
+              </form>
+            </td>
+          <% else %>
+            <td>N/A</td>
           <% end %>
         </tr>
       <% end %>

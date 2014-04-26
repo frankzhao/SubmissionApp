@@ -27,8 +27,7 @@ class CommentsController < ApplicationController
                                                   current_user)
           unless mark.save
             flash[:errors] = mark.errors.full_messages
-            redirect_to(assignment_assignment_submission_url(params[:assignment_id],
-                            params[:assignment_submission_id]))
+            redirect_to :back
             return
           end
         else
@@ -41,8 +40,7 @@ class CommentsController < ApplicationController
         peer_mark = PeerMark.new(:comment_id => @comment.id,
                                  :value => params[:peer_mark])
         unless peer_mark.save
-          redirect_to(assignment_assignment_submission_url(params[:assignment_id],
-                            params[:assignment_submission_id]))
+          redirect_to :back
           flash[:errors] = peer_mark.errors.full_messages
           return
         end
@@ -56,11 +54,9 @@ class CommentsController < ApplicationController
         @comment.save_data(params[:upload]["datafile"].read)
       end
 
-      redirect_to(assignment_assignment_submission_url(params[:assignment_id],
-                            params[:assignment_submission_id]))
+      redirect_to :back
     else
-      redirect_to(assignment_assignment_submission_url(params[:assignment_id],
-                            params[:assignment_submission_id]))
+      redirect_to :back
       flash[:errors] = @comment.errors.full_messages
     end
   end
