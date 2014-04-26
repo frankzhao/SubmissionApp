@@ -20,7 +20,7 @@
     <%= link_to comment.file_name, comment_file_url(comment) %>
   <% end %>
 
-  <% if current_user.is_admin_or_convener? %>
+  <% if current_user.is_admin_or_convener? || relationship == :staff %>
     <div style="margin-bottom: 25px;">
       <%= button_to("Delete",assignment_assignment_submission_comment_url(
             @assignment, @submission, comment), :method => :delete,
