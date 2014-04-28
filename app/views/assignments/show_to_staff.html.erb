@@ -96,7 +96,6 @@
                 </td>
                 <td style="width:70%;">
                   <% progress_hash = group.progress_bar_hash(@assignment) %>
-                  <% fail %>
                   <a href="<%= assignment_group_show_url(@assignment, group) %>">
                     <div class="progress progress-striped active">
                       <div class="progress-bar" style="width: <%= progress_hash[:percent_marked] %>%">
