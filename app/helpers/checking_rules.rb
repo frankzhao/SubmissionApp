@@ -70,7 +70,7 @@ module CheckingRules
     root = Rails.root.to_s
 
     unless text.include? "main"
-      test += "\n\nmain = undefined"
+      text += "\n\nmain = undefined"
     end
 
     Dir.mkdir("#{root}/temp") unless Dir.exists? "#{root}/temp"

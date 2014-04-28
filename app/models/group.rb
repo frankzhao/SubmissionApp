@@ -47,7 +47,7 @@ class Group < ActiveRecord::Base
       return Hash.new(0) if number_students == 0
       number_marked = assignment.submissions
                                 .where("user_id IN (#{self.student_ids.join(",")})")
-                                .select { |s| s.marks.count > 0  }
+                                .select { |s| s.comments.where(:user_id != s.user_id).count > 0  }
                                 .length
 
       number_submitted = assignment.submissions
