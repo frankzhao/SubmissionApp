@@ -20,7 +20,7 @@ class SessionsController < ApplicationController
         render :new
       end
     else
-      flash[:errors] = ["Incorrect username/password.\nYou should use your ANU passoword."]
+      flash[:errors] = ["Incorrect username/password.\nYou should use your ANU password."]
       render :new
     end
   end
