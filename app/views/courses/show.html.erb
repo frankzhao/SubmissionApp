@@ -54,9 +54,9 @@
     <% if (@course.staff+[@course.convener]).include?(current_user) or current_user.is_admin %>
       <h3>Students</h3>
       <p>
-        <em data-toggle="collapse" data-target="#students">
+      <button data-toggle="collapse" data-target="#students" class="btn btn-primary btn-sm">
           Show/hide students
-        </em>
+        </button>
       </p>
       <div id="students" class="collapse">
         <ul>
