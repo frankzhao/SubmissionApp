@@ -44,13 +44,17 @@
         <form method="POST" action="<%= assignment_marking_categories_url(@assignment) %>">
       <%% } %>
         <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
-        <label for="marking_category_name">Name</label>
-        <input id="marking_category_name" name="marking_category[name]"
-        value="<%%= marking_category.name %>"><br>
+        <p>
+          <label for="marking_category_name">Name</label>
+          <input id="marking_category_name" name="marking_category[name]"
+            value="<%%= marking_category.name %>"><br>
+        </p>
 
-        <label for="marking_category_maximum_mark">Maximum mark</label>
-        <input id="marking_category_maximum_mark" name="marking_category[maximum_mark]"
-        value="<%%= marking_category.maximum_mark %>"><br>
+        <p>
+          <label for="marking_category_maximum_mark">Maximum mark</label>
+          <input id="marking_category_maximum_mark" name="marking_category[maximum_mark]"
+            value="<%%= marking_category.maximum_mark %>"><br>
+        </p>
 
         <label for="marking_category_description">Description</label>
         <textarea class="form-control" id="marking_category_description" name="marking_category[description]"><%%= marking_category.description %></textarea><br>
