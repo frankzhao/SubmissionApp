@@ -15,7 +15,7 @@
       <div class="btn-group">
         <button type="button" class="btn btn-danger" data-toggle="modal"
                 data-target="#myModal">
-          Delete assignment
+          Delete
         </button>
 
         <input class="btn btn-primary" type="submit" value="Update">
@@ -39,9 +39,9 @@
         If you delete the assignment, it will be gone forever, but all submissions to the assignment will remain in the directory <%= @assignment.path %> on the server, where your IT guy might be able to recover them for you. Comments and marks on the assignment are not recoverable.
       </div>
       <div class="modal-footer">
+        <%= link_to "Delete assignment", @assignment, :method => :delete,
+          :class => "btn btn-danger", :style => "float: left" %>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <%= button_to "Delete assignment", @assignment, :method => :delete,
-                  :class => "btn btn-danger" %>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

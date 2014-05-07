@@ -22,7 +22,7 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Courses<b class="caret"></b></a>
-          <ul class="dropdown-menu">
+          <ul class="dropdown-menu scrollable-menu">
             <li><a href="/courses">Course index</a></li>
             <li class="divider"></li>
             <% current_user.courses.each do |course| %>
@@ -37,7 +37,7 @@
             <li><a>You have no assignments.</a></li>
             </ul>
           <% else %>
-          <ul class="dropdown-menu">
+          <ul class="dropdown-menu scrollable-menu">
             <% current_user.all_assignments.each do |assignment| %>
               <li><%= link_to assignment.name, assignment %></li>
             <% end %>
@@ -47,7 +47,7 @@
 
         <% unless (current_user.student_groups + current_user.staffed_groups).empty? %>
           <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Groups<b class="caret"></b></a>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu scrollable-menu">
               <% (current_user.student_groups + current_user.staffed_groups).each do |group| %>
                 <li><%= link_to group.name, group %></li>
               <% end %>
@@ -62,7 +62,7 @@
               <span class="glyphicon glyphicon-exclamation-sign"></span>
                Submissions to review<b class="caret"></b>
             </a>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu scrollable-menu"">
               <% uncommented_submissions.each do |s| %>
                 <li><%= link_to(s.id,
                     assignment_assignment_submission_url(s.assignment_id, s)) %>
@@ -86,7 +86,7 @@
             <span class="badge"><%= current_user.notifications.length %></span>
             <b class="caret"></b>
             </a>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu scrollable-menu"">
               <% current_user.notifications.each do |n| %>
                 <li class="notification">
                   <%= link_to(n.text, n.link,
