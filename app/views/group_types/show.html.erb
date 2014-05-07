@@ -27,12 +27,13 @@
 
 
     <% if @group_type.conveners.include?(current_user) || current_user.is_admin %>
-
-    Students who don't have a group: <%= @group_type.students_without_a_group_count %>
-
-      <h5 data-toggle="collapse" data-target="#edit-groups">
+      <p>Students who don't have a group: <%= @group_type.students_without_a_group_count %></p>
+    <p>
+    <button class="btn btn-primary btn-sm" 
+      data-toggle="collapse" data-target="#edit-groups">
         Edit groups
-      </h5>
+    </button>
+    </p>
 
       <div id="edit-groups" class="collapse">
         <form method="POST"
