@@ -10,8 +10,9 @@
 
     <table class="table" id="accordion">
       <tr>
-        <th></th>
-        <th>Submission status</th>
+        <th>UID</th>
+        <th>Name</th>
+        <th>Status</th>
         <th>Submissions</th>
         <th>Specs passing</th>
         <% if @assignment.peer_review_cycles.count > 0 %>
@@ -26,6 +27,7 @@
 
       <% @students.each do |student| %>
         <tr>
+          <td><%= link_to(student.uni_id, student) %></td>
           <td><%= link_to(student.name, student) %></td>
 
           <!-- Submission status -->
@@ -92,7 +94,7 @@
           <!-- File upload -->
           <% if mra %>
 
-            <td >
+            <td width="35%">
             <a data-toggle="collapse" data-parent="#accordion" href="#comment-<%= mra.id %>">
               Add comment
             </a>
@@ -106,7 +108,7 @@
             >
                 <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
 
-                <input type="hidden" name="comment[body]" value="Please find comments attached.">
+                <input type="text" name="comment[body]" value="">
                 <%= file_field 'upload', 'datafile' %>
 
                 <input class="btn btn-primary btn-xs" type="submit" value="Post comment">

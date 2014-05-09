@@ -3,7 +3,7 @@
     <h2>Courses</h2>
 
     <% if current_user.is_admin_or_convener? %>
-    <%= link_to("Create course", new_course_url) %>
+      <%= link_to("Create course", new_course_url, :class => "btn btn-primary btn-sm") %>
     <% end %>
 
     <h3>Your courses</h3>

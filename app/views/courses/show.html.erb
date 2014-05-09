@@ -6,10 +6,10 @@
 
     <p><em>Course convener: <%= link_to @convener.name, user_url(@convener) %></em></p>
 
-    <p><%= link_to "Create new group type", new_group_type_url %></p>
-
+    <p><%= link_to "Create new group type", new_group_type_url , :class => "btn btn-primary btn-sm" %>
     <% if current_user == @convener || current_user.is_admin %>
-      <p><%= link_to("Enroll students and staff", new_course_user_url(@course)) %></p>
+      <%= link_to("Enroll students and staff", new_course_user_url(@course), :class => "btn btn-primary btn-sm") %>
+    </p>
     <% end %>
 
     <% if @assignments %>
@@ -45,26 +45,30 @@
     <% end %>
 
     <h3>Staff</h3>
-    <ul>
+    <table id="staff" class="table table-bordered table-striped">
       <% @staffs.each do |staff| %>
-        <li> <%= link_to staff.name, user_url(staff) %> </li>
+      <tr>
+        <td> <%= link_to staff.name, user_url(staff) %> </td>
+      </tr>
       <% end %>
-    </ul>
+    </table>
 
     <% if (@course.staff+[@course.convener]).include?(current_user) or current_user.is_admin %>
       <h3>Students</h3>
-      <p>
-      <button data-toggle="collapse" data-target="#students" class="btn btn-primary btn-sm">
-          Show/hide students
-        </button>
-      </p>
-      <div id="students" class="collapse">
-        <ul>
-          <% @students.each do |student| %>
-            <li> <%= link_to student.name, user_url(student) %> </li>
-          <% end %>
-        </ul>
-      </div>
+      <table id="students" class="table table-bordered table-striped">
+        <tr>
+          <th><h5>Student</h5></th>
+          <th><h5>ID</h5></th>
+        </tr>
+        <% @students.each do |student| %>
+            <tr>
+              <!-- User info -->
+              <td><%= link_to student.name %></td>
+              <td><%= link_to "u" + student.uni_id.to_s, user_url(student) %></td>
+            </tr>
+        <% end %>
+      </table>
+    
     <% elsif @course.students.include? current_user %>
     <% else %>
       <em>Note that you aren't enrolled in this course--you'd

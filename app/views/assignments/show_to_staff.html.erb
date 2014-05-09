@@ -1,5 +1,4 @@
 <% content_for :title, @assignment.name %>
-
 <div class="row">
   <div class="col-sm-5 col-sm-offset-2">
     <h2><%= @assignment.name %></h2>
@@ -120,29 +119,50 @@
     </div>
 
     <h4>Raw list of all submissions (all <%= @submissions.count %> of them)</h4>
-    <button class="btn btn-primary btn-sm" 
-    data-toggle="collapse" data-target="#raw-submissions">Expand/collapse view</button>
 <!-- <p>TODO: currently when you download all submissions as a zip, none of them are labelled, and some of them are old submissions. How should I label them? Which ones should be downloaded?</p> -->
-    <ul id="raw-submissions" class="collapse">
-      <% @submissions.each do |submission| %>
-        <li>
-          <%= link_to("#{submission.user.name} (u#{submission.user.uni_id})",
-                  assignment_assignment_submission_url(@assignment, submission)) %>
+      <!-- Submission table -->
+      <table id="raw-submissions" class="table table-bordered table-striped">
+        <tr>
+          <th><h5>Student</h5></th>
+          <th><h5>ID</h5></th>
+          <% if @assignment.peer_review_cycles.any? %>
+            <th><h5>Visible to</h5></th>
+          <% end %>
+          <th><h5>Status</h5></th>
+        </tr>
+        <% @submissions.each do |submission| %>
+            <tr>
+              <!-- User info -->
+              <td><%= link_to "#{submission.user.name}",
+                  assignment_assignment_submission_url(@assignment, submission) %></td>
+              <td><%= link_to "u#{submission.user.uni_id}",
+                  assignment_assignment_submission_url(@assignment, submission) %></td>
+              <!-- Peer reviewer -->
+              <% if @assignment.peer_review_cycles.any? %>
+                <td>
+                  <% unless submission.submission_permissions.empty? %>
+                    <%= submission.permitted_users.pluck(:name).join(", ") %>
+                  <% end %>
+                </td>
+              <% end %>
+                  
+              <td>
+                <!-- Submission status -->
+                <% if submission.is_finalized %>
+                  <span class="label label-success">Finalized</span>
+                <% else %>
+                  <span class="label label-warning">Not finalized</span>
+                <% end %>
+                <% if (submission.comments.where_not_automated.count == 0) && (@assignment.peer_review_cycles.any?) %>
+                  <span class="label label-default">Not Reviewed</span>
+                <% end %>
+              </td>
+            </tr>
+        <% end %>
+      </table>
+      
          <!-- TODO: add this feature back in -->
          <!--  <%# unless submission.mark %>
             <span class="label label-default">(unmarked)</span>
-          <%# end %> -->
-          <% unless submission.submission_permissions.empty? %>
-            (visible to <%= submission.permitted_users.pluck(:name).join(", ") %>)
-            <% if submission.comments.where_not_automated.count == 0 %>
-              <span class="label label-default">Uncommented</span>
-            <% end %>
-          <% end %>
-          <% unless submission.is_finalized %>
-            <span class="label label-default">Not finalized</span>
-          <% end %>
-        </li>
-      <% end %>
-    </ul>
-  </div>
+-->
 </div>
