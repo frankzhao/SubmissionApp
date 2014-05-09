@@ -18,7 +18,7 @@ Protip: if you want to watch the server log as the server writes to it, run `tai
 
 This project uses Rails 3.2.15, as it says in the Gemfile.
 
-Currently, it uses sqlite3 for a database. This will probably change before the project goes into production. It also stores data files in `/upload`.
+Currently, it uses sqlite3 for a database. This will probably change before the project goes into production. It also stores data files in `/upload`. If you are starting with an empty database, you will need to create a user to login with. In `rails c` execute `User.create :uni_id => "username", :name => "name"` and you will be able to login with the user `username`.
 
 On a Mac, get Rails set up, install necessary dependencies with `bundle install`. Then run `rake db:reset` to get the database set up. To seed it with demo data, run `rake db:seed`.
 
