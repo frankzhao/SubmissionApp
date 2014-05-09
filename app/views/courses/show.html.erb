@@ -45,21 +45,30 @@
     <% end %>
 
     <h3>Staff</h3>
-    <ul>
+    <table id="staff" class="table table-bordered table-striped">
       <% @staffs.each do |staff| %>
-        <li> <%= link_to staff.name, user_url(staff) %> </li>
+      <tr>
+        <td> <%= link_to staff.name, user_url(staff) %> </td>
+      </tr>
       <% end %>
-    </ul>
+    </table>
 
     <% if (@course.staff+[@course.convener]).include?(current_user) or current_user.is_admin %>
       <h3>Students</h3>
-      <div id="students">
-        <ul>
-          <% @students.each do |student| %>
-            <li> <%= link_to student.name + " (u" + student.uni_id.to_s + ")", user_url(student) %> </li>
-          <% end %>
-        </ul>
-      </div>
+      <table id="students" class="table table-bordered table-striped">
+        <tr>
+          <th><h5>Student</h5></th>
+          <th><h5>ID</h5></th>
+        </tr>
+        <% @students.each do |student| %>
+            <tr>
+              <!-- User info -->
+              <td><%= link_to student.name %></td>
+              <td><%= link_to "u" + student.uni_id.to_s, user_url(student) %></td>
+            </tr>
+        <% end %>
+      </table>
+    
     <% elsif @course.students.include? current_user %>
     <% else %>
       <em>Note that you aren't enrolled in this course--you'd

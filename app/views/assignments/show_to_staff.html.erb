@@ -123,12 +123,12 @@
       <!-- Submission table -->
       <table id="raw-submissions" class="table table-bordered table-striped">
         <tr>
-          <td><h5>Student</h5></td>
-          <td><h5>ID</h5></td>
+          <th><h5>Student</h5></th>
+          <th><h5>ID</h5></th>
           <% if @assignment.peer_review_cycles.any? %>
-            <td><h5>Visible to</h5></td>
+            <th><h5>Visible to</h5></th>
           <% end %>
-          <td><h5>Status</h5></td>
+          <th><h5>Status</h5></th>
         </tr>
         <% @submissions.each do |submission| %>
             <tr>

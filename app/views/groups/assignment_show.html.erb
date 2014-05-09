@@ -10,8 +10,9 @@
 
     <table class="table" id="accordion">
       <tr>
-        <th></th>
-        <th>Submission status</th>
+        <th>UID</th>
+        <th>Name</th>
+        <th>Status</th>
         <th>Submissions</th>
         <th>Specs passing</th>
         <% if @assignment.peer_review_cycles.count > 0 %>
@@ -26,6 +27,7 @@
 
       <% @students.each do |student| %>
         <tr>
+          <td><%= link_to(student.uni_id, student) %></td>
           <td><%= link_to(student.name, student) %></td>
 
           <!-- Submission status -->
