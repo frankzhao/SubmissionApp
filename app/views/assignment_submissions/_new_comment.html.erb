@@ -28,8 +28,10 @@
     <% if relationship == :staff || submission.which_peer_review_cycle(
                                       current_user).try(:maximum_mark) %>
       <p data-toggle="collapse" data-target="#marks-<%= parent_id %>">
-      <a class="btn btn-success btn-sm">Add mark</a> &nbsp; for <%= @submission.user.name %> 
-        (u<%=@submission.user.uni_id%>)
+      <a class="btn btn-success btn-sm">Add mark</a> 
+        <% if relationship == :staff %>
+          &nbsp; for <%= @submission.user.name %> (u<%=@submission.user.uni_id%>)
+        <% end %>
       </p>
 
       <div id="marks-<%= parent_id %>" class="collapse">
