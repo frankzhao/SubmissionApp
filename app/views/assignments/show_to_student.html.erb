@@ -36,23 +36,27 @@
       <p>Submissions have closed.</p>
     <% else %>
       <%= link_to("Submit assignment",
-                new_assignment_assignment_submission_url(@assignment)) %>
+                new_assignment_assignment_submission_url(@assignment), :class => "btn btn-primary btn-sm") %>
     <% end %>
 
 
     <% unless @permitted_submissions.empty? %>
       <h3>Submissions for peer review</h3>
-      <ul>
+      <table id="peer-review" class="table table-bordered table-striped">
       <% @permitted_submissions.each do |submission| %>
-        <li> <%= link_to("Submission #{submission.id}",
+        <td> <%= link_to("Submission #{submission.id}",
                   assignment_assignment_submission_url(
                             @assignment, submission)) %>
-            <% unless submission.commented_on_by_user?(current_user) %>
-              <span class="label label-default">Needs comment</span>
+        </td>
+        <td>
+            <% if submission.commented_on_by_user?(current_user) %>
+              <span class="label label-success">Reviewed</span>
+            <% else %>
+              <span class="label label-warning">Not Reviewed</span>
             <% end %>
-        </li>
+        </td>
       <% end %>
-      </ul>
+      </table>
     <% end %>
   </div>
 </div>
