@@ -16,13 +16,14 @@
 
     <p>It has the following groups:</p>
 
-    <ul>
+    <table id="students" class="table table-bordered table-striped">
       <% @group_type.groups.each do |group| %>
-        <li>
-          <%= link_to group.name, group_url(group) %> (<%= group.students.count %> students)
-        </li>
+      <tr>
+        <td><%= link_to group.name, group_url(group) %></td>
+        <td><%= group.students.count %> students</td>
+      </tr>
       <% end %>
-    </ul>
+    </table>
 
 
 
