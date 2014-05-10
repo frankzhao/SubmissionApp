@@ -6,8 +6,9 @@
 
     <p><em>Course convener: <%= link_to @convener.name, user_url(@convener) %></em></p>
 
-    <p><%= link_to "Create new group type", new_group_type_url , :class => "btn btn-primary btn-sm" %>
+    <p>
     <% if current_user == @convener || current_user.is_admin %>
+      <%= link_to "Create new group type", new_group_type_url , :class => "btn btn-primary btn-sm" %>
       <%= link_to("Enroll students and staff", new_course_user_url(@course), :class => "btn btn-primary btn-sm") %>
     </p>
     <% end %>

@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  attr_accessible :name, :session_token, :uni_id
+  attr_accessible :name, :session_token, :uni_id, :is_admin_or_convenor?
   attr_protected :admin
 
   has_many :student_enrollments, :dependent => :destroy
@@ -56,6 +56,11 @@ class User < ActiveRecord::Base
         out << user
       end
     end
+  end
+
+  def is_admin_or_convenor?
+    return (self.is_admin)
+    # TODO implement convenor check
   end
 
   def self.touch(name, uni_id)
