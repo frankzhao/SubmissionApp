@@ -1,7 +1,17 @@
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
     <div class="panel panel-default">
-      <div class="panel-heading">Main.hs</div>
+      <div class="panel-heading"><h4>Main.hs 
+        
+        <% unless (current_user.relationship_to_assignment(@assignment) != :staff) && 
+          (!@submission.permitted_users.pluck(:uni_id).include? current_user.uni_id) %>
+        
+            <%= link_to "Download submission", "Main.hs", :action => "download_raw", 
+              :class => 'btn btn-primary btn-sm', :style => "float:right; display:block" %> 
+          
+        <% end %>
+        </h4>
+      </div>
       <div class="panel-body">
         <%= render :partial => "file", :locals => { :file =>
                               submission.submission_files.first } %>

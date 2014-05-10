@@ -15,7 +15,7 @@ class AssignmentSubmissionsController < ApplicationController
                               .select { |s| s.notable.assignment_submission_id == @submission.id }
                               .map(&:delete)
 
-    if @relationship
+    if (@relationship == :staff) || (@submission.permitted_users.pluck(:uni_id).include? current_user.uni_id)
       render :show
     else
       flash[:errors] = ["You don't have permission to access that page"]
@@ -185,4 +185,10 @@ class AssignmentSubmissionsController < ApplicationController
       redirect_to "/"
     end
   end
+  
+  def download_raw
+    @submission = AssignmentSubmission.find(params[:id])
+    send_data @submission.body, :filename => "Main.hs", :type => 'application/text'
+  end
+  
 end
