@@ -62,7 +62,7 @@
               <span class="glyphicon glyphicon-exclamation-sign"></span>
                Submissions to review<b class="caret"></b>
             </a>
-            <ul class="dropdown-menu scrollable-menu"">
+            <ul class="dropdown-menu scrollable-menu">
               <% uncommented_submissions.each do |s| %>
                 <li><%= link_to(s.id,
                     assignment_assignment_submission_url(s.assignment_id, s)) %>
@@ -86,11 +86,10 @@
             <span class="badge"><%= current_user.notifications.length %></span>
             <b class="caret"></b>
             </a>
-            <ul class="dropdown-menu scrollable-menu"">
+            <ul class="dropdown-menu scrollable-menu">
               <% current_user.notifications.each do |n| %>
                 <li class="notification">
-                  <%= link_to(n.text, n.link,
-                            :method => (n.notable_id.nil? ? :delete : :get)) %>
+                  <%= link_to(n.text, n.link, :method => (n.notable_id.nil? ? :delete : :get)) %>
                 </li>
               <% end %>
             </ul>

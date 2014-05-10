@@ -185,4 +185,10 @@ class AssignmentSubmissionsController < ApplicationController
       redirect_to "/"
     end
   end
+  
+  def download_raw
+    @submission = AssignmentSubmission.find(params[:id])
+    send_data @submission.body, :filename => "Main.hs", :type => 'application/text'
+  end
+  
 end

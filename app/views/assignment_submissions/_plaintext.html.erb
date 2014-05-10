@@ -1,7 +1,9 @@
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
     <div class="panel panel-default">
-      <div class="panel-heading">Main.hs</div>
+      <div class="panel-heading"><h4>Main.hs <%= link_to "Download submission", nil, :action => "download_raw", 
+        :class => 'btn btn-primary btn-sm', :style => "float:right; display:block" %></h4>
+      </div>
       <div class="panel-body">
         <%= render :partial => "file", :locals => { :file =>
                               submission.submission_files.first } %>
