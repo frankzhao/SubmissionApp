@@ -5,7 +5,7 @@
 
   <%= sanitize (assignment.submission_instructions || "<p>Please put the text of your submission in here.</p>"), tags: %w(li ul ol code strong em b a) %>
 
-  <textarea name="submission[body]" class="form-control" style="font-family: monospace;"><%= submission.body if submission %></textarea>
+  <textarea name="submission[body]" class="form-control" style="font-family: monospace; height:200px" placeholder="You should put the text of your project into here. This is not a file upload field."><%= submission.body if submission %></textarea>
   <p>You should put the text of your project into here. This is not a file upload field.</p>
   <br>
   <input class="btn btn-primary" type="submit" value="Submit!">
