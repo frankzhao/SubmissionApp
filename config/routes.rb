@@ -67,9 +67,10 @@ SubmissionApp::Application.routes.draw do
   get 'assignments/:assignment_id/assignment_submissions/:id/file.zip',
                                     :to => 'assignment_submissions#get_zip',
                                     :as => 'assignment_submission_zip'
+  
   get 'assignments/:assignment_id/assignment_submissions/:id/Main.hs',
-                                  :to => 'assignment_submissions#download_raw',
-                                  :as => 'assignment_submission_raw'
+                                    :to => 'assignment_submissions#download_raw',
+                                    :as => 'assignment_submission_raw'
 
   get 'comment_files/:id', :to => 'comments#get_file',
                            :as => 'comment_file'
