@@ -6,7 +6,7 @@
         <% unless (current_user.relationship_to_assignment(@assignment) != :staff) && 
           (!@submission.permitted_users.pluck(:uni_id).include? current_user.uni_id) %>
         
-            <%= link_to "Download submission", "Main.hs", :action => "download_raw", 
+            <%= link_to "Download submission", {:action => "download_raw"}, 
               :class => 'btn btn-primary btn-sm', :style => "float:right; display:block" %> 
           
         <% end %>
