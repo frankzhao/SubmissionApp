@@ -13,34 +13,43 @@
     <% end %>
 
     <% if @assignments %>
-      <h3>Assignments</h3>
-      <ul>
-        <% @assignments.each do |assignment| %>
-          <li>
-            <%= link_to assignment.name, assignment_url(assignment) %>
-          </li>
-        <% end %>
-      </ul>
-    <% end %>
+    <div class="panel panel-default">
+      <div class="panel-heading"><h4>Assignments</h4></div>
+        <ul class="list-group">
+          <% @assignments.each do |assignment| %>
+            <li class="list-group-item">
+              <%= link_to assignment.name, assignment_url(assignment) %>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+    </div>
 
     <% if @group_types %>
       <% @group_types.each do |group_type| %>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4><%= link_to group_type.name, group_type_url(group_type) %>
+              <% if current_user == @convener %>
+                <div class="btn-group" style="float:right">
+                <%= link_to "New assignment", new_group_type_assignment_url(group_type), 
+                  :class => "btn btn-default btn-sm" %>
+                <%= link_to "Delete group", group_type_url(group_type), :method => :delete, 
+                  :class => "btn btn-danger btn-sm", data: {confirm: "Are you sure?"} %>
+                </div>
+              <% end %>
+            </h4>
+          </div>
 
-        <h3><%= link_to group_type.name, group_type_url(group_type) %></h3>
-
-        <% if current_user == @convener %>
-    <p><%= link_to "New assignment", new_group_type_assignment_url(group_type) %></p>
-
-    <p><%= link_to "Delete "+group_type.name, group_type_url(group_type), :method => :delete %> </p>
-        <% end %>
-
-          <ul>
+          <ul class="list-group">
             <% group_type.groups.each do |group| %>
-              <li>
+              <li class="list-group-item">
                 <%= link_to group.name, group_url(group) %>
               </li>
             <% end %>
           </ul>
+        </div>
+    
       <% end %>
     <% end %>
 

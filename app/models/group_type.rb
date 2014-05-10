@@ -70,7 +70,7 @@ class GroupType < ActiveRecord::Base
   end
 
   def render_csv
-    out = ["group name,staff..."]
+    out = ["group name,staff_uid..."]
     self.groups.each do |group|
       row = []
       row << group.name
@@ -84,7 +84,7 @@ class GroupType < ActiveRecord::Base
     ActiveRecord::Base.transaction do
       lines = csv_string.split("\n")
 
-      unless "group name,staff..." == lines[0].chomp
+      unless "group name,staff_uid..." == lines[0].chomp
         raise "invalid csv"
       end
 
