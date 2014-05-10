@@ -15,7 +15,9 @@ class AssignmentSubmissionsController < ApplicationController
                               .select { |s| s.notable.assignment_submission_id == @submission.id }
                               .map(&:delete)
 
-    if (@relationship == :staff) || (@submission.permitted_users.pluck(:uni_id).include? current_user.uni_id)
+    if (@relationship == :staff) || 
+      (@submission.permitted_users.pluck(:uni_id).include? current_user.uni_id) ||
+      (@submission.user == current_user)
       render :show
     else
       flash[:errors] = ["You don't have permission to access that page"]
