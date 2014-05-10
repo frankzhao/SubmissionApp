@@ -4,22 +4,28 @@
     <p><%= @group.name %> is an instance of <%= link_to @group_type.name, @group_type %>.</p>
 
     <h3>Staff</h3>
-    <ul>
-      <% @staff.each do |user| %>
-        <li>
-          <%= link_to user.name, user_url(user) %>
-        </li>
+    <table id="students" class="table table-bordered table-striped">
+      <% @staff.each do |staff| %>
+          <tr>
+            <!-- User info -->
+            <td><%= link_to staff.name %></td>
+          </tr>
       <% end %>
-    </ul>
+    </table>
 
     <h3>Students</h3>
-
-    <ul>
-      <% @users.each do |user| %>
-        <li>
-          <%= link_to user.name, user_url(user) %>
-        </li>
-      <% end %>
-    </ul>
+    <table id="students" class="table table-bordered table-striped">
+        <tr>
+          <th><h5>Student</h5></th>
+          <th><h5>ID</h5></th>
+        </tr>
+        <% @users.each do |student| %>
+            <tr>
+              <!-- User info -->
+              <td><%= link_to student.name %></td>
+              <td><%= link_to "u" + student.uni_id.to_s, user_url(student) %></td>
+            </tr>
+        <% end %>
+      </table>
   </div>
 </div>
