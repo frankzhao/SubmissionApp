@@ -60,21 +60,29 @@
 
     <% if @assignments.length > 0 %>
       <% @assignments.each do |assignment| %>
+        <table id="students" class="table table-bordered table-striped">
+          <tr><th><h5><%= assignment.name %> submissions:</h5></th></tr>
         <% subs = assignment.submissions.where_user_is(@user).all %>
-        <% next if subs.empty? %>
-        <p><%= assignment.name %> submissions:</p>
-        <ul>
-        <% subs.each do |sub| %>
-          <li>
-          <%= link_to sub.id,
-                    assignment_assignment_submission_url(assignment, sub) %>
-          <% unless sub.submission_permissions.empty? %>
-            (visible to <%= sub.permitted_users.pluck(:name).join(", ") %>)
-          <% end %>
-
-          </li>
+        <% if subs.empty? %>
+          <tr><td><span style="color:red" class="glyphicon glyphicon-warning-sign"></span>&nbsp; 
+            <span style="color:red">No submissions found!</span></td></tr>
+          </table>
+          <% next %>
         <% end %>
-        </ul>
+          <% subs.each do |sub| %>
+          <tr>
+            <td>
+              <%= link_to sub.id,
+                    assignment_assignment_submission_url(assignment, sub) %>
+            </td>
+            <% unless sub.submission_permissions.empty? %>
+              <% if current_user.is_admin_or_convenor? || current_user.staffed_courses.length > 0%>
+                <td>(visible to <%= sub.permitted_users.pluck(:name).join(", ") %>)</td>
+              <% end %>
+            <% end %>
+          </tr>
+          <% end %>
+        </table>
       <% end %>
     <% end %>
 

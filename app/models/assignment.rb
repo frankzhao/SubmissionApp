@@ -8,6 +8,7 @@ class Assignment < ActiveRecord::Base
   has_many :groups, :through => :group_type, :source => :groups
 
   has_many :submissions, :class_name => "AssignmentSubmission"
+  # TODO submissions should have timestamps
   has_many :students_who_have_submitted, :through => :submissions, :source => :user
   has_many :submission_permissions, :through => :submissions,
                                     :source => :submission_permissions,
