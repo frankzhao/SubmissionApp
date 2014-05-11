@@ -72,7 +72,7 @@
           <% subs.each do |sub| %>
           <tr>
             <td>
-              <%= link_to sub.id,
+              <%= link_to "##{sub.id}",
                     assignment_assignment_submission_url(assignment, sub) %>
             </td>
             <% unless sub.submission_permissions.empty? %>

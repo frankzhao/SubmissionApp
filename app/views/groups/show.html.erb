@@ -8,7 +8,7 @@
       <% @staff.each do |staff| %>
           <tr>
             <!-- User info -->
-            <td><%= link_to staff.name %></td>
+            <td><%= link_to staff.name, user_url(staff) %></td>
           </tr>
       <% end %>
     </table>
