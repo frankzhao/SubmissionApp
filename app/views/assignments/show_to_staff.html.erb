@@ -153,10 +153,13 @@
                 <% else %>
                   <span class="label label-warning">Not finalized</span>
                 <% end %>
-                <% if (submission.comments.where_not_automated.count == 0) && (@assignment.peer_review_cycles.any?) %>
-                  <span class="label label-default">Not Reviewed</span>
-                <% else %>
-                  <span class="label label-success">Reviewed</span>
+                <% if @assignment.peer_review_cycles.any? %>
+                  <% if (submission.comments.where_not_automated.count == 0) && 
+                      (@assignment.peer_review_cycles.any?) %>
+                    <span class="label label-default">Not Reviewed</span>
+                  <% else %>
+                    <span class="label label-success">Reviewed</span>
+                  <% end %>
                 <% end %>
               </td>
             </tr>
