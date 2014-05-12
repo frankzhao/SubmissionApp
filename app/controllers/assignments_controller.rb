@@ -69,15 +69,16 @@ class AssignmentsController < ApplicationController
 
     case @relation
     when :student
-      unless @assignment.is_visible
+      if @assignment.is_visible
+        @user_submissions = @assignment.submissions
+                                       .where(:user_id => current_user.id)
+                                       .order('created_at DESC')
+        @permitted_submissions = current_user.permitted_submissions_for_assignment(@assignment)
+        render :show_to_student
+      else
         flash[:errors] = ["That assignment isn't visible yet"]
         redirect_to :back
       end
-      @user_submissions = @assignment.submissions
-                                     .where(:user_id => current_user.id)
-                                     .order('created_at DESC')
-      @permitted_submissions = current_user.permitted_submissions_for_assignment(@assignment)
-      render :show_to_student
     when :staff
 
       @submissions = @assignment.relevant_submissions(current_user)
@@ -87,9 +88,12 @@ class AssignmentsController < ApplicationController
       @submissions = @assignment.relevant_submissions(current_user)
       render :show_to_staff
     else
-      return unless current_user.is_admin
-      @submissions = @assignment.submissions
-      render :show_to_staff
+      if current_user.is_admin
+        @submissions = @assignment.submissions
+        render :show_to_staff
+      else
+        redirect_to "/"
+      end
     end
   end
 
