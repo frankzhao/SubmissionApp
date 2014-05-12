@@ -3,7 +3,8 @@
     <div class="panel panel-default">
       <div class="panel-heading"><h4>Main.hs 
         
-        <% unless (current_user.relationship_to_assignment(@assignment) != :staff) && 
+        <% unless ((current_user.relationship_to_assignment(@assignment) != :staff) || 
+          (current_user.relationship_to_assignment(@assignment) != :convenor)) && 
           (!@submission.permitted_users.pluck(:uni_id).include? current_user.uni_id) %>
         
             <%= link_to "Download submission", {:action => "download_raw"}, 
