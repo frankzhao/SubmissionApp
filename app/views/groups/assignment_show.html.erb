@@ -66,7 +66,7 @@
             <% else %>
               <% if (student.permitted_submissions_for_assignment(@assignment)
                         .count) > 0 %>
-                <td>Commented</td>
+                <td class="success">Commented</td>
               <% else %>
                 <td>No submission received</td>
               <% end %>
