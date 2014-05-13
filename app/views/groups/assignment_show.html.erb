@@ -27,7 +27,7 @@
 
       <% @students.each do |student| %>
         <tr>
-          <td><%= link_to(student.uni_id, student) %></td>
+          <td><%= link_to("u" + student.uni_id.to_s, student) %></td>
           <td><%= link_to(student.name, student) %></td>
 
           <!-- Submission status -->
