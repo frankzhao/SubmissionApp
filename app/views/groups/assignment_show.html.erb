@@ -28,7 +28,7 @@
 
       <% @students.each do |student| %>
         <tr>
-          <td><%= link_to(student.uni_id, student) %></td>
+          <td><%= link_to("u" + student.uni_id.to_s, student) %></td>
           <td><%= link_to(student.name, student) %></td>
 
           <!-- Submission status -->
@@ -67,7 +67,7 @@
             <% else %>
               <% if (student.permitted_submissions_for_assignment(@assignment)
                         .count) > 0 %>
-                <td>Commented</td>
+                <td class="success">Commented</td>
               <% else %>
                 <td>Not reviewed</td>
               <% end %>
@@ -121,6 +121,5 @@
         </tr>
       <% end %>
     </table>
-</div>
-  <!--</div>-->
+  </div>
 </div>
