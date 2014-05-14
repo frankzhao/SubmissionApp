@@ -74,28 +74,37 @@ class Group < ActiveRecord::Base
     end
   end
 
+  def sanitize(filename)
+    filename.strip!
+    filename.gsub!(/^.*(\\|\/)/, '') # remove slashes etc
+    filename.gsub!(/[^0-9A-Za-z.\-]/, '_') # remove non-ascii
+    return filename
+  end
+
   def make_group_zip(assignment)
-    folder_name = "/tmp/#{self.name.gsub(/[ '"]/,"_")}_#{assignment.name.gsub(" ","_")}"
-    p "folder name is "+folder_name
-    system("mkdir #{folder_name}")
+    folder_name = "#{sanitize(self.name)}_#{sanitize(assignment.name)}"
+    p "Creating folder for group submissions: "+folder_name
+    system("mkdir /tmp/#{folder_name}")
     self.students.each do |student|
 
       sub = student.most_recent_submission(assignment)
 
       next if sub.nil?
-      next unless File.exists?(sub.zip_path)
+      if !File.exists?(sub.zip_path)
+        next
+      end
 
-      sub_name = "#{sub.user.name.gsub(" ","_")}_#{sub.id}"
+      sub_name = "u#{sub.user.uni_id.to_s}_#{sub.user.name.gsub(" ","_")}_#{sub.id}"
       if sub
-        system("mkdir #{folder_name}/#{sub_name}")
-        system("unzip -o #{sub.zip_path} -d #{folder_name}/#{sub_name}")
+        system("mkdir /tmp/#{folder_name}/#{sub_name}")
+        system("unzip -o #{sub.zip_path} -d /tmp/#{folder_name}/#{sub_name}")
         # x = "mv #{folder_name}#{sub.file_path_without_assignment_path}.zip #{folder_name}/#{sub_name}"
         # p x
         # system(x)
       end
     end
-    system("zip -r -o #{folder_name} #{folder_name}")
+    system("cd /tmp/#{folder_name}/ && zip -r ../#{folder_name}.zip .")
     # system("rm -rf \"#{folder_name}\"")
-    folder_name+".zip"
+    "/tmp/" + folder_name + ".zip"
   end
 end

@@ -1,7 +1,8 @@
 <% content_for :title, "#{@group.name}: #{@assignment.name}" %>
 
-<div class="row">
-  <div class="col-sm-8 col-sm-offset-2">
+<div class="container-fluid">
+  <!--<div class="container">-->
+  <div class="col-md-10 col-md-offset-1">
     <h2>Submissions for <%= @assignment.name %> from <%= @group.name %></h2>
 
     <p><%= link_to("<span class=\"glyphicon glyphicon-download\"></span> Download all submissions as a zip".html_safe,
@@ -68,7 +69,7 @@
                         .count) > 0 %>
                 <td>Commented</td>
               <% else %>
-                <td>No submission received</td>
+                <td>Not reviewed</td>
               <% end %>
             <% end %>
           <% end %>
@@ -94,7 +95,7 @@
           <!-- File upload -->
           <% if mra %>
 
-            <td width="35%">
+            <td width="30%">
             <a data-toggle="collapse" data-parent="#accordion" href="#comment-<%= mra.id %>">
               Add comment
             </a>
@@ -120,6 +121,6 @@
         </tr>
       <% end %>
     </table>
-
-  </div>
+</div>
+  <!--</div>-->
 </div>
