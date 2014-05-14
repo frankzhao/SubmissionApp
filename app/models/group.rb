@@ -104,7 +104,7 @@ class Group < ActiveRecord::Base
       end
     end
     system("cd /tmp/#{folder_name}/ && zip -r ../#{folder_name}.zip .")
-    # system("rm -rf \"#{folder_name}\"")
+    system("rm -rf /tmp/#{folder_name}")
     "/tmp/" + folder_name + ".zip"
   end
 end
