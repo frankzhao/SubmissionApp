@@ -18,19 +18,19 @@
         <p>
         <%= link_to "Submit new version", new_assignment_assignment_submission_url(
                             @assignment), :class => "btn btn-primary btn-sm"%>
+          <% if current_user.is_admin_or_convener? %>
+          <%= link_to("Delete submission",
+                assignment_assignment_submission_url(@assignment, @submission),
+                :method => :delete,
+                :class => "btn btn-danger btn-sm", :style => "float:right") %>
+        <% end %>
+        <% else %>
+          <h3> <%= link_to(@submission.user.name,user_url(@submission.user)) %>
+            (u<%= @submission.user.uni_id%>)
+          </h3>
+        <% end %>
         </p>
       <% end %>
-      <% if current_user.is_admin_or_convener? %>
-      <%= link_to("Delete submission",
-            assignment_assignment_submission_url(@assignment, @submission),
-            :method => :delete,
-            :class => "btn btn-danger btn-sm", :style => "float:right") %>
-    <% end %>
-    <% else %>
-      <h3> <%= link_to(@submission.user.name,user_url(@submission.user)) %>
-        (u<%= @submission.user.uni_id%>)
-      </h3>
-    <% end %>
 
     <% if @relationship == :staff && @submission.permitted_users.count > 0%>
       <p>This submission is visible to: <%=@submission.permitted_users.map {|u|
@@ -41,10 +41,9 @@
 
     <% unless @submission.is_finalized %>
     <div class="alert alert-warning" style="margin-top:10px; padding-bottom:60px">
-      <h4>  <span class="glyphicon glyphicon-warning-sign"></span> Not finalized</h4>
-      <p>This submission has not been finalized. It will not be submitted for tutor consideration or peer review until you finalize it.</p>
-      <%= button_to "Finalize", assignment_assignment_submission_finalize_url(
+      <h4>  <span class="glyphicon glyphicon-warning-sign"></span> Not finalized</h4><%= button_to "Finalize", assignment_assignment_submission_finalize_url(
             @assignment, @submission), :class => "btn btn-primary pull-right" %>
+      <p>This submission has not been finalized. It will not be submitted for tutor consideration or peer review until you finalize it.</p>
     </div>
     <% end %>
   </div>

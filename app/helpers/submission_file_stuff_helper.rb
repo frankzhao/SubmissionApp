@@ -130,39 +130,60 @@ module SubmissionFileStuffHelper
       user_name = self.context_name(self.user, user).gsub(" ","_")
     end
     assignment_name = self.assignment.name.gsub(/ |-|:/, "_")
-    user_name + "_" + assignment_name
+    return "u" + self.user.uni_id.to_s + "_" + user_name + "_" + assignment_name
   end
 
   def make_pdf
-    self.submission_files.each_with_index do |file, index|
-      p file.name
-      if file.name =~ /pdf/
-        File.open("/tmp/#{index}.pdf", "wb") do |f|
-          f.write(file.file_blob)
-        end
-      else
-        escaped_body = file.body.gsub(/(?<foo>[$%\\])/, '\\\\\k<foo>')
-        File.open("/tmp/#{index}.tex", "w") do |f|
-          f.write(<<-FILE)
+    if File.exists?("/tmp/pdf/#{self.pretty_filename}.pdf")
+      return "/tmp/pdf/#{self.pretty_filename}.pdf"
+    else
+      hash = Digest::SHA1.hexdigest("#{rand(10000)}#{Time.now}")
+      system "mkdir -p /tmp/pdf/#{hash}"
+      self.submission_files.each_with_index do |file, index|
+        p file.name
+        if file.name =~ /pdf/
+          File.open("/tmp/pdf/#{hash}/#{index}.pdf", "wb") do |f|
+            f.write(file.file_blob)
+          end
+        else
+          escaped_body = file.body.gsub(/(?<foo>[$%\\])/, '\\\\\k<foo>')
+          File.open("/tmp/pdf/#{hash}/#{index}.tex", "w") do |f|
+            f.write(<<-FILE)
 \\nonstopmode
-\\documentclass[12pt]{report}
-\\usepackage[margin=0.5in]{geometry}
+\\documentclass[a4paper, 8pt]{article}
+\\usepackage[usenames]{color}
+\\usepackage{hyperref}
+\\oddsidemargin 0in
+\\textwidth 6in
+\\topmargin -0.5in
+\\textheight 9in
+\\columnsep 0.25in
+\\newsavebox{\\spaceb}
+\\newsavebox{\\tabb}
+\\savebox{\\spaceb}[1ex]{~}
+\\savebox{\\tabb}[4ex]{~}
+\\newcommand{\\hsspace}{\\usebox{\\spaceb}}
+\\newcommand{\\hstab}{\\usebox{\\tabb}}
+\\newcommand{\\conceal}[1]{}
 \\begin{document}
 \\textbf{#{file.name.gsub(/(?<foo>[$%_\\])/, '\\\\\k<foo>')}}\\\\
-\\textbf{#{self.user.name}}
+\\textbf{#{self.user.name}}\ \ \\textbf{u#{self.user.uni_id}}
 \\begin{verbatim}
 #{escaped_body}
 \\end{verbatim}
 \\end{document}
-          FILE
+            FILE
+          end
+          system("pdflatex -output-directory=/tmp/pdf/#{hash} /tmp/pdf/#{hash}/#{index}.tex")
         end
-        system("pdflatex -output-directory=/tmp /tmp/#{index}.tex")
       end
-    end
 
-    num_files = self.submission_files.length
-    files_string = (0...num_files).map { |x| "/tmp/#{x}.pdf" }.join(" ")
-    system("gs -q -sPAPERSIZE=letter -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=/tmp/#{self.pretty_filename}.pdf #{files_string}")
-    "/tmp/#{self.pretty_filename}.pdf"
+      num_files = self.submission_files.length
+      files_string = (0...num_files).map { |x| "/tmp/pdf/#{hash}/#{x}.pdf" }.join(" ")
+      system("gs -q -sPAPERSIZE=letter -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=/tmp/pdf/#{self.pretty_filename}.pdf #{files_string}")
+      "/tmp/pdf/#{hash}/#{self.pretty_filename}.pdf"
+      system("rm -rf /tmp/pdf/#{hash}")
+      return "/tmp/pdf/#{self.pretty_filename}.pdf"
+    end
   end
 end

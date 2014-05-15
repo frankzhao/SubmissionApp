@@ -31,7 +31,7 @@
         <div class="panel-heading">
           <p class="panel-title">
             <a data-toggle="collapse" data-parent="#accordion" href="#<%= file.name.hash %>">
-                <%= file.name %> (<%= file.body.try(:length) || file.file_blob.length %> bytes)
+                <%= file.name %> (<%= file.body.try(:length) || file.file_blob.length/1024 %> KB)
             </a>
           </p>
         </div>
