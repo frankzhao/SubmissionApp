@@ -130,7 +130,7 @@ module SubmissionFileStuffHelper
       user_name = self.context_name(self.user, user).gsub(" ","_")
     end
     assignment_name = self.assignment.name.gsub(/ |-|:/, "_")
-    return "u" + self.user.uni_id.to_s + "_" + user_name + "_" + assignment_name
+    return "u#{self.user.uni_id.to_s}_#{user_name}_#{assignment_name}_#{self.id}" 
   end
 
   def make_pdf
