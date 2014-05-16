@@ -100,11 +100,12 @@
                   <% progress_hash = group.progress_bar_hash(@assignment) %>
                   <a href="<%= assignment_group_show_url(@assignment, group) %>">
                     <div class="progress progress-striped active">
+                        <div class="progress-bar" style="width: <%= progress_hash[:percent_marked] %>%"></div>
                       <div class="progress-bar progress-bar-success" style="width: <%= progress_hash[:percent_finalized] %>%">
                       </div>
                       <div class="progress-bar progress-bar-warning" style="width: <%= progress_hash[:percent_submitted] %>%">
                       </div>
-                      <div class="progress-bar progress-bar-danger" style="width: <%= progress_hash[:percent_not_submitted] %>%">
+                      <div class="progress-bar progress-bar-danger" style="width: <%= progress_hash[:percent_not_submitted] - progress_hash[:percent_finalized]%>%">
                       </div>
                     </div>
                   </a>
