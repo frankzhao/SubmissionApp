@@ -180,7 +180,7 @@ class AssignmentSubmissionsController < ApplicationController
     @submission = AssignmentSubmission.find(params[:assignment_submission_id])
     relationship = @submission.relationship_to_user(current_user)
     if relationship
-      send_file(@submission.make_pdf)
+      send_file(@submission.make_pdf, :type => 'application/pdf')
     else
       flash[:errors] = ["Permission denied"]
       logger.warn("Security warning: someone tried to finalize someone else's submission")
