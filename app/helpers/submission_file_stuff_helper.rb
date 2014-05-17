@@ -9,34 +9,41 @@ module SubmissionFileStuffHelper
     end
   end
 
-  def save_data(data)
-    File.open(self.zip_path, 'wb') do |f|
+  def save_data(data, assignment)
+    File.open(self.zip_path(assignment), 'wb') do |f|
       f.write(data)
     end
   end
-
-  def file_path
-    self.assignment.path + self.file_path_without_assignment_path
+  
+  def sanitize_str(filename)
+    filename.strip!
+    filename.gsub!(/^.*(\\|\/)/, '') # remove slashes etc
+    filename.gsub!(/[^0-9A-Za-z.\-]/, '_') # remove non-ascii
+    return filename
   end
 
-  def file_path_without_assignment_path
+  def file_path(assignment)
+    self.assignment.path + self.file_path_without_assignment_path(assignment)
+  end
+
+  def file_path_without_assignment_path(assignment)
     name = self.user.name.gsub(" ","_")
     datetime = self.created_at.to_s.gsub(" ","_")
-    "/#{self.id}_#{datetime}"
+    "/u#{self.user.uni_id}_#{sanitize_str(self.user.name)}_#{sanitize_str(assignment.name)}_#{self.id}_#{datetime}"
   end
 
-  def zip_path
-    self.file_path+".zip"
+  def zip_path(assignment)
+    self.file_path(assignment) + ".zip"
   end
 
   def upload=(whatever)
     @upload = whatever
   end
 
-  def all_zip_contents
+  def all_zip_contents(assignment)
     begin
 
-      Zip::File.open(self.zip_path, "b") do |zipfile|
+      Zip::File.open(self.zip_path(assignment), "b") do |zipfile|
         names = zipfile.map{|e| e.name}
                .select{|x| x[0..5]!= "__MACO" }
         return names
@@ -49,7 +56,7 @@ module SubmissionFileStuffHelper
   def zip_contents
     begin
       zip_contents = {}
-      Zip::File.open(self.zip_path, "b") do |zipfile|
+      Zip::File.open(self.zip_path(assignment), "b") do |zipfile|
         names = zipfile.map{|e| e.name}
                .select{|x| x[0..5]!= "__MACO" }
 

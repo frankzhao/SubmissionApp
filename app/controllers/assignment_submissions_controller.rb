@@ -89,7 +89,7 @@ class AssignmentSubmissionsController < ApplicationController
     if @submission.save
       if @assignment.submission_format == "zipfile"
         if (params[:upload] and params[:upload]["datafile"])
-          @submission.save_data(params[:upload]["datafile"].read)
+          @submission.save_data(params[:upload]["datafile"].read, @assignment)
 
           begin
             @submission.zip_contents
@@ -137,12 +137,13 @@ class AssignmentSubmissionsController < ApplicationController
 
   def get_zip
     @submission = AssignmentSubmission.find(params[:id])
+    assignment = Assignment.find(@submission.assignment_id)
 
     filename = @submission.pretty_filename(current_user) + '.zip"'
 
     if @submission.permits?(current_user)
       response.headers['Content-Disposition'] = "attachment; filename=\"#{filename}\""
-      send_file(@submission.zip_path)
+      send_file(@submission.zip_path(assignment))
     else
       flash[:errors] = ["You don't have permission to access that page"]
       redirect_to "/"
