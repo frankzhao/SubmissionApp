@@ -90,14 +90,14 @@ class Group < ActiveRecord::Base
       sub = student.most_recent_submission(assignment)
 
       next if sub.nil?
-      if !File.exists?(sub.zip_path)
+      if !File.exists?(sub.zip_path(assignment))
         next
       end
 
       sub_name = "u#{sub.user.uni_id.to_s}_#{sub.user.name.gsub(" ","_")}_#{sub.id}"
       if sub
         system("mkdir /tmp/#{folder_name}/#{sub_name}")
-        system("unzip -o #{sub.zip_path} -d /tmp/#{folder_name}/#{sub_name}")
+        system("unzip -o #{sub.zip_path(assignment)} -d /tmp/#{folder_name}/#{sub_name}")
         # x = "mv #{folder_name}#{sub.file_path_without_assignment_path}.zip #{folder_name}/#{sub_name}"
         # p x
         # system(x)

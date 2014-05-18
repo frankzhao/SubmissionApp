@@ -40,11 +40,10 @@
                                         :courses => @courses} %>
 
     <h3>Submissions</h3>
-        <% if @relation == :staff %>
+        <% if @relation == :staff || @relation == :convener %>
 <!--           As a tutor, you can't currently download all of your students'
         submissions as a zip. Sorry about that. You can, however, view and download them individually. -->
         <p>
-        <% elsif (@relation == :convener) || (relation == :staff) %>
           <%= link_to "Download all submissions as zip",
             "/assignments/#{@assignment.id}/submissions.zip", 
             {:class => "btn btn-primary btn-sm"} %>
