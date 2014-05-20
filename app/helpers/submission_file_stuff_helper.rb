@@ -33,7 +33,7 @@ module SubmissionFileStuffHelper
   end
 
   def zip_path
-    self.file_path(self.assignment) + ".zip"
+    self.file_path + ".zip"
   end
 
   def upload=(whatever)
@@ -43,7 +43,7 @@ module SubmissionFileStuffHelper
   def all_zip_contents(assignment)
     begin
 
-      Zip::File.open(self.zip_path(assignment), "b") do |zipfile|
+      Zip::File.open(self.zip_path, "b") do |zipfile|
         names = zipfile.map{|e| e.name}
                .select{|x| x[0..5]!= "__MACO" }
         return names
