@@ -32,8 +32,8 @@ module SubmissionFileStuffHelper
     "/u#{self.user.uni_id}_#{sanitize_str(self.user.name)}_#{sanitize_str(assignment.name)}_#{self.id}_#{datetime}"
   end
 
-  def zip_path(assignment)
-    self.file_path(assignment) + ".zip"
+  def zip_path
+    self.file_path(self.assignment) + ".zip"
   end
 
   def upload=(whatever)
