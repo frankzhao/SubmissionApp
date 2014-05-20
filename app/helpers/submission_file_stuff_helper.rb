@@ -10,7 +10,7 @@ module SubmissionFileStuffHelper
   end
 
   def save_data(data)
-    File.open(self.zip_path(self.assignment), 'wb') do |f|
+    File.open(self.zip_path, 'wb') do |f|
       f.write(data)
     end
   end
