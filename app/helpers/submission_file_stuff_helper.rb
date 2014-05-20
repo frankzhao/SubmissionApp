@@ -14,7 +14,7 @@ module SubmissionFileStuffHelper
       f.write(data)
     end
   end
-  
+
   def sanitize_str(filename)
     filename.strip!
     filename.gsub!(/^.*(\\|\/)/, '') # remove slashes etc
@@ -22,8 +22,8 @@ module SubmissionFileStuffHelper
     return filename
   end
 
-  def file_path(assignment)
-    self.assignment.path + self.file_path_without_assignment_path(assignment)
+  def file_path
+    self.assignment.path + self.file_path_without_assignment_path(self.assignment)
   end
 
   def file_path_without_assignment_path(assignment)
@@ -137,7 +137,7 @@ module SubmissionFileStuffHelper
       user_name = self.context_name(self.user, user).gsub(" ","_")
     end
     assignment_name = self.assignment.name.gsub(/ |-|:/, "_")
-    return "u#{self.user.uni_id.to_s}_#{user_name}_#{assignment_name}_#{self.id}" 
+    return "u#{self.user.uni_id.to_s}_#{user_name}_#{assignment_name}_#{self.id}"
   end
 
   def make_pdf
