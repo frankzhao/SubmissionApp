@@ -143,7 +143,7 @@ class AssignmentSubmissionsController < ApplicationController
 
     if @submission.permits?(current_user)
       response.headers['Content-Disposition'] = "attachment; filename=\"#{filename}\""
-      send_file(@submission.zip_path(assignment))
+      send_file(@submission.zip_path)
     else
       flash[:errors] = ["You don't have permission to access that page"]
       redirect_to "/"
