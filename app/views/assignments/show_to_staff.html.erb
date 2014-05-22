@@ -134,7 +134,7 @@
               <td><%= link_to "#{submission.user.name}",
                   assignment_assignment_submission_url(@assignment, submission) %></td>
               <td><%= link_to "u#{submission.user.uni_id}",
-                  assignment_assignment_submission_url(@assignment, submission) %></td>
+                  user_url(submission.user) %></td>
               <!-- Peer reviewer -->
               <% if @assignment.peer_review_cycles.any? %>
                 <td>
