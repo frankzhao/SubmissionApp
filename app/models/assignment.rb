@@ -72,20 +72,27 @@ class Assignment < ActiveRecord::Base
     end
   end
 
+  def sanitize(filename)
+    filename.strip!
+    filename.gsub!(/^.*(\\|\/)/, '') # remove slashes etc
+    filename.gsub!(/[^0-9A-Za-z.\-]/, '_') # remove non-ascii
+    return filename
+  end
+
   def path
-    "#{Rails.root.to_s}/upload/#{self.path_without_upload}"
+    "#{Rails.root.to_s}/upload/#{self.id}"
   end
 
   def path_without_upload
-    "#{self.id}"
+    "#{sanitize(self.name)}"
   end
 
   def update_zip
-    system("zip -r #{self.path}.zip #{self.path}/*")
+    system("cd #{self.path} && zip -r #{sanitize(self.name)}.zip *")
   end
 
   def zip_path
-    "#{self.path}.zip"
+    "#{self.path}/#{self.name}.zip"
   end
 
   def make_directory

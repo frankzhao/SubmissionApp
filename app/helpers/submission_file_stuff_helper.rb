@@ -15,25 +15,32 @@ module SubmissionFileStuffHelper
     end
   end
 
-  def file_path
-    self.assignment.path + self.file_path_without_assignment_path
+  def sanitize_str(filename)
+    filename.strip!
+    filename.gsub!(/^.*(\\|\/)/, '') # remove slashes etc
+    filename.gsub!(/[^0-9A-Za-z.\-]/, '_') # remove non-ascii
+    return filename
   end
 
-  def file_path_without_assignment_path
+  def file_path
+    self.assignment.path + self.file_path_without_assignment_path(self.assignment)
+  end
+
+  def file_path_without_assignment_path(assignment)
     name = self.user.name.gsub(" ","_")
     datetime = self.created_at.to_s.gsub(" ","_")
-    "/#{self.id}_#{datetime}"
+    "/u#{self.user.uni_id}_#{sanitize_str(self.user.name)}_#{sanitize_str(assignment.name)}_#{self.id}_#{datetime}"
   end
 
   def zip_path
-    self.file_path+".zip"
+    self.file_path + ".zip"
   end
 
   def upload=(whatever)
     @upload = whatever
   end
 
-  def all_zip_contents
+  def all_zip_contents(assignment)
     begin
 
       Zip::File.open(self.zip_path, "b") do |zipfile|
@@ -49,7 +56,7 @@ module SubmissionFileStuffHelper
   def zip_contents
     begin
       zip_contents = {}
-      Zip::File.open(self.zip_path, "b") do |zipfile|
+      Zip::File.open(self.zip_path(assignment), "b") do |zipfile|
         names = zipfile.map{|e| e.name}
                .select{|x| x[0..5]!= "__MACO" }
 
@@ -130,7 +137,7 @@ module SubmissionFileStuffHelper
       user_name = self.context_name(self.user, user).gsub(" ","_")
     end
     assignment_name = self.assignment.name.gsub(/ |-|:/, "_")
-    return "u#{self.user.uni_id.to_s}_#{user_name}_#{assignment_name}_#{self.id}" 
+    return "u#{self.user.uni_id.to_s}_#{user_name}_#{assignment_name}_#{self.id}"
   end
 
   def make_pdf

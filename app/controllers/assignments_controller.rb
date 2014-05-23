@@ -6,7 +6,8 @@ class AssignmentsController < ApplicationController
 
   def require_permission
     @assignment = Assignment.find(params[:id])
-    unless @assignment.group_type.conveners.include?(current_user) || current_user.is_admin
+    #unless @assignment.group_type.conveners.include?(current_user) || current_user.is_admin
+    unless @assignment.conveners_and_staff.include?(current_user) || current_user.is_admin
       flash[:errors] = ["You don't have permission to do that with assignments."]
       redirect_to @assignment
     end

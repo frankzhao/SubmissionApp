@@ -137,6 +137,7 @@ class AssignmentSubmissionsController < ApplicationController
 
   def get_zip
     @submission = AssignmentSubmission.find(params[:id])
+    assignment = Assignment.find(@submission.assignment_id)
 
     filename = @submission.pretty_filename(current_user) + '.zip"'
 

@@ -40,11 +40,10 @@
                                         :courses => @courses} %>
 
     <h3>Submissions</h3>
-        <% if @relation == :staff %>
+        <% if @relation == :staff || @relation == :convener %>
 <!--           As a tutor, you can't currently download all of your students'
         submissions as a zip. Sorry about that. You can, however, view and download them individually. -->
         <p>
-        <% elsif @relation == :convener %>
           <%= link_to "Download all submissions as zip",
             "/assignments/#{@assignment.id}/submissions.zip", 
             {:class => "btn btn-primary btn-sm"} %>
@@ -100,13 +99,12 @@
                   <% progress_hash = group.progress_bar_hash(@assignment) %>
                   <a href="<%= assignment_group_show_url(@assignment, group) %>">
                     <div class="progress progress-striped active">
-                      <div class="progress-bar" style="width: <%= progress_hash[:percent_marked] %>%">
-                      </div>
+                        <div class="progress-bar" style="width: <%= progress_hash[:percent_marked] %>%"></div>
                       <div class="progress-bar progress-bar-success" style="width: <%= progress_hash[:percent_finalized] %>%">
                       </div>
                       <div class="progress-bar progress-bar-warning" style="width: <%= progress_hash[:percent_submitted] %>%">
                       </div>
-                      <div class="progress-bar progress-bar-danger" style="width: <%= progress_hash[:percent_not_submitted] %>%">
+                      <div class="progress-bar progress-bar-danger" style="width: <%= progress_hash[:percent_not_submitted] - progress_hash[:percent_finalized]%>%">
                       </div>
                     </div>
                   </a>
@@ -136,7 +134,7 @@
               <td><%= link_to "#{submission.user.name}",
                   assignment_assignment_submission_url(@assignment, submission) %></td>
               <td><%= link_to "u#{submission.user.uni_id}",
-                  assignment_assignment_submission_url(@assignment, submission) %></td>
+                  user_url(submission.user) %></td>
               <!-- Peer reviewer -->
               <% if @assignment.peer_review_cycles.any? %>
                 <td>

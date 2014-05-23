@@ -13,7 +13,7 @@
         <div id="list-of-all" class="panel-collapse panel-body">
           <p>If this looks wrong, try resubmitting. In particular, if this is empty, something is wrong.</p>
           <ul>
-            <% submission.all_zip_contents.each do |filename| %>
+            <% submission.all_zip_contents(@assignment).each do |filename| %>
               <li><%= filename %></li>
             <% end %>
           </ul>
